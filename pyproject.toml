@@ -1,0 +1,12 @@
+[project]
+name = "trader"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["numpy", "pydantic>=2", "pyarrow", "httpx", "structlog", "rich"]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
