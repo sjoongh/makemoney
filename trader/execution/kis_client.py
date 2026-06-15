@@ -514,7 +514,9 @@ class KisClient:
             RuntimeError: if rt_cd != "0" in the KIS response.
         """
         if market == "NASDAQ":
-            tr_id = "VTTT1002U" if side == "BUY" else "VTTT1006U"
+            # Paper US: buy VTTT1002U, sell VTTT1001U. (VTTT1006U is a wrong
+            # derivation — KIS paper rejects it with "해당업무 미제공"; verified live.)
+            tr_id = "VTTT1002U" if side == "BUY" else "VTTT1001U"
             path = "/uapi/overseas-stock/v1/trading/order"
             body = {
                 "CANO": self.account,
@@ -526,6 +528,8 @@ class KisClient:
                 "ORD_DVSN": order_type,
                 "ORD_SVR_DVSN_CD": "0",
             }
+            if side == "SELL":
+                body["SLL_TYPE"] = "00"
         elif market == "KOSPI":
             tr_id = "VTTC0012U" if side == "BUY" else "VTTC0011U"
             path = "/uapi/domestic-stock/v1/trading/order-cash"

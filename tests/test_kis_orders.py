@@ -95,7 +95,7 @@ def test_nasdaq_sell_uses_vttt1006u(tmp_path):
     kis = _make_client(handler, tmp_path)
     result = kis.submit_order("AAPL", "NASDAQ", "SELL", 3, price=200.0)
     assert result == "9999"
-    assert captured["tr_id"] == "VTTT1006U"
+    assert captured["tr_id"] == "VTTT1001U"  # paper US sell (VTTT1006U is rejected by KIS paper)
 
 
 # ---------------------------------------------------------------------------
