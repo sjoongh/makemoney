@@ -229,3 +229,61 @@ def test_invalid_config_rejected():
         NewsSignalSource(MockNewsProvider([]), MockSentimentScorer(), halflife_days=0)
     with pytest.raises(ValueError):
         NewsSignalSource(MockNewsProvider([]), MockSentimentScorer(), lookback=timedelta(0))
+
+
+def test_same_ticker_different_markets_scored_independently():
+    """Two symbols with the same ticker but different markets must NOT share cache entries."""
+    from trader.signals.news.models import NewsItem, SentimentResult
+
+    bar_ts = datetime(2026, 1, 10, tzinfo=UTC)
+    sym_nasdaq = Symbol("005930", Market.NASDAQ, "USD")
+    sym_kospi  = Symbol("005930", Market.KOSPI,  "KRW")
+
+    # Both symbols get the same item id from their respective providers
+    item_nasdaq = NewsItem(
+        id="item1", symbol="005930", title="005930 beats earnings",
+        body=None, url=None, published_at=bar_ts - timedelta(hours=1), provider="test",
+    )
+    item_kospi = NewsItem(
+        id="item1", symbol="005930", title="005930 plunge after recall",
+        body=None, url=None, published_at=bar_ts - timedelta(hours=1), provider="test",
+    )
+
+    class CountingScorer:
+        def __init__(self):
+            self.calls: list[str] = []
+        def score(self, news_item: NewsItem, *, symbol: str, as_of: datetime) -> SentimentResult:
+            self.calls.append(symbol)
+            # positive for "beats", negative for "plunge"
+            score = 0.8 if "beats" in news_item.title else -0.8
+            return SentimentResult(
+                item_id=news_item.id, score=score, confidence=0.7,
+                horizon="5d", event_type=None, rationale=None, model="counting",
+            )
+
+    from trader.signals.news.cache import SentimentCache
+    scorer = CountingScorer()
+    # Shared cache to prove there is no cross-symbol contamination
+    shared_cache = SentimentCache()
+
+    src_nasdaq = NewsSignalSource(
+        MockNewsProvider([item_nasdaq]), scorer, cache=shared_cache,
+        lookback=timedelta(days=7),
+    )
+    src_kospi = NewsSignalSource(
+        MockNewsProvider([item_kospi]), scorer, cache=shared_cache,
+        lookback=timedelta(days=7),
+    )
+
+    bar_nasdaq = BarEvent(sym_nasdaq, bar_ts, 100.0, 105.0, 99.0, 102.0, 1000)
+    bar_kospi  = BarEvent(sym_kospi,  bar_ts, 100.0, 105.0, 99.0, 102.0, 1000)
+
+    sig_nasdaq = src_nasdaq.on_bar(bar_nasdaq)
+    sig_kospi  = src_kospi.on_bar(bar_kospi)
+
+    assert sig_nasdaq is not None and sig_kospi is not None
+    # scorer must have been called once per market (not deduped across markets)
+    assert len(scorer.calls) == 2
+    # signals must reflect their own news, not the other market's
+    assert sig_nasdaq.score > 0, f"NASDAQ signal should be positive, got {sig_nasdaq.score}"
+    assert sig_kospi.score  < 0, f"KOSPI signal should be negative, got {sig_kospi.score}"

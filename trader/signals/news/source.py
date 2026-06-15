@@ -88,10 +88,11 @@ class NewsSignalSource:
         if not items:
             return None
 
-        # Step 3: score all (cache ensures each item.id scored only once)
+        # Step 3: score all (cache ensures each item.id scored only once per market+symbol)
+        market_symbol = f"{bar.symbol.market.value}:{bar.symbol.ticker}"
         scored = [
             (item, self.cache.get_or_score(
-                item, self.scorer, symbol=bar.symbol.ticker, as_of=bar.ts
+                item, self.scorer, symbol=market_symbol, as_of=bar.ts
             ))
             for item in items
         ]
