@@ -1,7 +1,7 @@
 # trader/strategy/portfolio.py
 from __future__ import annotations
 from dataclasses import dataclass, field
-from trader.core.events import Symbol, BarEvent, FillEvent, Side
+from trader.core.events import Symbol, Market, BarEvent, FillEvent, Side
 
 @dataclass
 class FxRates:
@@ -46,3 +46,35 @@ class Portfolio:
             sym = self._sym[key]
             eq += self.fx.to_krw(qty * self._mark.get(key, 0.0), sym.currency)
         return eq
+
+    def position_value_krw(self, sym: Symbol) -> float:
+        """qty * mark * fx; returns 0 if no position or no mark."""
+        key = _sym_key(sym)
+        qty = self._pos.get(key, 0)
+        if qty == 0:
+            return 0.0
+        mark = self._mark.get(key, 0.0)
+        return self.fx.to_krw(qty * mark, sym.currency)
+
+    def position_weight(self, sym: Symbol) -> float:
+        """position_value_krw / equity_krw; returns 0 if equity <= 0."""
+        eq = self.equity_krw()
+        if eq <= 0:
+            return 0.0
+        return self.position_value_krw(sym) / eq
+
+    def market_weight(self, market: Market) -> float:
+        """Sum of position_value_krw for all symbols in market / equity_krw."""
+        eq = self.equity_krw()
+        if eq <= 0:
+            return 0.0
+        total = 0.0
+        for key, qty in self._pos.items():
+            sym = self._sym[key]
+            if sym.market == market and qty != 0:
+                total += self.fx.to_krw(qty * self._mark.get(key, 0.0), sym.currency)
+        return total / eq
+
+    def open_position_count(self) -> int:
+        """Number of symbols with nonzero position."""
+        return sum(1 for qty in self._pos.values() if qty != 0)
