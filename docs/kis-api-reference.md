@@ -30,6 +30,10 @@ tr_cont: ""        # 연속조회 시 "N"
 | 국내 주문 | `POST /uapi/domestic-stock/v1/trading/order-cash` | 매수 `VTTC0012U` / 매도 `VTTC0011U` | ⬜ 미검증 (단위테스트만) |
 | 해외 체결조회 | `GET /uapi/overseas-stock/v1/trading/inquire-ccnl` | `VTTS3035R` | ✅ rt_cd=0, 빈 리스트 반환 (정상 수락) |
 | 국내 체결조회 | `GET /uapi/domestic-stock/v1/trading/inquire-daily-ccld` | 3개월내 `VTTC0081R` | ⬜ 미검증 (TODO) |
+| 현재잔고/환율 | `GET /uapi/overseas-stock/v1/trading/inquire-present-balance` | `VTRP6504R` | ✅ 라이브 검증 — `output2[].frst_bltn_exrt` USD/KRW=1520.40 수신 확인 (2026-06-15) |
+
+### VTRP6504R 파라미터 메모
+- **현재잔고/환율** (`VTRP6504R`): query `CANO`, `ACNT_PRDT_CD="01"`, `WCRC_FRCR_DVSN_CD="01"`, `NATN_CD="000"`, `TR_MKET_CD="00"`, `INQR_DVSN_CD="00"`. 응답 `output1[].bass_exrt`(기준환율, 통화코드=`crcy_cd`), `output2[].frst_bltn_exrt`(최초고시환율). USD/KRW 환율: `crcy_cd=="USD"` 행 우선 `bass_exrt` → 없으면 `frst_bltn_exrt` → 없으면 fallback 1380.0. 문자열→float 변환 필수; 0/empty는 fallback 처리.
 
 ### 파라미터 메모
 - **해외 일봉**: query `AUTH=""`, `EXCD="NAS"`(NASDAQ), `SYMB="AAPL"`, `GUBN="0"`(일), `BYMD=""`(기준일, 빈값=최근), `MODP="0"`. 응답 `output2[]` 각 행: `xymd`(YYYYMMDD), `open/high/low/clos`, `tvol`.

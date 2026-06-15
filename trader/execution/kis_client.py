@@ -493,6 +493,69 @@ class KisClient:
             )
         return body
 
+    def present_balance(self, exchange: str = "NASD", ccy: str = "USD") -> dict:
+        """GET /uapi/overseas-stock/v1/trading/inquire-present-balance (VTRP6504R).
+
+        Returns the parsed JSON body containing current overseas balance with FX rates.
+        Key fields used for USD/KRW rate:
+          output1[*].bass_exrt  — base exchange rate where the row's currency matches.
+          output2[*].frst_bltn_exrt — first posted exchange rate (fallback).
+
+        Raises RuntimeError if rt_cd != "0".
+        """
+        self._throttle()
+        resp = self._c.get(
+            "/uapi/overseas-stock/v1/trading/inquire-present-balance",
+            headers=self._headers("VTRP6504R"),
+            params={
+                "CANO": self.account,
+                "ACNT_PRDT_CD": "01",
+                "WCRC_FRCR_DVSN_CD": "01",
+                "NATN_CD": "000",
+                "TR_MKET_CD": "00",
+                "INQR_DVSN_CD": "00",
+            },
+        )
+        resp.raise_for_status()
+        body = resp.json()
+        if body.get("rt_cd") != "0":
+            raise RuntimeError(
+                f"KIS present_balance error [{body.get('rt_cd')}]: {body.get('msg1', body)}"
+            )
+        return body
+
+    def usd_krw_rate(self, default: float = 1380.0) -> float:
+        """Return today's USD/KRW exchange rate from present_balance (VTRP6504R).
+
+        Lookup priority:
+          1. output1[*].bass_exrt  where the row's currency code is "USD".
+          2. output2[*].frst_bltn_exrt where the row's currency code is "USD".
+          3. Returns `default` (1380.0) if the API returns nothing usable.
+
+        All string→float conversions are defensive; zero/empty values fall through
+        to the next source or the default.
+        """
+        try:
+            body = self.present_balance()
+        except Exception:
+            return default
+
+        # --- Priority 1: output1 bass_exrt ---
+        for row in body.get("output1", []):
+            if row.get("crcy_cd", "").upper() == "USD":
+                val = _safe_float(row.get("bass_exrt", ""), 0.0)
+                if val > 0:
+                    return val
+
+        # --- Priority 2: output2 frst_bltn_exrt ---
+        for row in body.get("output2", []):
+            if row.get("crcy_cd", "").upper() == "USD":
+                val = _safe_float(row.get("frst_bltn_exrt", ""), 0.0)
+                if val > 0:
+                    return val
+
+        return default
+
     def account_snapshot(self) -> dict:
         """Return a normalized account snapshot combining domestic + overseas balances.
 

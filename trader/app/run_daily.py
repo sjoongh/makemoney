@@ -40,10 +40,6 @@ SYMBOLS = [
     ("005930", "KOSPI", "KRW"),
 ]
 
-# FX rates: in production these would come from a live feed.
-# Using approximate rates here for paper trading.
-FX = FxRates({"USD": 1380.0, "KRW": 1.0})
-
 
 def _load_dotenv(path: str = ".env") -> None:
     """Minimal .env loader — sets missing keys into os.environ, no extra deps."""
@@ -82,6 +78,11 @@ def build_kis_client():
 def main(dry_run: bool = True) -> None:
     kis = build_kis_client()
 
+    # Fetch live USD/KRW rate via VTRP6504R; falls back to 1380.0 if unavailable.
+    usd_rate = kis.usd_krw_rate(default=1380.0)
+    fx = FxRates({"USD": usd_rate, "KRW": 1.0})
+    print(f"FX rate: 1 USD = {usd_rate:,.2f} KRW (live via VTRP6504R, fallback=1380.0)")
+
     # Snapshot to learn current equity before building the portfolio.
     # DailyActEngine.run() will re-snapshot internally; this call is just
     # for the printed header.
@@ -93,7 +94,7 @@ def main(dry_run: bool = True) -> None:
 
     # Build a throw-away portfolio + strategy (DailyActEngine will rebuild
     # from snapshot internally; these are just to satisfy constructor types).
-    pf = Portfolio({"KRW": snapshot["cash_krw"]}, FX)
+    pf = Portfolio({"KRW": snapshot["cash_krw"]}, fx)
     strategy = FusionEngine(
         signal_sources=[TechnicalSignalSource(fast=20, slow=50)],
         portfolio=pf,
@@ -107,7 +108,7 @@ def main(dry_run: bool = True) -> None:
     engine = DailyActEngine(
         kis_client=kis,
         strategy=strategy,
-        fx=FX,
+        fx=fx,
         symbols=SYMBOLS,
         band=0.01,
         dry_run=dry_run,
