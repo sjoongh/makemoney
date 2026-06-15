@@ -10,3 +10,7 @@ build/
 .pytest_cache/
 .coverage
 htmlcov/
+.env
+money.txt
+.kis_token.json
+.run_ledger.json

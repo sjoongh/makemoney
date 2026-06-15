@@ -89,11 +89,14 @@ class DailyActEngine:
         # Within processing, bars are sorted ascending so warmup sees history
         # before the latest bar triggers a decision.
         orders: list[OrderEvent] = []
+        # Track the latest bar per symbol key for use in submission step.
+        latest_bars: dict[tuple[str, str], BarEvent] = {}
         for key in sorted(groups.keys()):
             bars = groups[key]
             if not bars:
                 continue
             *warmup_bars, latest_bar = bars
+            latest_bars[key] = latest_bar
             for bar in warmup_bars:
                 portfolio.mark(bar)
                 self.strategy.warmup_bar(bar)
@@ -108,16 +111,19 @@ class DailyActEngine:
         for order in orders:
             market_str = order.symbol.market.value
             ticker = order.symbol.ticker
+            sym_key = (market_str, ticker)
+
+            # Resolve the latest bar for this specific symbol
+            sym_latest = latest_bars.get(sym_key)
+            trading_date = str(sym_latest.ts.date()) if sym_latest else ""
 
             # Idempotency: skip if ledger says we already ran this market today
             if self.ledger is not None:
-                trading_date = str(latest_bar.ts.date())  # type: ignore[possibly-undefined]
                 if not self.ledger.acquire(self.kis.account, trading_date, market_str):
                     continue  # already submitted for this market today
 
-            # Compute protective limit price from the last bar for this symbol
-            sym_bars = groups.get((market_str, ticker), [])
-            last_close = sym_bars[-1].close if sym_bars else order.limit_price or 0.0
+            # Compute protective limit price from the last close for this symbol
+            last_close = sym_latest.close if sym_latest else (order.limit_price or 0.0)
             limit = protective_limit_price(order.side, last_close, self.band)
 
             self.kis.submit_order(
