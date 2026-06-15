@@ -102,6 +102,7 @@ def _make_engine(portfolio: Portfolio) -> FusionEngine:
 
 
 SYMS = [("AAPL", "NASDAQ", "USD")]
+TWO_NASDAQ_SYMS = [("AAPL", "NASDAQ", "USD"), ("MSFT", "NASDAQ", "USD")]
 
 
 # ---------------------------------------------------------------------------
@@ -253,3 +254,73 @@ class TestDailyActEngineLiveRun:
             assert call["side"] == order.side.value
             assert call["ticker"] == order.symbol.ticker
             assert call["market"] == order.symbol.market.value
+
+
+class TestDailyActEngineMultiSymbolLedger:
+    """Ledger is ticker-scoped: multiple symbols in same market submit independently."""
+
+    def test_two_nasdaq_symbols_both_submit_first_run(self, tmp_path):
+        """With two NASDAQ symbols and a fresh ledger, both tickers submit on first run."""
+        from trader.live.ledger import RunLedger
+
+        fake_kis = FakeKis(TWO_NASDAQ_SYMS, n_bars=60)
+        pf = Portfolio({"KRW": 100_000_000.0}, FX)
+        strategy = _make_engine(pf)
+        ledger = RunLedger(path=str(tmp_path / "ledger.json"))
+
+        engine = DailyActEngine(
+            kis_client=fake_kis,
+            strategy=strategy,
+            fx=FX,
+            symbols=TWO_NASDAQ_SYMS,
+            dry_run=False,
+            ledger=ledger,
+        )
+        orders = engine.run()
+
+        # Every generated order must be submitted (no ticker blocks another)
+        submitted_tickers = {c["ticker"] for c in fake_kis.submit_calls}
+        order_tickers = {o.symbol.ticker for o in orders}
+        assert submitted_tickers == order_tickers, (
+            f"All generated order tickers should be submitted independently. "
+            f"Orders: {order_tickers}, Submitted: {submitted_tickers}"
+        )
+
+    def test_same_day_rerun_submits_neither_symbol(self, tmp_path):
+        """After a full two-symbol run, re-run with reloaded ledger submits nothing."""
+        from trader.live.ledger import RunLedger
+
+        ledger_path = str(tmp_path / "ledger.json")
+
+        # First run — record both tickers
+        fake_kis_1 = FakeKis(TWO_NASDAQ_SYMS, n_bars=60)
+        pf1 = Portfolio({"KRW": 100_000_000.0}, FX)
+        engine1 = DailyActEngine(
+            kis_client=fake_kis_1,
+            strategy=_make_engine(pf1),
+            fx=FX,
+            symbols=TWO_NASDAQ_SYMS,
+            dry_run=False,
+            ledger=RunLedger(path=ledger_path),
+        )
+        engine1.run()
+        if len(fake_kis_1.submit_calls) == 0:
+            import pytest
+            pytest.skip("No orders generated — cannot test rerun idempotency")
+
+        # Second run — same ledger file, same day
+        fake_kis_2 = FakeKis(TWO_NASDAQ_SYMS, n_bars=60)
+        pf2 = Portfolio({"KRW": 100_000_000.0}, FX)
+        engine2 = DailyActEngine(
+            kis_client=fake_kis_2,
+            strategy=_make_engine(pf2),
+            fx=FX,
+            symbols=TWO_NASDAQ_SYMS,
+            dry_run=False,
+            ledger=RunLedger(path=ledger_path),
+        )
+        engine2.run()
+
+        assert len(fake_kis_2.submit_calls) == 0, (
+            f"Re-run must not submit either ticker again; got {fake_kis_2.submit_calls}"
+        )

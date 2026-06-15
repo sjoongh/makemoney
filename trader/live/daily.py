@@ -117,10 +117,10 @@ class DailyActEngine:
             sym_latest = latest_bars.get(sym_key)
             trading_date = str(sym_latest.ts.date()) if sym_latest else ""
 
-            # Idempotency: skip if ledger says we already ran this market today
+            # Idempotency: skip if ledger says we already submitted this ticker today
             if self.ledger is not None:
-                if not self.ledger.acquire(self.kis.account, trading_date, market_str):
-                    continue  # already submitted for this market today
+                if not self.ledger.acquire(self.kis.account, trading_date, market_str, ticker):
+                    continue  # already submitted for this ticker today
 
             # Compute protective limit price from the last close for this symbol
             last_close = sym_latest.close if sym_latest else (order.limit_price or 0.0)
