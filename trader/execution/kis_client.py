@@ -565,19 +565,21 @@ class KisClient:
     # ------------------------------------------------------------------
 
     def filled_orders(self) -> list[dict]:
-        """Query today's overseas (NASDAQ) executions.
+        """Query today's confirmed executions for both NASDAQ and KOSPI.
 
         Returns a list of dicts with keys:
             order_id, ticker, market, currency, side,
             qty, price, commission
 
-        Domestic fill inquiry is a TODO stub (returns []).
+        Merges overseas (VTTS3035R) and domestic (VTTC0081R) results.
         Only rows with executed qty > 0 are included.
 
         KIS overseas side codes: "02" = BUY, "01" = SELL.
+        KIS domestic side codes: "02" = BUY, "01" = SELL.
         """
         today = datetime.now(timezone.utc).strftime("%Y%m%d")
 
+        # --- Overseas (NASDAQ) ---
         self._throttle()
         resp = self._c.get(
             "/uapi/overseas-stock/v1/trading/inquire-ccnl",
@@ -634,7 +636,111 @@ class KisClient:
                 }
             )
 
-        # TODO: domestic (KOSPI) fill inquiry — VTTC0081R — not yet implemented
+        # --- Domestic (KOSPI) ---
+        fills.extend(self.domestic_filled_orders(as_of_yyyymmdd=today))
+
+        return fills
+
+    def domestic_filled_orders(
+        self, as_of_yyyymmdd: Optional[str] = None
+    ) -> list[dict]:
+        """Query today's confirmed domestic (KOSPI) executions via VTTC0081R.
+
+        GET /uapi/domestic-stock/v1/trading/inquire-daily-ccld
+
+        Args:
+            as_of_yyyymmdd: Date in YYYYMMDD format for INQR_STRT_DT / INQR_END_DT.
+                If None, the date fields are left empty and KIS defaults to today.
+
+        Returns a list of dicts with keys:
+            order_id, ticker, market, currency, side,
+            qty, price, commission
+
+        Only rows with tot_ccld_qty > 0 are included.
+
+        KIS domestic side codes: "02" = BUY, "01" = SELL.
+        (NOTE: domestic uses same mapping as overseas — flag for live confirmation.)
+
+        Raises RuntimeError if rt_cd != "0".
+        """
+        date_str = as_of_yyyymmdd or ""
+
+        self._throttle()
+        resp = self._c.get(
+            "/uapi/domestic-stock/v1/trading/inquire-daily-ccld",
+            headers=self._headers("VTTC0081R"),
+            params={
+                "CANO": self.account,
+                "ACNT_PRDT_CD": "01",
+                "INQR_STRT_DT": date_str,
+                "INQR_END_DT": date_str,
+                "SLL_BUY_DVSN_CD": "00",   # 00 = all (both buy and sell)
+                "INQR_DVSN": "00",          # 00 = by order date
+                "PDNO": "",
+                "CCLD_DVSN": "01",          # 01 = filled only
+                "ORD_GNO_BRNO": "",
+                "ODNO": "",
+                "INQR_DVSN_3": "00",
+                "INQR_DVSN_1": "",
+                "CTX_AREA_FK100": "",
+                "CTX_AREA_NK100": "",
+            },
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        if data.get("rt_cd") != "0":
+            raise RuntimeError(
+                f"KIS domestic_filled_orders error [{data.get('rt_cd')}]: "
+                f"{data.get('msg1', data)}"
+            )
+
+        fills: list[dict] = []
+        # KIS domestic side codes: "01" = SELL, "02" = BUY
+        # (same encoding as overseas; flagged here for live confirmation)
+        _side_map = {"02": "BUY", "01": "SELL"}
+
+        for row in data.get("output1", []):
+            # tot_ccld_qty: 총체결수량 (total filled quantity for the order)
+            # NOTE: field name flagged for live confirmation; KIS docs vary between
+            # tot_ccld_qty and ccld_qty across different endpoints.
+            filled_qty_raw = row.get("tot_ccld_qty", "0")
+            try:
+                filled_qty = int(filled_qty_raw)
+            except (ValueError, TypeError):
+                filled_qty = 0
+            if filled_qty <= 0:
+                continue  # skip unfilled / partially-unfilled rows
+
+            # sll_buy_dvsn_cd: 매도매수구분코드 — "01" SELL / "02" BUY
+            sll_buy_code = row.get("sll_buy_dvsn_cd", "")
+            side_str = _side_map.get(sll_buy_code, sll_buy_code)
+
+            # Price: avg_prvs (평균가) preferred; fall back to tot_ccld_amt / qty.
+            # NOTE: avg_prvs field name flagged for live confirmation.
+            avg_price_raw = row.get("avg_prvs", "")
+            if avg_price_raw and avg_price_raw not in ("", "0", "-"):
+                price = _safe_float(avg_price_raw)
+            else:
+                # Compute from tot_ccld_amt (총체결금액) / qty
+                # NOTE: tot_ccld_amt field name flagged for live confirmation.
+                tot_amt = _safe_float(row.get("tot_ccld_amt", "0"))
+                price = tot_amt / filled_qty if filled_qty else 0.0
+
+            fills.append(
+                {
+                    # odno: 주문번호 — NOTE: field name flagged for live confirmation
+                    "order_id": row.get("odno", ""),
+                    # pdno: 상품번호 (ticker / stock code)
+                    "ticker": row.get("pdno", ""),
+                    "market": "KOSPI",
+                    "currency": "KRW",
+                    "side": side_str,
+                    "qty": filled_qty,
+                    "price": price,
+                    "commission": 0.0,
+                }
+            )
+
         return fills
 
     # ------------------------------------------------------------------

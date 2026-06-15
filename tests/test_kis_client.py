@@ -235,7 +235,7 @@ def test_submit_order_returns_odno(tmp_path):
 
 
 def test_filled_orders_returns_empty_list_when_no_fills(tmp_path):
-    """filled_orders returns [] when the API reports no executions."""
+    """filled_orders returns [] when the API reports no executions (both markets)."""
     def handler(req):
         p = str(req.url.path)
         if p.endswith("/oauth2/tokenP"):
@@ -243,6 +243,10 @@ def test_filled_orders_returns_empty_list_when_no_fills(tmp_path):
         if "inquire-ccnl" in p:
             return httpx.Response(
                 200, json={"rt_cd": "0", "msg1": "ok", "output": []}
+            )
+        if "inquire-daily-ccld" in p:
+            return httpx.Response(
+                200, json={"rt_cd": "0", "msg1": "ok", "output1": []}
             )
         return httpx.Response(404, json={})
 

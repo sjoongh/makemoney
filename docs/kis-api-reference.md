@@ -29,11 +29,22 @@ tr_cont: ""        # 연속조회 시 "N"
 | 해외 주문 | `POST /uapi/overseas-stock/v1/trading/order` | 매수 `VTTT1002U` / 매도 `VTTT1001U` | ✅✅ **장중 실체결 검증**(2026-06-15) — AAPL 1주 매수 $295.85 체결→매도 flat 완료. ⚠️ 매도는 `VTTT1006U` 아님(모의 거부 "해당업무 미제공") → **`VTTT1001U` + body `SLL_TYPE="00"`** 필수. |
 | 국내 주문 | `POST /uapi/domestic-stock/v1/trading/order-cash` | 매수 `VTTC0012U` / 매도 `VTTC0011U` | ⬜ 미검증 (단위테스트만) |
 | 해외 체결조회 | `GET /uapi/overseas-stock/v1/trading/inquire-ccnl` | `VTTS3035R` | ✅ rt_cd=0, 빈 리스트 반환 (정상 수락) |
-| 국내 체결조회 | `GET /uapi/domestic-stock/v1/trading/inquire-daily-ccld` | 3개월내 `VTTC0081R` | ⬜ 미검증 (TODO) |
+| 국내 체결조회 | `GET /uapi/domestic-stock/v1/trading/inquire-daily-ccld` | 3개월내 `VTTC0081R` | ✅ rt_cd=0 정상 수락 (2026-06-15, 빈 리스트 — 당일 국내 거래 없음) |
 | 현재잔고/환율 | `GET /uapi/overseas-stock/v1/trading/inquire-present-balance` | `VTRP6504R` | ✅ 라이브 검증 — `output2[].frst_bltn_exrt` USD/KRW=1520.40 수신 확인 (2026-06-15) |
 
 ### VTRP6504R 파라미터 메모
 - **현재잔고/환율** (`VTRP6504R`): query `CANO`, `ACNT_PRDT_CD="01"`, `WCRC_FRCR_DVSN_CD="01"`, `NATN_CD="000"`, `TR_MKET_CD="00"`, `INQR_DVSN_CD="00"`. 응답 `output1[].bass_exrt`(기준환율, 통화코드=`crcy_cd`), `output2[].frst_bltn_exrt`(최초고시환율). USD/KRW 환율: `crcy_cd=="USD"` 행 우선 `bass_exrt` → 없으면 `frst_bltn_exrt` → 없으면 fallback 1380.0. 문자열→float 변환 필수; 0/empty는 fallback 처리.
+
+### VTTC0081R 파라미터 메모 (국내 체결조회 — 라이브 검증 2026-06-15)
+- **국내 체결조회** (`VTTC0081R`): query `CANO`, `ACNT_PRDT_CD="01"`, `INQR_STRT_DT`/`INQR_END_DT`(YYYYMMDD, 빈값=KIS기본), `SLL_BUY_DVSN_CD="00"`(전체), `INQR_DVSN="00"`, `PDNO=""`, `CCLD_DVSN="01"`(체결만), `ORD_GNO_BRNO=""`, `ODNO=""`, `INQR_DVSN_3="00"`, `INQR_DVSN_1=""`, `CTX_AREA_FK100=""`, `CTX_AREA_NK100=""`.
+  - 응답 `output1[]`: 체결 행 목록. 주요 필드:
+    - `pdno` — 종목코드(ticker)
+    - `odno` — 주문번호 ⚠️ 라이브 빈 리스트라 실체결 row 필드명 미확인
+    - `sll_buy_dvsn_cd` — "01"=매도, "02"=매수 ⚠️ 라이브 row 없어 매핑 미확인
+    - `tot_ccld_qty` — 총체결수량 ⚠️ 라이브 row 없어 미확인
+    - `avg_prvs` — 평균가 ⚠️ 라이브 row 없어 미확인; 없으면 `tot_ccld_amt`/qty 사용
+    - `tot_ccld_amt` — 총체결금액 (평균가 fallback용) ⚠️ 미확인
+  - rt_cd=0 정상 수락 확인; 실체결 row 파싱은 실거래 발생 시 재검증 필요.
 
 ### 파라미터 메모
 - **해외 일봉**: query `AUTH=""`, `EXCD="NAS"`(NASDAQ), `SYMB="AAPL"`, `GUBN="0"`(일), `BYMD=""`(기준일, 빈값=최근), `MODP="0"`. 응답 `output2[]` 각 행: `xymd`(YYYYMMDD), `open/high/low/clos`, `tvol`.

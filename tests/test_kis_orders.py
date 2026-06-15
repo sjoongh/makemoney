@@ -200,6 +200,11 @@ def test_filled_orders_parses_overseas_ccnl_response(tmp_path):
                     ],
                 },
             )
+        if "inquire-daily-ccld" in p:
+            # domestic returns empty — this test is scoped to overseas parsing only
+            return httpx.Response(
+                200, json={"rt_cd": "0", "msg1": "ok", "output1": []}
+            )
         return httpx.Response(404, json={})
 
     kis = _make_client(handler, tmp_path)
@@ -239,6 +244,10 @@ def test_filled_orders_uses_vtts3035r_tr_id(tmp_path):
                 200,
                 json={"rt_cd": "0", "msg1": "ok", "output": []},
             )
+        if "inquire-daily-ccld" in p:
+            return httpx.Response(
+                200, json={"rt_cd": "0", "msg1": "ok", "output1": []}
+            )
         return httpx.Response(404, json={})
 
     kis = _make_client(handler, tmp_path)
@@ -254,6 +263,10 @@ def test_filled_orders_empty_when_no_fills(tmp_path):
         if "inquire-ccnl" in p:
             return httpx.Response(
                 200, json={"rt_cd": "0", "msg1": "ok", "output": []}
+            )
+        if "inquire-daily-ccld" in p:
+            return httpx.Response(
+                200, json={"rt_cd": "0", "msg1": "ok", "output1": []}
             )
         return httpx.Response(404, json={})
 
