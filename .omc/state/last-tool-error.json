@@ -1,0 +1,7 @@
+{
+  "tool_name": "Read",
+  "tool_input_preview": "{\"file_path\":\"/Users/manager/.claude/projects/-Users-manager-aidp/memory/MEMORY.md\"}",
+  "error": "File does not exist. Note: your current working directory is /Users/manager/aidp/makemoney.",
+  "timestamp": "2026-06-15T06:22:02.790Z",
+  "retry_count": 1
+}
