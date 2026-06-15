@@ -26,10 +26,10 @@ tr_cont: ""        # 연속조회 시 "N"
 | 토큰 발급 | `POST /oauth2/tokenP` (body: grant_type=client_credentials, appkey, appsecret) | — | ✅ 200 |
 | 해외 일봉 | `GET /uapi/overseas-price/v1/quotations/dailyprice` | `HHDFS76240000` | ✅ AAPL 실데이터 수신 |
 | 국내 일봉 | `GET /uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice` | `FHKST03010100` | ⚠️ 스펙OK(레이트리밋만 겪음) |
-| 해외 주문 | `POST /uapi/overseas-stock/v1/trading/order` | 매수 `VTTT1002U` / 매도 `VTTT1006U` | ⬜ 미검증 |
-| 국내 주문 | `POST /uapi/domestic-stock/v1/trading/order-cash` | 매수 `VTTC0012U` / 매도 `VTTC0011U` | ⬜ 미검증 |
-| 해외 체결조회 | `GET /uapi/overseas-stock/v1/trading/inquire-ccnl` | `VTTS3035R` | ⬜ 미검증 |
-| 국내 체결조회 | `GET /uapi/domestic-stock/v1/trading/inquire-daily-ccld` | 3개월내 `VTTC0081R` | ⬜ 미검증 |
+| 해외 주문 | `POST /uapi/overseas-stock/v1/trading/order` | 매수 `VTTT1002U` / 매도 `VTTT1006U` | ✅ rt_cd=1 msg1="모의투자 장시작전 입니다." (장마감 시간대 — 인증/TR_ID/body 정상 수락, 비즈니스 오류) |
+| 국내 주문 | `POST /uapi/domestic-stock/v1/trading/order-cash` | 매수 `VTTC0012U` / 매도 `VTTC0011U` | ⬜ 미검증 (단위테스트만) |
+| 해외 체결조회 | `GET /uapi/overseas-stock/v1/trading/inquire-ccnl` | `VTTS3035R` | ✅ rt_cd=0, 빈 리스트 반환 (정상 수락) |
+| 국내 체결조회 | `GET /uapi/domestic-stock/v1/trading/inquire-daily-ccld` | 3개월내 `VTTC0081R` | ⬜ 미검증 (TODO) |
 
 ### 파라미터 메모
 - **해외 일봉**: query `AUTH=""`, `EXCD="NAS"`(NASDAQ), `SYMB="AAPL"`, `GUBN="0"`(일), `BYMD=""`(기준일, 빈값=최근), `MODP="0"`. 응답 `output2[]` 각 행: `xymd`(YYYYMMDD), `open/high/low/clos`, `tvol`.
@@ -40,4 +40,7 @@ tr_cont: ""        # 연속조회 시 "N"
 - `hashkey`(`POST /uapi/hashkey`)는 선택. 주문 위변조 체크 원하면 사용.
 
 ### 검증 코드 위치
-- 읽기 검증 완료: 해외 일봉. 주문/체결 TR_ID는 W4에서 모의계좌로 실검증하며 확정.
+- 읽기 검증 완료: 해외 일봉.
+- 해외 주문 (`VTTT1002U`): 라이브 검증 완료 — rt_cd=1 "모의투자 장시작전 입니다." (장마감 시간대 비즈니스 오류. 인증/TR_ID/path/body 정상 수락 확인.)
+- 해외 체결조회 (`VTTS3035R`): 라이브 검증 완료 — rt_cd=0, 정상 응답 확인.
+- 국내 주문/체결조회 (`VTTC0012U`, `VTTC0011U`, `VTTC0081R`): 단위테스트만, 라이브 미검증.

@@ -267,15 +267,152 @@ class KisClient:
         return bars
 
     # ------------------------------------------------------------------
-    # Order stubs (implemented in a later task)
+    # Order submission
     # ------------------------------------------------------------------
 
     def submit_order(
-        self, ticker: str, market: str, side: str, quantity: int
+        self,
+        ticker: str,
+        market: str,
+        side: str,
+        quantity: int,
+        price: float = 0.0,
+        order_type: str = "00",
     ) -> str:
-        """Stub — order submission implemented in a later task."""
-        return ""
+        """Submit a paper order and return the broker order id (ODNO).
+
+        Args:
+            ticker: e.g. "AAPL" or "005930".
+            market: "NASDAQ" or "KOSPI".
+            side: "BUY" or "SELL".
+            quantity: Number of shares.
+            price: Limit price (0.0 for market orders on KOSPI).
+            order_type: KIS ORD_DVSN code — "00" limit / "01" market.
+                        For NASDAQ paper trading only limit ("00") is supported.
+                        For KOSPI default is "01" (market); caller may override.
+
+        Returns:
+            ODNO (broker order number) as a string.
+
+        Raises:
+            RuntimeError: if rt_cd != "0" in the KIS response.
+        """
+        if market == "NASDAQ":
+            tr_id = "VTTT1002U" if side == "BUY" else "VTTT1006U"
+            path = "/uapi/overseas-stock/v1/trading/order"
+            body = {
+                "CANO": self.account,
+                "ACNT_PRDT_CD": "01",
+                "OVRS_EXCG_CD": "NASD",
+                "PDNO": ticker,
+                "ORD_QTY": str(quantity),
+                "OVRS_ORD_UNPR": str(price),
+                "ORD_DVSN": order_type,
+                "ORD_SVR_DVSN_CD": "0",
+            }
+        elif market == "KOSPI":
+            tr_id = "VTTC0012U" if side == "BUY" else "VTTC0011U"
+            path = "/uapi/domestic-stock/v1/trading/order-cash"
+            # KOSPI default: market order ("01"); caller may pass "00" for limit
+            kospi_ord_dvsn = order_type if order_type != "00" else "01"
+            body = {
+                "CANO": self.account,
+                "ACNT_PRDT_CD": "01",
+                "PDNO": ticker,
+                "ORD_DVSN": kospi_ord_dvsn,
+                "ORD_QTY": str(quantity),
+                "ORD_UNPR": str(int(price)),
+                "EXCG_ID_DVSN_CD": "KRX",
+            }
+        else:
+            raise ValueError(f"Unsupported market: {market}")
+
+        self._throttle()
+        resp = self._c.post(path, headers=self._headers(tr_id), json=body)
+        resp.raise_for_status()
+        data = resp.json()
+        if data.get("rt_cd") != "0":
+            raise RuntimeError(
+                f"KIS submit_order error [{data.get('rt_cd')}]: {data.get('msg1', data)}"
+            )
+
+        output = data.get("output", {})
+        odno = output.get("ODNO", "")
+        return odno
+
+    # ------------------------------------------------------------------
+    # Fill inquiry
+    # ------------------------------------------------------------------
 
     def filled_orders(self) -> list[dict]:
-        """Stub — fill query implemented in a later task."""
-        return []
+        """Query today's overseas (NASDAQ) executions.
+
+        Returns a list of dicts with keys:
+            order_id, ticker, market, currency, side,
+            qty, price, commission
+
+        Domestic fill inquiry is a TODO stub (returns []).
+        Only rows with executed qty > 0 are included.
+
+        KIS overseas side codes: "02" = BUY, "01" = SELL.
+        """
+        today = datetime.now(timezone.utc).strftime("%Y%m%d")
+
+        self._throttle()
+        resp = self._c.get(
+            "/uapi/overseas-stock/v1/trading/inquire-ccnl",
+            headers=self._headers("VTTS3035R"),
+            params={
+                "CANO": self.account,
+                "ACNT_PRDT_CD": "01",
+                "PDNO": "",
+                "ORD_STRT_DT": today,
+                "ORD_END_DT": today,
+                "SLL_BUY_DVSN": "00",
+                "CCLD_NCCS_DVSN": "00",
+                "OVRS_EXCG_CD": "",
+                "SORT_SQN": "DS",
+                "CTX_AREA_FK200": "",
+                "CTX_AREA_NK200": "",
+                "ORD_DT": "",
+                "ORD_GNO_BRNO": "",
+                "ODNO": "",
+            },
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        if data.get("rt_cd") != "0":
+            raise RuntimeError(
+                f"KIS filled_orders error [{data.get('rt_cd')}]: {data.get('msg1', data)}"
+            )
+
+        fills: list[dict] = []
+        _side_map = {"02": "BUY", "01": "SELL"}
+
+        for row in data.get("output", []):
+            filled_qty_raw = row.get("ft_ccld_qty", "0")
+            try:
+                filled_qty = int(filled_qty_raw)
+            except (ValueError, TypeError):
+                filled_qty = 0
+            if filled_qty <= 0:
+                continue  # skip unfilled / zero rows
+
+            sll_buy_code = row.get("sll_buy_dvsn_cd", "")
+            side_str = _side_map.get(sll_buy_code, sll_buy_code)
+
+            fills.append(
+                {
+                    "order_id": row.get("odno", ""),
+                    "ticker": row.get("pdno", ""),
+                    "market": "NASDAQ",
+                    "currency": "USD",
+                    "side": side_str,
+                    "qty": filled_qty,
+                    "price": float(row.get("ft_ccld_unpr3", "0") or "0"),
+                    "commission": 0.0,
+                }
+            )
+
+        # TODO: domestic (KOSPI) fill inquiry — VTTC0081R — not yet implemented
+        return fills

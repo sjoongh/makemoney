@@ -215,13 +215,39 @@ def test_non_zero_rt_cd_raises(tmp_path):
         kis.daily_bars("AAPL", "NASDAQ", "USD")
 
 
-def test_submit_order_stub_returns_empty_string(tmp_path):
-    c = _client(tmp_path)
-    result = c.submit_order("AAPL", "NASDAQ", "BUY", 1)
-    assert result == ""
+def test_submit_order_returns_odno(tmp_path):
+    """submit_order calls the overseas order endpoint and returns ODNO."""
+    def handler(req):
+        p = str(req.url.path)
+        if p.endswith("/oauth2/tokenP"):
+            return httpx.Response(200, json={"access_token": "T", "expires_in": 86400})
+        if p.endswith("/uapi/overseas-stock/v1/trading/order"):
+            return httpx.Response(
+                200, json={"rt_cd": "0", "msg1": "ok", "output": {"ODNO": "0000001"}}
+            )
+        return httpx.Response(404, json={})
+
+    c = httpx.Client(transport=httpx.MockTransport(handler), base_url="https://mock")
+    kis = KisClient(c, "k", "s", "50193330", paper=True, min_interval=0,
+                    token_cache_path=str(tmp_path / "tok.json"))
+    result = kis.submit_order("AAPL", "NASDAQ", "BUY", 1, price=1.0)
+    assert result == "0000001"
 
 
-def test_filled_orders_stub_returns_empty_list(tmp_path):
-    c = _client(tmp_path)
-    result = c.filled_orders()
+def test_filled_orders_returns_empty_list_when_no_fills(tmp_path):
+    """filled_orders returns [] when the API reports no executions."""
+    def handler(req):
+        p = str(req.url.path)
+        if p.endswith("/oauth2/tokenP"):
+            return httpx.Response(200, json={"access_token": "T", "expires_in": 86400})
+        if "inquire-ccnl" in p:
+            return httpx.Response(
+                200, json={"rt_cd": "0", "msg1": "ok", "output": []}
+            )
+        return httpx.Response(404, json={})
+
+    c = httpx.Client(transport=httpx.MockTransport(handler), base_url="https://mock")
+    kis = KisClient(c, "k", "s", "50193330", paper=True, min_interval=0,
+                    token_cache_path=str(tmp_path / "tok.json"))
+    result = kis.filled_orders()
     assert result == []
