@@ -42,7 +42,7 @@ def main() -> None:
 
     try:
         client = build_client()
-        n = fetch(SYMBOLS, out_path, client=client)
+        n = fetch(SYMBOLS, out_path, client=client, lookback_days=730)
         print(f"  Fetched {n} bars total -> {out_path}")
         print()
 

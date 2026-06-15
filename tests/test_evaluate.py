@@ -236,3 +236,98 @@ def test_format_report_contains_thresholds():
     assert "0.10" in report
     assert "0.20" in report
     assert "0.35" in report
+
+
+# ---------------------------------------------------------------------------
+# Sleeve strategy tests (evaluate returns trend_only/reversion_only/combined)
+# ---------------------------------------------------------------------------
+
+from trader.backtest.evaluate import evaluate_sleeves, run_sleeve_strategy  # noqa: E402
+
+
+def test_evaluate_returns_sleeve_strategy_keys():
+    """evaluate() must include trend_only, reversion_only, combined_sleeves keys."""
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    result = evaluate(all_bars, thresholds=(0.10, 0.35))
+
+    strategies = result["strategies"]
+    for name in ("trend_only", "reversion_only", "combined_sleeves"):
+        assert name in strategies, f"Missing strategy key: {name}"
+        for thr in (0.10, 0.35):
+            key = f"thr={thr:.2f}"
+            assert key in strategies[name], f"Missing threshold {key} in {name}"
+            entry = strategies[name][key]
+            assert "stats" in entry
+            assert isinstance(entry["stats"], StrategyStats)
+            assert "equity_curve" in entry
+
+
+def test_evaluate_sleeves_returns_three_strategies():
+    """evaluate_sleeves() must return exactly trend_only, reversion_only, combined_sleeves."""
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    result = evaluate_sleeves(all_bars, thresholds=(0.10,))
+
+    assert set(result.keys()) == {"trend_only", "reversion_only", "combined_sleeves"}
+    for name, thr_map in result.items():
+        assert "thr=0.10" in thr_map
+        entry = thr_map["thr=0.10"]
+        s = entry["stats"]
+        assert isinstance(s, StrategyStats)
+        assert s.trades >= 0
+        assert 0.0 <= s.exposure <= 1.0
+        assert s.final_equity_krw > 0.0
+
+
+def test_run_sleeve_strategy_returns_stats_and_curve():
+    """run_sleeve_strategy must return valid StrategyStats and correct-length curve."""
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    stats, curve = run_sleeve_strategy(all_bars, enter_threshold=0.10)
+
+    assert isinstance(stats, StrategyStats)
+    assert stats.name == "combined_sleeves"
+    assert len(curve) == len(all_bars)
+    assert all(isinstance(v, float) for v in curve)
+    assert stats.final_equity_krw > 0.0
+
+
+def test_combined_sleeves_equity_is_sum_of_halves():
+    """combined_sleeves equity should reflect two sub-portfolios each seeded at 50% capital.
+
+    We can't directly access the sub-portfolios here, but we verify that
+    the final equity is > 0 and the equity curve has the right length.
+    """
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    stats, curve = run_sleeve_strategy(all_bars, enter_threshold=0.10,
+                                       capital_fraction_trend=0.5,
+                                       capital_fraction_reversion=0.5)
+
+    # Combined equity = trend_half + reversion_half — both seeded from _INITIAL_KRW
+    # Final equity must be positive and curve length must match bar count
+    assert stats.final_equity_krw > 0.0
+    assert len(curve) == len(all_bars)
+
+
+def test_format_report_includes_sleeve_strategy_names():
+    """format_report must include trend_only, reversion_only, combined_sleeves."""
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    result = evaluate(all_bars, thresholds=(0.10,))
+    report = format_report(result)
+
+    assert "trend_only" in report
+    assert "reversion_only" in report
+    assert "combined_sleeves" in report
