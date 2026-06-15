@@ -22,7 +22,7 @@ class SimulatedExecutionHandler:
                 price = bar.open
                 fills.append(FillEvent(o.order_id, o.symbol, bar.ts, o.side,
                                        o.quantity, price,
-                                       self._cost.commission(price, o.quantity),
+                                       self._cost.commission(price, o.quantity, o.symbol.market, o.side),
                                        o.symbol.currency))
             else:
                 still.append(o)

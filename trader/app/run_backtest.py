@@ -3,7 +3,7 @@ from __future__ import annotations
 from trader.data.storage import load_bars
 from trader.data.historical_feed import InMemoryDailyFeed
 from trader.execution.simulated import SimulatedExecutionHandler
-from trader.execution.costs import BpsCostModel
+from trader.execution.costs import MarketCostModel
 from trader.strategy.fusion_engine import FusionEngine
 from trader.strategy.portfolio import Portfolio, FxRates
 from trader.strategy.risk import RiskManager
@@ -16,7 +16,7 @@ def main(parquet_path: str) -> None:
     fx = FxRates({"USD":1300.0,"KRW":1.0})
     pf = Portfolio({"KRW":10_000_000.0}, fx)
     eng = FusionEngine([TechnicalSignalSource(20,50)], pf, RiskManager(0.3), OrderFactory())
-    ex = SimulatedExecutionHandler(BpsCostModel(5.0))
+    ex = SimulatedExecutionHandler(MarketCostModel())
     curve: list[float] = []
     feed = InMemoryDailyFeed(load_bars(parquet_path))
     class _Track(BacktestEngine):

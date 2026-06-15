@@ -15,7 +15,7 @@ from typing import Callable
 
 from trader.backtest.metrics import max_drawdown, total_return
 from trader.core.events import BarEvent
-from trader.execution.costs import BpsCostModel
+from trader.execution.costs import MarketCostModel
 from trader.execution.simulated import SimulatedExecutionHandler
 from trader.signals.indicators import (
     BollingerReversion,
@@ -144,7 +144,7 @@ def run_strategy(
     """
     pf, _ = _make_portfolio()
     strategy = build_strategy(pf, enter_threshold)
-    execution = SimulatedExecutionHandler(BpsCostModel(_COST_BPS))
+    execution = SimulatedExecutionHandler(MarketCostModel())
 
     sorted_bars = sorted(bars, key=lambda b: (b.ts, b.symbol.ticker))
     n_bars = len(sorted_bars)
@@ -319,7 +319,7 @@ def format_report(result: dict) -> str:
     lines.append(f"  Total bars in dataset : {n_bars}")
     lines.append(f"  Thresholds (fixed grid): {', '.join(f'{t:.2f}' for t in thresholds)}")
     lines.append(f"  Initial capital        : {_INITIAL_KRW:,.0f} KRW")
-    lines.append(f"  Cost model             : {_COST_BPS} bps per fill")
+    lines.append(f"  Cost model             : MarketCostModel (KOSPI 1.41bps+20bps sell tax; NASDAQ 25bps+SEC+TAF)")
     lines.append(f"  FX rate (fixed)        : 1 USD = {_FX_USD_KRW:,.1f} KRW")
     lines.append("")
 
