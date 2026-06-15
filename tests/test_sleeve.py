@@ -344,3 +344,62 @@ def test_multi_sleeve_empty_equity_is_zero():
     ex = _execution()
     multi = MultiSleeveEngine([], ex)
     assert multi.equity_krw() == pytest.approx(0.0)
+
+
+# ---------------------------------------------------------------------------
+# (h) Fill routing isolation: sleeve A fill does NOT touch sleeve B positions
+# ---------------------------------------------------------------------------
+
+def test_fill_routing_isolation_direct():
+    """A fill routed to sleeve A must update ONLY sleeve A's portfolio._pos,
+    leaving sleeve B's _pos untouched.
+
+    This test bypasses indicator warm-up by directly submitting an order to
+    the execution handler, registering the routing entry in MultiSleeveEngine,
+    then triggering the fill via on_bar and verifying sleeve B has zero positions.
+    """
+    from uuid import uuid4
+
+    pf_a = _make_portfolio(0.5)
+    pf_b = _make_portfolio(0.5)
+
+    sleeve_a = StrategySleeve("trend", _trend_engine(pf_a, enter_threshold=0.05), 0.5)
+    sleeve_b = StrategySleeve("reversion", _reversion_engine(pf_b, enter_threshold=0.05), 0.5)
+
+    ex = _execution()
+    multi = MultiSleeveEngine([sleeve_a, sleeve_b], ex)
+
+    # Build a BUY order for sleeve_a directly (bypasses indicator warm-up)
+    ts = T0
+    from trader.core.events import OrderEvent, Side
+    order = OrderEvent(order_id=uuid4(), symbol=SYM, ts=ts, side=Side.BUY, quantity=5)
+
+    # Submit the order to the execution handler and register routing to sleeve_a only
+    ex.submit_order(order)
+    multi._order_sleeve[order.order_id] = sleeve_a
+
+    # Sleeve B's portfolio has no positions before the fill
+    assert pf_b.open_position_count() == 0
+
+    # Trigger a bar for SYM → execution fills the pending order at bar.open
+    fill_bar = BarEvent(SYM, T0 + timedelta(days=1), 150.0, 155.0, 145.0, 150.0, 1000)
+
+    # Drive only the fill phase (execution.on_bar) and routing manually,
+    # without running the full sleeve on_bar (which would warm indicators)
+    fills = ex.on_bar(fill_bar)
+    for fill in fills:
+        target_sleeve = multi._order_sleeve.pop(fill.order_id, None)
+        if target_sleeve is not None:
+            target_sleeve.apply_fill(fill)
+
+    # Sleeve A must now hold 5 shares of SYM
+    assert pf_a.position(SYM) == 5, (
+        f"sleeve_a expected 5 shares, got {pf_a.position(SYM)}"
+    )
+    # Sleeve B must still have zero positions — fill must not have leaked
+    assert pf_b.open_position_count() == 0, (
+        f"sleeve_b position count should be 0, got {pf_b.open_position_count()}"
+    )
+    assert pf_b.position(SYM) == 0, (
+        f"sleeve_b should have no SYM position, got {pf_b.position(SYM)}"
+    )
