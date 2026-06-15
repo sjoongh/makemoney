@@ -27,7 +27,14 @@ import httpx
 from trader.app.config import AppConfig
 from trader.live.daily import DailyActEngine
 from trader.live.ledger import RunLedger
-from trader.signals.technical import TechnicalSignalSource
+from trader.signals.technical import TechnicalSignalSource  # kept for parity tests
+from trader.signals.technical_indicator_source import TechnicalIndicatorSource
+from trader.signals.indicators import (
+    MovingAverageCross,
+    RsiReversion,
+    MacdTrend,
+    BollingerReversion,
+)
 from trader.strategy.fusion_engine import FusionEngine
 from trader.strategy.order_factory import OrderFactory
 from trader.strategy.portfolio import FxRates, Portfolio
@@ -95,12 +102,24 @@ def main(dry_run: bool = True) -> None:
     # Build a throw-away portfolio + strategy (DailyActEngine will rebuild
     # from snapshot internally; these are just to satisfy constructor types).
     pf = Portfolio({"KRW": snapshot["cash_krw"]}, fx)
+    sources = [
+        TechnicalIndicatorSource(name="technical.ma_10_30",  indicator=MovingAverageCross(10, 30)),
+        TechnicalIndicatorSource(name="technical.rsi_14",    indicator=RsiReversion(14, 30, 70)),
+        TechnicalIndicatorSource(name="technical.macd",      indicator=MacdTrend(12, 26, 9)),
+        TechnicalIndicatorSource(name="technical.boll_20_2", indicator=BollingerReversion(20, 2.0)),
+    ]
     strategy = FusionEngine(
-        signal_sources=[TechnicalSignalSource(fast=20, slow=50)],
+        signal_sources=sources,
         portfolio=pf,
         risk_manager=RiskManager(max_symbol_weight=0.3),
         order_factory=OrderFactory(),
         enter_threshold=0.35,
+        source_weight={
+            "technical.ma_10_30":  0.30,
+            "technical.rsi_14":    0.20,
+            "technical.macd":      0.30,
+            "technical.boll_20_2": 0.20,
+        },
     )
 
     ledger = RunLedger() if not dry_run else None
