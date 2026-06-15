@@ -48,6 +48,20 @@ SYMBOLS = [
 ]
 
 
+def filter_symbols_by_market(
+    symbols: list[tuple[str, str, str]], market: str
+) -> list[tuple[str, str, str]]:
+    """Return only the symbols whose market field matches `market`.
+
+    market="ALL" returns the full list unchanged.
+    Any other value filters to exact string match on the second element.
+    Unknown market names (no match) return an empty list.
+    """
+    if market == "ALL":
+        return list(symbols)
+    return [(t, m, c) for t, m, c in symbols if m == market]
+
+
 def _load_dotenv(path: str = ".env") -> None:
     """Minimal .env loader — sets missing keys into os.environ, no extra deps."""
     if not os.path.exists(path):
@@ -82,7 +96,13 @@ def build_kis_client():
     )
 
 
-def main(dry_run: bool = True) -> None:
+def main(dry_run: bool = True, market: str = "ALL") -> None:
+    symbols = filter_symbols_by_market(SYMBOLS, market)
+    if not symbols:
+        print(f"No symbols match market={market!r}. Exiting.")
+        return
+
+    print(f"Market filter: {market}  →  symbols: {symbols}")
     kis = build_kis_client()
 
     # Fetch live USD/KRW rate via VTRP6504R; falls back to 1380.0 if unavailable.
@@ -128,14 +148,14 @@ def main(dry_run: bool = True) -> None:
         kis_client=kis,
         strategy=strategy,
         fx=fx,
-        symbols=SYMBOLS,
+        symbols=symbols,
         band=0.01,
         dry_run=dry_run,
         ledger=ledger,
     )
 
     mode = "DRY-RUN" if dry_run else "LIVE"
-    print(f"\nRunning DailyActEngine [{mode}] for symbols: {SYMBOLS}")
+    print(f"\nRunning DailyActEngine [{mode}] for symbols: {symbols}")
     orders = engine.run()
 
     print(f"\n=== Orders {'(would place)' if dry_run else '(submitted)'} ===")
@@ -163,5 +183,11 @@ if __name__ == "__main__":
         default=False,
         help="Actually submit orders (default: dry-run only)",
     )
+    parser.add_argument(
+        "--market",
+        choices=["NASDAQ", "KOSPI", "ALL"],
+        default="ALL",
+        help="Filter symbols to this market (default: ALL)",
+    )
     args = parser.parse_args()
-    main(dry_run=not args.live)
+    main(dry_run=not args.live, market=args.market)

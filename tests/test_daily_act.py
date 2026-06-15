@@ -256,6 +256,183 @@ class TestDailyActEngineLiveRun:
             assert call["market"] == order.symbol.market.value
 
 
+class TestMarketFilter:
+    """filter_symbols_by_market helper selects only the matching market."""
+
+    def test_filter_nasdaq_selects_only_nasdaq(self):
+        from trader.app.run_daily import filter_symbols_by_market
+
+        all_syms = [("AAPL", "NASDAQ", "USD"), ("005930", "KOSPI", "KRW")]
+        result = filter_symbols_by_market(all_syms, "NASDAQ")
+        assert result == [("AAPL", "NASDAQ", "USD")]
+
+    def test_filter_kospi_selects_only_kospi(self):
+        from trader.app.run_daily import filter_symbols_by_market
+
+        all_syms = [("AAPL", "NASDAQ", "USD"), ("005930", "KOSPI", "KRW")]
+        result = filter_symbols_by_market(all_syms, "KOSPI")
+        assert result == [("005930", "KOSPI", "KRW")]
+
+    def test_filter_all_returns_everything(self):
+        from trader.app.run_daily import filter_symbols_by_market
+
+        all_syms = [("AAPL", "NASDAQ", "USD"), ("005930", "KOSPI", "KRW")]
+        result = filter_symbols_by_market(all_syms, "ALL")
+        assert result == all_syms
+
+    def test_filter_unknown_market_returns_empty(self):
+        from trader.app.run_daily import filter_symbols_by_market
+
+        all_syms = [("AAPL", "NASDAQ", "USD"), ("005930", "KOSPI", "KRW")]
+        result = filter_symbols_by_market(all_syms, "NYSE")
+        assert result == []
+
+
+class TestStalenessGuard:
+    """DailyActEngine skips stale symbols but still acts on fresh ones."""
+
+    def _make_engine_with_staleness(
+        self,
+        symbols_and_offsets: list[tuple[tuple[str, str, str], int]],
+        max_staleness_days: int = 4,
+    ):
+        """
+        symbols_and_offsets: list of ((ticker, market, currency), offset_days)
+          where offset_days is how many days BEFORE the freshest bar this
+          symbol's latest bar is dated (0 = fresh, >max_staleness = stale).
+        """
+        from trader.live.daily import DailyActEngine
+
+        reference_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+
+        class ControlledFakeKis:
+            """Returns bars whose latest date is reference_date - offset_days."""
+
+            def __init__(self):
+                self.submit_calls: list[dict] = []
+                self._symbol_offsets: dict[tuple[str, str], int] = {}
+
+            @property
+            def account(self) -> str:
+                return "FAKE-ACCT"
+
+            def account_snapshot(self) -> dict:
+                return _make_snapshot()
+
+            def daily_bars(
+                self, ticker: str, market: str, currency: str, **_
+            ) -> list[BarEvent]:
+                sym = Symbol(ticker, Market(market), currency)
+                offset = self._symbol_offsets.get((market, ticker), 0)
+                # Generate 60 bars ending at reference_date - offset
+                latest_ts = reference_date - timedelta(days=offset)
+                t0 = latest_ts - timedelta(days=59)
+                bars = []
+                for i in range(60):
+                    ts = t0 + timedelta(days=i)
+                    close = 100.0 + i
+                    bars.append(
+                        BarEvent(
+                            symbol=sym,
+                            ts=ts,
+                            open=close,
+                            high=close + 0.5,
+                            low=close - 0.5,
+                            close=close,
+                            volume=1000,
+                        )
+                    )
+                return bars
+
+            def submit_order(self, **_) -> str:
+                self.submit_calls.append(_)
+                return "FAKE"
+
+        fake_kis = ControlledFakeKis()
+        syms = []
+        for (ticker, market, currency), offset in symbols_and_offsets:
+            fake_kis._symbol_offsets[(market, ticker)] = offset
+            syms.append((ticker, market, currency))
+
+        pf = Portfolio({"KRW": 100_000_000.0}, FX)
+        strategy = _make_engine(pf)
+
+        engine = DailyActEngine(
+            kis_client=fake_kis,
+            strategy=strategy,
+            fx=FX,
+            symbols=syms,
+            band=0.01,
+            dry_run=True,
+            max_staleness_days=max_staleness_days,
+        )
+        return engine, fake_kis
+
+    def test_stale_symbol_not_acted_on(self):
+        """A symbol whose latest bar is older than max_staleness_days
+        vs the freshest symbol should produce no orders."""
+        # AAPL fresh (offset=0), MSFT very stale (offset=10 > max_staleness=4)
+        engine, fake_kis = self._make_engine_with_staleness(
+            [
+                (("AAPL", "NASDAQ", "USD"), 0),
+                (("MSFT", "NASDAQ", "USD"), 10),
+            ],
+            max_staleness_days=4,
+        )
+        orders = engine.run()
+        acted_tickers = {o.symbol.ticker for o in orders}
+        assert "MSFT" not in acted_tickers, (
+            f"Stale MSFT should not produce orders; got: {orders}"
+        )
+
+    def test_fresh_symbol_is_acted_on(self):
+        """The fresh symbol alongside a stale one still produces orders."""
+        engine, fake_kis = self._make_engine_with_staleness(
+            [
+                (("AAPL", "NASDAQ", "USD"), 0),
+                (("MSFT", "NASDAQ", "USD"), 10),
+            ],
+            max_staleness_days=4,
+        )
+        orders = engine.run()
+        acted_tickers = {o.symbol.ticker for o in orders}
+        # AAPL is fresh — with 60 rising bars it should generate a BUY
+        assert "AAPL" in acted_tickers, (
+            f"Fresh AAPL should produce orders; got: {orders}"
+        )
+
+    def test_within_staleness_threshold_is_still_acted_on(self):
+        """A symbol offset by exactly max_staleness_days should still act (boundary)."""
+        engine, _ = self._make_engine_with_staleness(
+            [
+                (("AAPL", "NASDAQ", "USD"), 0),
+                (("MSFT", "NASDAQ", "USD"), 4),
+            ],
+            max_staleness_days=4,
+        )
+        orders = engine.run()
+        acted_tickers = {o.symbol.ticker for o in orders}
+        # MSFT is at the boundary (offset == max_staleness_days) → should still act
+        assert "MSFT" in acted_tickers, (
+            f"MSFT at boundary offset should still act; got acted_tickers={acted_tickers}"
+        )
+
+    def test_both_symbols_fresh_both_acted_on(self):
+        """When all symbols are fresh, all are acted on normally."""
+        engine, _ = self._make_engine_with_staleness(
+            [
+                (("AAPL", "NASDAQ", "USD"), 0),
+                (("MSFT", "NASDAQ", "USD"), 1),
+            ],
+            max_staleness_days=4,
+        )
+        orders = engine.run()
+        acted_tickers = {o.symbol.ticker for o in orders}
+        assert "AAPL" in acted_tickers and "MSFT" in acted_tickers, (
+            f"Both fresh symbols should act; got acted_tickers={acted_tickers}"
+        )
+
+
 class TestDailyActEngineMultiSymbolLedger:
     """Ledger is ticker-scoped: multiple symbols in same market submit independently."""
 

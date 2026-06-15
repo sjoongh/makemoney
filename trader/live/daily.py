@@ -2,10 +2,13 @@
 """Daily once-per-bar runner: warm up indicators on history, act only on the latest bar."""
 from __future__ import annotations
 
+import logging
 from typing import Optional
 
 from trader.core.events import BarEvent, OrderEvent, Side
 from trader.strategy.portfolio import FxRates, Portfolio
+
+logger = logging.getLogger(__name__)
 
 
 def protective_limit_price(side: Side, last_close: float, band: float = 0.01) -> float:
@@ -51,6 +54,7 @@ class DailyActEngine:
         band: float = 0.01,
         dry_run: bool = True,
         ledger=None,
+        max_staleness_days: int = 4,
     ):
         self.kis = kis_client
         self.strategy = strategy
@@ -59,6 +63,7 @@ class DailyActEngine:
         self.band = band
         self.dry_run = dry_run
         self.ledger = ledger
+        self.max_staleness_days = max_staleness_days
 
     def run(self) -> list[OrderEvent]:
         # ── 1. Account snapshot → Portfolio ──────────────────────────────────
@@ -85,6 +90,22 @@ class DailyActEngine:
         for key in groups:
             groups[key].sort(key=lambda b: b.ts)
 
+        # ── Staleness guard ──────────────────────────────────────────────────
+        # Derive a reference date from data, not the system clock:
+        # use the maximum latest-bar date across all symbols.  A symbol whose
+        # latest bar is more than max_staleness_days older than that reference
+        # is considered stale (holiday / market closed) and is skipped for
+        # action (warmup-only) to avoid acting on yesterday's close.
+        latest_bar_per_group: dict[tuple[str, str], BarEvent] = {
+            key: groups[key][-1] for key in groups if groups[key]
+        }
+        if latest_bar_per_group:
+            reference_date = max(
+                b.ts.date() for b in latest_bar_per_group.values()
+            )
+        else:
+            reference_date = None
+
         # Process symbols in deterministic order: by (market, ticker).
         # Within processing, bars are sorted ascending so warmup sees history
         # before the latest bar triggers a decision.
@@ -97,11 +118,33 @@ class DailyActEngine:
                 continue
             *warmup_bars, latest_bar = bars
             latest_bars[key] = latest_bar
+
+            # Staleness check: compare this symbol's latest bar date to reference
+            is_stale = False
+            if reference_date is not None:
+                bar_date = latest_bar.ts.date()
+                staleness = (reference_date - bar_date).days
+                if staleness > self.max_staleness_days:
+                    logger.info(
+                        "Skipping %s/%s — latest bar %s is %d days behind "
+                        "reference %s (max_staleness_days=%d)",
+                        key[0], key[1], bar_date, staleness,
+                        reference_date, self.max_staleness_days,
+                    )
+                    is_stale = True
+
             for bar in warmup_bars:
                 portfolio.mark(bar)
                 self.strategy.warmup_bar(bar)
-            portfolio.mark(latest_bar)
-            orders.extend(self.strategy.on_bar(latest_bar))
+
+            if is_stale:
+                # Warm up on the latest bar too so indicators stay consistent,
+                # but do NOT act (no on_bar call).
+                portfolio.mark(latest_bar)
+                self.strategy.warmup_bar(latest_bar)
+            else:
+                portfolio.mark(latest_bar)
+                orders.extend(self.strategy.on_bar(latest_bar))
 
         # ── 4. Submit or dry-run ──────────────────────────────────────────────
         if self.dry_run:
