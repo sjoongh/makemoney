@@ -105,3 +105,22 @@ def test_on_bar_equals_decide_of_observe():
         assert [(o.side, o.quantity) for o in orders_a] == \
                [(o.side, o.quantity) for o in orders_b], \
                f"Mismatch on bar {b.ts}: on_bar={orders_a} vs split={orders_b}"
+
+
+def test_combined_score_public_method_equals_combine():
+    """combined_score(signals) must equal the private _combine output."""
+    from datetime import datetime, timezone, timedelta
+    from trader.core.events import Symbol, Market, BarEvent, NormalizedSignal
+
+    sym = Symbol("AAPL", Market.NASDAQ, "USD")
+    t0 = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    bars = [BarEvent(sym, t0 + timedelta(days=i), float(i+1), float(i+1),
+                     float(i+1), float(i+1), 100) for i in range(6)]
+
+    eng = _engine()
+    for b in bars[:5]:
+        eng.warmup_bar(b)
+
+    signals = eng.observe_bar(bars[5])
+    assert hasattr(eng, "combined_score"), "FusionEngine must expose combined_score"
+    assert eng.combined_score(signals) == eng._combine(signals)

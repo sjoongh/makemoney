@@ -26,6 +26,11 @@ class FusionEngine:
             w = s.confidence * self.source_weight.get(s.source, 1.0)
             num += s.score * w; den += w
         return num / den if den else 0.0
+
+    def combined_score(self, signals: list) -> float:
+        """Public alias for _combine — returns the weighted combined score."""
+        return self._combine(signals)
+
     def observe_bar(self, bar: BarEvent) -> list:
         """Update risk state and collect signals. Returns list[NormalizedSignal]."""
         self.risk.on_bar(bar, self.portfolio)  # two-phase: update ATR + daily loss state first
