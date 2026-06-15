@@ -117,3 +117,75 @@ def test_open_position_count_excludes_zero_qty():
     sell = FillEvent(uuid4(), USD_SYM, _ts(), Side.SELL, 10, 100.0, 0.0, "USD")
     pf.apply_fill(sell)
     assert pf.open_position_count() == 0
+
+
+# ---------------------------------------------------------------------------
+# Portfolio.from_snapshot
+# ---------------------------------------------------------------------------
+
+def _snapshot_with_positions() -> dict:
+    """Snapshot with one KOSPI and one NASDAQ position."""
+    return {
+        "cash_krw": 5_000_000.0,
+        "positions": {
+            ("KOSPI", "005930"): 10,
+            ("NASDAQ", "AAPL"): 5,
+        },
+        "marks": {
+            ("KOSPI", "005930"): 75_000.0,
+            ("NASDAQ", "AAPL"): 195.50,
+        },
+    }
+
+
+def test_from_snapshot_cash():
+    fx = FxRates({"USD": 1300.0, "KRW": 1.0})
+    pf = Portfolio.from_snapshot(_snapshot_with_positions(), fx)
+    assert pf.cash["KRW"] == 5_000_000.0
+
+
+def test_from_snapshot_positions():
+    fx = FxRates({"USD": 1300.0, "KRW": 1.0})
+    pf = Portfolio.from_snapshot(_snapshot_with_positions(), fx)
+    assert pf.position(Symbol("005930", Market.KOSPI, "KRW")) == 10
+    assert pf.position(Symbol("AAPL", Market.NASDAQ, "USD")) == 5
+
+
+def test_from_snapshot_marks_and_position_value():
+    fx = FxRates({"USD": 1300.0, "KRW": 1.0})
+    pf = Portfolio.from_snapshot(_snapshot_with_positions(), fx)
+    # KOSPI: 10 * 75000 * 1.0 = 750,000 KRW
+    assert pf.position_value_krw(Symbol("005930", Market.KOSPI, "KRW")) == 750_000.0
+    # NASDAQ: 5 * 195.50 * 1300 = 1,270,750 KRW
+    assert abs(pf.position_value_krw(Symbol("AAPL", Market.NASDAQ, "USD")) - 1_270_750.0) < 0.01
+
+
+def test_from_snapshot_equity():
+    fx = FxRates({"USD": 1300.0, "KRW": 1.0})
+    pf = Portfolio.from_snapshot(_snapshot_with_positions(), fx)
+    # cash 5,000,000 + KOSPI 750,000 + NASDAQ 1,270,750 = 7,020,750
+    expected = 5_000_000.0 + 750_000.0 + 1_270_750.0
+    assert abs(pf.equity_krw() - expected) < 0.01
+
+
+def test_from_snapshot_empty_positions():
+    fx = FxRates({"USD": 1300.0, "KRW": 1.0})
+    snap = {"cash_krw": 100_000_000.0, "positions": {}, "marks": {}}
+    pf = Portfolio.from_snapshot(snap, fx)
+    assert pf.cash["KRW"] == 100_000_000.0
+    assert pf.open_position_count() == 0
+    assert pf.equity_krw() == 100_000_000.0
+
+
+def test_from_snapshot_missing_mark_defaults_zero():
+    """If marks dict is missing an entry, mark defaults to 0.0 (position valued at 0)."""
+    fx = FxRates({"USD": 1300.0, "KRW": 1.0})
+    snap = {
+        "cash_krw": 1_000_000.0,
+        "positions": {("KOSPI", "005930"): 10},
+        "marks": {},  # no mark for this position
+    }
+    pf = Portfolio.from_snapshot(snap, fx)
+    assert pf.position(Symbol("005930", Market.KOSPI, "KRW")) == 10
+    assert pf.position_value_krw(Symbol("005930", Market.KOSPI, "KRW")) == 0.0
+    assert pf.equity_krw() == 1_000_000.0

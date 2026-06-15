@@ -78,3 +78,25 @@ class Portfolio:
     def open_position_count(self) -> int:
         """Number of symbols with nonzero position."""
         return sum(1 for qty in self._pos.values() if qty != 0)
+
+    @classmethod
+    def from_snapshot(cls, snapshot: dict, fx: "FxRates") -> "Portfolio":
+        """Construct a Portfolio from an account_snapshot dict (from KisClient.account_snapshot).
+
+        snapshot keys:
+            cash_krw  : float — available KRW cash
+            positions : {(market_str, ticker): qty}  e.g. {("KOSPI","005930"): 10}
+            marks     : {(market_str, ticker): price} in native currency
+
+        The internal key convention (_sym_key) is (market.value, ticker), which
+        matches the tuple keys already produced by account_snapshot.
+        """
+        p = cls(cash={"KRW": snapshot["cash_krw"]}, fx=fx)
+        for (market_str, ticker), qty in snapshot["positions"].items():
+            key = (market_str, ticker)
+            ccy = "USD" if market_str == "NASDAQ" else "KRW"
+            sym = Symbol(ticker, Market(market_str), ccy)
+            p._pos[key] = qty
+            p._sym[key] = sym
+            p._mark[key] = snapshot["marks"].get(key, 0.0)
+        return p
