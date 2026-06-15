@@ -242,7 +242,11 @@ def test_format_report_contains_thresholds():
 # Sleeve strategy tests (evaluate returns trend_only/reversion_only/combined)
 # ---------------------------------------------------------------------------
 
-from trader.backtest.evaluate import evaluate_sleeves, run_sleeve_strategy  # noqa: E402
+from trader.backtest.evaluate import (  # noqa: E402
+    _HoldingTracker,
+    evaluate_sleeves,
+    run_sleeve_strategy,
+)
 
 
 def test_evaluate_returns_sleeve_strategy_keys():
@@ -400,3 +404,152 @@ def test_run_sleeve_strategy_trades_counts_fills_not_holding_transitions():
     assert stats_no_trade.trades == 0
     assert stats_active.trades >= 0  # structural: must be non-negative
     assert 0.0 <= stats_active.exposure <= 1.0
+
+
+# ---------------------------------------------------------------------------
+# _HoldingTracker unit tests — deterministic white-box scenarios
+# ---------------------------------------------------------------------------
+
+
+def test_holding_tracker_single_open_close():
+    """Buy at bar 2, sell at bar 5 → holding 3 bars → AvgHold == 3.0.
+
+    Definition: open_bar_idx=2, close_bar_idx=5 → length = 5 - 2 = 3.
+    """
+    sym_key = ("NASDAQ", "AAPL")
+    tracker = _HoldingTracker()
+    n_bars = 8
+
+    # bars 0,1: no position
+    tracker.update({}, 0)
+    tracker.update({}, 1)
+    # bar 2: position opens (qty 0 → nonzero)
+    tracker.update({sym_key: 10}, 2)
+    # bars 3,4: still open
+    tracker.update({sym_key: 10}, 3)
+    tracker.update({sym_key: 10}, 4)
+    # bar 5: position closes (qty → 0)
+    tracker.update({sym_key: 0}, 5)
+    # bars 6,7: no position
+    tracker.update({}, 6)
+    tracker.update({}, 7)
+
+    avg = tracker.finalise(n_bars)
+    assert avg == pytest.approx(3.0), f"Expected AvgHold=3.0, got {avg}"
+
+
+def test_holding_tracker_partial_hold_counted():
+    """Position opens at bar 3 and is still open at end of 6-bar run.
+
+    Partial hold = 6 - 3 = 3 bars.  AvgHold must include this partial hold.
+    """
+    sym_key = ("NASDAQ", "AAPL")
+    tracker = _HoldingTracker()
+    n_bars = 6
+
+    tracker.update({}, 0)
+    tracker.update({}, 1)
+    tracker.update({}, 2)
+    # bar 3: opens
+    tracker.update({sym_key: 5}, 3)
+    tracker.update({sym_key: 5}, 4)
+    tracker.update({sym_key: 5}, 5)
+
+    avg = tracker.finalise(n_bars)
+    assert avg == pytest.approx(3.0), f"Expected partial hold AvgHold=3.0, got {avg}"
+
+
+def test_holding_tracker_no_positions_returns_zero():
+    """All-cash run: AvgHold must be 0.0."""
+    tracker = _HoldingTracker()
+    for i in range(10):
+        tracker.update({}, i)
+    avg = tracker.finalise(10)
+    assert avg == pytest.approx(0.0)
+
+
+def test_holding_tracker_fully_invested_run():
+    """Position open from bar 0 through entire 5-bar run → partial hold = 5.
+
+    No explicit close → finalise counts it as 5 - 0 = 5 bars.
+    """
+    sym_key = ("KOSPI", "005930")
+    tracker = _HoldingTracker()
+    n_bars = 5
+    for i in range(n_bars):
+        tracker.update({sym_key: 100}, i)
+    avg = tracker.finalise(n_bars)
+    assert avg == pytest.approx(5.0)
+
+
+def test_holding_tracker_multiple_positions():
+    """Two separate holds: bars 0-2 (length 2) and bars 4-7 (length 3) → avg 2.5."""
+    sym_key = ("NASDAQ", "AAPL")
+    tracker = _HoldingTracker()
+    n_bars = 8
+
+    # First hold: opens bar 0, closes bar 2 → length 2
+    tracker.update({sym_key: 10}, 0)
+    tracker.update({sym_key: 10}, 1)
+    tracker.update({sym_key: 0}, 2)   # close
+
+    # gap: bars 3 (no position)
+    tracker.update({}, 3)
+
+    # Second hold: opens bar 4, closes bar 7 → length 3
+    tracker.update({sym_key: 10}, 4)
+    tracker.update({sym_key: 10}, 5)
+    tracker.update({sym_key: 10}, 6)
+    tracker.update({sym_key: 0}, 7)   # close
+
+    avg = tracker.finalise(n_bars)
+    assert avg == pytest.approx(2.5), f"Expected AvgHold=2.5, got {avg}"
+
+
+# ---------------------------------------------------------------------------
+# Exposure definition tests
+# ---------------------------------------------------------------------------
+
+
+def test_exposure_all_cash_is_zero():
+    """With threshold=2.0 (impossible to fill), exposure must be exactly 0.0."""
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    stats, _ = run_strategy(all_bars, _build_simple_strategy, enter_threshold=2.0)
+
+    assert stats.exposure == pytest.approx(0.0)
+    assert stats.avg_holding_days == pytest.approx(0.0)
+
+
+def test_sleeve_single_sleeve_equivalent_matches_single_path():
+    """A single-sleeve run (100% trend capital, 0% reversion) should produce
+    the same AvgHold and exposure as running the same trend engine via run_strategy,
+    because both use the same _HoldingTracker definition on the same positions.
+
+    We verify that the two paths give structurally consistent results on the SAME
+    bars: both exposure and avg_holding_days must be in [0, 1] / >= 0 respectively,
+    and with threshold=2.0 (no trades) both must be exactly 0.0.
+    """
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    # Single path: trend engine, no trades
+    from trader.backtest.evaluate import _build_trend_engine  # noqa: PLC0415
+
+    stats_single, _ = run_strategy(all_bars, _build_trend_engine, enter_threshold=2.0)
+
+    # Sleeve path: 100% trend, 0% reversion capital (both impossible threshold)
+    stats_sleeve, _ = run_sleeve_strategy(all_bars, enter_threshold=2.0,
+                                          capital_fraction_trend=1.0,
+                                          capital_fraction_reversion=0.0)
+
+    # Both paths: 0 trades, 0 exposure, 0 AvgHold
+    assert stats_single.trades == 0
+    assert stats_sleeve.trades == 0
+    assert stats_single.exposure == pytest.approx(0.0)
+    assert stats_sleeve.exposure == pytest.approx(0.0)
+    assert stats_single.avg_holding_days == pytest.approx(0.0)
+    assert stats_sleeve.avg_holding_days == pytest.approx(0.0)

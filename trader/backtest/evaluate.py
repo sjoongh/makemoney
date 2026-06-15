@@ -70,6 +70,75 @@ _DISCLAIMER = """\
 
 
 # ---------------------------------------------------------------------------
+# _HoldingTracker — shared helper for AvgHold computation
+# ---------------------------------------------------------------------------
+
+class _HoldingTracker:
+    """Track per-symbol holding periods from actual position 0→nonzero entries/exits.
+
+    Definition (applied identically to run_strategy and run_sleeve_strategy):
+      - A position OPENS on the bar where a symbol's net qty transitions from 0 to nonzero.
+      - A position CLOSES on the bar where a symbol's net qty transitions from nonzero to 0.
+      - Holding length = (close_bar_idx - open_bar_idx), measured in bars.
+      - A position still open at end-of-run counts its bars held so far:
+        holding = (n_bars - open_bar_idx).  This partial hold IS included in AvgHold.
+      - AvgHold = mean of all completed + partial holding lengths.  0.0 if no positions.
+
+    Exposure definition (tracked externally per bar, not here):
+      - Fraction of bar-events where the (aggregate) book holds any nonzero net position.
+      - For the single path: any nonzero position in the single portfolio.
+      - For the sleeve path: union of both sleeve portfolios — counted ONCE per bar
+        (not OR-inflated across sleeves; the check is a single boolean per bar event).
+    """
+
+    def __init__(self) -> None:
+        self._open_since: dict[tuple[str, str], int] = {}  # sym_key -> bar_idx when opened
+        self._holding_lengths: list[int] = []
+
+    def update(self, pos_dict: dict[tuple[str, str], int], bar_idx: int) -> None:
+        """Inspect a portfolio's _pos dict and record open/close transitions.
+
+        Call once per bar per portfolio, AFTER the portfolio has been marked and
+        orders submitted (i.e. at end-of-bar processing, when _pos reflects
+        positions as of end of this bar's signal cycle — fills from THIS bar
+        already applied, new orders from THIS bar's signal are pending for next bar).
+
+        Args:
+            pos_dict: The portfolio's _pos dict {(market, ticker): qty}.
+            bar_idx:  Zero-based index of the current bar in the sorted bar list.
+        """
+        for key, qty in list(pos_dict.items()):
+            was_open = key in self._open_since
+            is_open = qty != 0
+            if is_open and not was_open:
+                # Position opened this bar (qty went 0 → nonzero)
+                self._open_since[key] = bar_idx
+            elif not is_open and was_open:
+                # Position closed this bar (qty went nonzero → 0)
+                self._holding_lengths.append(bar_idx - self._open_since.pop(key))
+
+    def finalise(self, n_bars: int) -> float:
+        """Close any still-open positions and return AvgHold.
+
+        Positions still open at end-of-run are counted with bars held so far:
+        holding = n_bars - open_bar_idx (partial hold included in the average).
+
+        Args:
+            n_bars: Total number of bars in the run.
+
+        Returns:
+            Average holding period in bars (0.0 if no positions were ever held).
+        """
+        for opened_at in self._open_since.values():
+            self._holding_lengths.append(n_bars - opened_at)
+        return (
+            sum(self._holding_lengths) / len(self._holding_lengths)
+            if self._holding_lengths
+            else 0.0
+        )
+
+
+# ---------------------------------------------------------------------------
 # StrategyStats dataclass
 # ---------------------------------------------------------------------------
 
@@ -159,13 +228,8 @@ def run_strategy(
 
     equity_curve: list[float] = []
     fills_count = 0
-
-    # For exposure / holding-period tracking: track per-bar total open position count
-    bars_with_position = 0
-
-    # Holding-period tracking: symbol -> bar-index when position was opened
-    _open_since: dict[tuple[str, str], int] = {}
-    _holding_lengths: list[int] = []
+    bars_with_position = 0   # bars where portfolio holds any nonzero position
+    tracker = _HoldingTracker()
     _bar_idx = 0
 
     for bar in sorted_bars:
@@ -186,28 +250,16 @@ def run_strategy(
         eq = pf.equity_krw()
         equity_curve.append(eq)
 
-        # Track exposure: any nonzero position this bar?
-        open_count = pf.open_position_count()
-        if open_count > 0:
+        # Exposure: any nonzero position this bar? (checked once per bar)
+        if pf.open_position_count() > 0:
             bars_with_position += 1
 
-        # Track per-symbol holding periods (open / close transitions)
-        for sym_bars_key, qty in list(pf._pos.items()):
-            was_open = sym_bars_key in _open_since
-            is_open = qty != 0
-            if is_open and not was_open:
-                _open_since[sym_bars_key] = _bar_idx
-            elif not is_open and was_open:
-                _holding_lengths.append(_bar_idx - _open_since.pop(sym_bars_key))
-
+        # Holding-period: detect open/close transitions via shared tracker
+        tracker.update(pf._pos, _bar_idx)
         _bar_idx += 1
 
-    # Close any still-open positions at end for holding-period calc
-    for sym_key, opened_at in _open_since.items():
-        _holding_lengths.append(n_bars - opened_at)
-
     exposure = bars_with_position / n_bars if n_bars > 0 else 0.0
-    avg_holding = sum(_holding_lengths) / len(_holding_lengths) if _holding_lengths else 0.0
+    avg_holding = tracker.finalise(n_bars)
 
     stats = StrategyStats(
         name=f"thr={enter_threshold:.2f}",
@@ -360,10 +412,9 @@ def run_sleeve_strategy(
     fills_count = 0          # actual FillEvents received (= trades)
     bars_with_position = 0   # bars where aggregate book has any nonzero position
 
-    # Holding-period tracking: per sleeve, keyed by (market, ticker)
-    _open_since_trend: dict[tuple[str, str], int] = {}
-    _open_since_rev:   dict[tuple[str, str], int] = {}
-    _holding_lengths: list[int] = []
+    # One _HoldingTracker per sleeve portfolio — same definition as run_strategy
+    tracker_trend = _HoldingTracker()
+    tracker_rev   = _HoldingTracker()
     _bar_idx = 0
 
     for bar in sorted_bars:
@@ -380,8 +431,8 @@ def run_sleeve_strategy(
             sleeve.portfolio.mark(bar)
 
         # ── Exposure: aggregate nonzero position in any sleeve ────────────────
-        # Union both sleeve _pos dicts; check if any symbol has qty != 0.
-        # This avoids the OR-artifact: we measure the COMBINED book, not per-sleeve.
+        # Union of both sleeve books — checked ONCE per bar (not OR-inflated).
+        # A bar counts as "exposed" if EITHER sleeve holds any nonzero position.
         has_position = (pf_trend.open_position_count() > 0 or
                         pf_rev.open_position_count() > 0)
         if has_position:
@@ -398,34 +449,19 @@ def run_sleeve_strategy(
                 _order_sleeve[order.order_id] = sleeve
                 execution.submit_order(order)
 
-        # ── Holding-period tracking (trend sleeve) ────────────────────────────
-        for key, qty in list(pf_trend._pos.items()):
-            was_open = key in _open_since_trend
-            is_open  = qty != 0
-            if is_open and not was_open:
-                _open_since_trend[key] = _bar_idx
-            elif not is_open and was_open:
-                _holding_lengths.append(_bar_idx - _open_since_trend.pop(key))
-
-        # ── Holding-period tracking (reversion sleeve) ────────────────────────
-        for key, qty in list(pf_rev._pos.items()):
-            was_open = key in _open_since_rev
-            is_open  = qty != 0
-            if is_open and not was_open:
-                _open_since_rev[key] = _bar_idx
-            elif not is_open and was_open:
-                _holding_lengths.append(_bar_idx - _open_since_rev.pop(key))
-
+        # ── Holding-period tracking — one tracker per sleeve (same definition) ─
+        tracker_trend.update(pf_trend._pos, _bar_idx)
+        tracker_rev.update(pf_rev._pos, _bar_idx)
         _bar_idx += 1
 
-    # ── Close any still-open positions for holding-period calc ────────────────
-    for key, opened_at in _open_since_trend.items():
-        _holding_lengths.append(n_bars - opened_at)
-    for key, opened_at in _open_since_rev.items():
-        _holding_lengths.append(n_bars - opened_at)
+    # Finalise both trackers: merge their holding lengths into a combined average
+    avg_trend = tracker_trend.finalise(n_bars)
+    avg_rev   = tracker_rev.finalise(n_bars)
+    # Weighted average by number of completed+partial holds recorded
+    all_lengths = tracker_trend._holding_lengths + tracker_rev._holding_lengths
+    avg_holding = sum(all_lengths) / len(all_lengths) if all_lengths else 0.0
 
     exposure = bars_with_position / n_bars if n_bars > 0 else 0.0
-    avg_holding = sum(_holding_lengths) / len(_holding_lengths) if _holding_lengths else 0.0
     final_equity = sum(s.portfolio.equity_krw() for s in sleeves)
 
     stats = StrategyStats(
@@ -593,13 +629,34 @@ def format_report(result: dict) -> str:
         lines.append("")
 
     lines.append(
-        "  NOTE: 'Trades' = number of fills (each buy or sell = 1 trade)."
+        "  NOTE: 'Trades' = number of FillEvents received (each buy or sell execution = 1)."
     )
     lines.append(
-        "  'Exposure' = fraction of bars where at least one position was open."
+        "  'Exposure' = fraction of bar-events where the aggregate book holds any nonzero"
     )
     lines.append(
-        "  'AvgHold' = average holding period in bars (trading days)."
+        "    net position.  For single-engine strategies: any nonzero position in the"
+    )
+    lines.append(
+        "    portfolio.  For sleeve strategies (combined_sleeves): union of both sleeve"
+    )
+    lines.append(
+        "    portfolios, checked once per bar — not double-counted.  combined_sleeves"
+    )
+    lines.append(
+        "    exposure is naturally higher because EITHER sleeve being invested triggers it."
+    )
+    lines.append(
+        "  'AvgHold' = average holding period in bars (same definition for all paths):"
+    )
+    lines.append(
+        "    a position opens when net qty goes 0→nonzero, closes when nonzero→0."
+    )
+    lines.append(
+        "    Positions still open at end-of-run count bars held so far (partial hold"
+    )
+    lines.append(
+        "    included).  For sleeve strategies, all sleeve holding periods are pooled."
     )
     lines.append("")
     lines.append(
