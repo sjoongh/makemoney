@@ -57,3 +57,51 @@ def test_neutral_signal_holds_emits_no_orders():
                           RiskManager(0.5), OrderFactory(), enter_threshold=0.35)
     orders = eng.on_bar(BarEvent(sym, datetime(2026,1,2,tzinfo=timezone.utc),10,10,10,10,100))
     assert orders == []   # 중립 → 무주문(홀드, 청산 금지)
+
+
+def test_warmup_does_not_emit_orders():
+    """warmup_bar over a rising series produces no orders (returns None),
+    and after warmup, on_bar on the next bar still works correctly."""
+    from datetime import datetime, timezone, timedelta
+    from trader.core.events import Symbol, Market, BarEvent
+
+    sym = Symbol("AAPL", Market.NASDAQ, "USD")
+    t0 = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    bars = [BarEvent(sym, t0 + timedelta(days=i), float(i+1), float(i+1),
+                     float(i+1), float(i+1), 100) for i in range(6)]
+
+    eng = _engine()
+    # Warmup over first 5 bars — must return None, never orders
+    for b in bars[:5]:
+        result = eng.warmup_bar(b)
+        assert result is None, f"warmup_bar must return None, got {result!r}"
+
+    # After warmup, on_bar on the 6th bar must still work
+    orders = eng.on_bar(bars[5])
+    assert isinstance(orders, list)  # can be [] or [order], but must not raise
+
+
+def test_on_bar_equals_decide_of_observe():
+    """on_bar(bar) == decide_orders(bar, observe_bar(bar)) for identical engines.
+
+    Because observe_bar mutates state (signals + risk), we use two identical
+    engines — one via on_bar, one via the split path — and compare results.
+    """
+    from datetime import datetime, timezone, timedelta
+    from trader.core.events import Symbol, Market, BarEvent
+
+    sym = Symbol("AAPL", Market.NASDAQ, "USD")
+    t0 = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    bars = [BarEvent(sym, t0 + timedelta(days=i), float(i+1), float(i+1),
+                     float(i+1), float(i+1), 100) for i in range(6)]
+
+    eng_a = _engine()   # driven via on_bar
+    eng_b = _engine()   # driven via observe_bar + decide_orders
+
+    for b in bars:
+        orders_a = eng_a.on_bar(b)
+        signals  = eng_b.observe_bar(b)
+        orders_b = eng_b.decide_orders(b, signals)
+        assert [(o.side, o.quantity) for o in orders_a] == \
+               [(o.side, o.quantity) for o in orders_b], \
+               f"Mismatch on bar {b.ts}: on_bar={orders_a} vs split={orders_b}"
