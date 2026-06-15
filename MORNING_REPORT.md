@@ -19,4 +19,10 @@
 ## 작업 로그
 | 시각(KST) | 항목 | 결과 | 커밋 |
 |---|---|---|---|
-| 23:50 | 셋업 | caffeinate+cron+보고서 | — |
+| 23:50 | 셋업 | caffeinate+cron+보고서 | 921e966 |
+| 23:58 | B1 조사 | ⚠️ **보류(사람 판단 필요)** — VTRP6504R 라이브 probe서 `tot_asst_amt=383M` vs 국내현금 100M 불일치, output2 USD현금/포지션 0. KIS 페이퍼 외화총액 의미 불명. 돈처리 코드 무감독 변경 위험 → account_snapshot 현행 유지, 아침에 KIS 문서/고객센터로 확인 권장 | — |
+
+| 00:03 | B2 ✅ | 국내 체결조회 VTTC0081R 구현+병합, 라이브 rt_cd=0, 9테스트, 전체 green | 838789a |
+
+### ⚠️ 사람 확인 필요 (B1 상세)
+VTRP6504R `output3`: `tot_asst_amt=382,983,974`, `frcr_evlu_tota=382,983,974` (포지션 0·외화현금 0인데 383M). `output2`는 5개 통화(CNY/HKD/USD/JPY/EUR) 행, 전부 `frcr_dncl_amt_2=0`. 국내 VTTC8434R는 100M KRW. **이 383M의 정체를 확인하기 전엔 account_snapshot을 VTRP6504R 기반으로 바꾸지 않음.** 현재는 국내 KRW현금만 사용(보수적·안전).
