@@ -20,12 +20,14 @@ def test_same_ticker_different_markets_do_not_collide():
     p.apply_fill(FillEvent(uuid4(), b, t, Side.BUY, 7, 5000.0, 0.0, "KRW"))
     assert p.position(a) == 3 and p.position(b) == 7   # 충돌하지 않음
 
-def test_equity_in_krw_after_usd_buy_and_mark():
+def test_usd_buy_settles_in_krw_and_equity():
+    from uuid import uuid4
     fx = FxRates({"USD": 1300.0, "KRW": 1.0})
-    p = Portfolio(cash={"KRW": 13_000_000.0}, fx=fx)   # 1300만원, USD현금 0
-    p.deposit("USD", 2000.0)                            # 테스트 단순화: USD 현금 시드
+    p = Portfolio(cash={"KRW": 13_000_000.0}, fx=fx)
     p.apply_fill(FillEvent(uuid4(), USD, _t(), Side.BUY, 10, 100.0, 0.0, "USD"))
     assert p.position(USD) == 10
-    assert p.cash["USD"] == 1000.0
-    p.mark(BarEvent(USD, _t(), 110,110,110,110, 1))     # 종가 $110
-    assert round(p.equity_krw()) == round(13_000_000 + 1000*1300 + 10*110*1300)
+    # 외화 매수가 KRW 현금에서 자동환전 차감: 10*100*1300 = 1,300,000
+    assert round(p.cash["KRW"]) == 13_000_000 - 10*100*1300
+    p.mark(BarEvent(USD, _t(), 110,110,110,110, 1))
+    # equity = KRW현금 + 포지션(110*10*1300)
+    assert round(p.equity_krw()) == round(13_000_000 - 10*100*1300 + 10*110*1300)

@@ -25,10 +25,15 @@ class Portfolio:
     def position(self, sym: Symbol) -> int:
         return self._pos.get(_sym_key(sym), 0)
     def apply_fill(self, fill: FillEvent) -> None:
-        sign = 1 if fill.side == Side.BUY else -1
         key = _sym_key(fill.symbol)
-        self.cash[fill.currency] = self.cash.get(fill.currency, 0.0) - sign * (fill.price*fill.quantity) - fill.commission
-        self._pos[key] = self._pos.get(key, 0) + sign * fill.quantity
+        notional_krw = self.fx.to_krw(fill.price * fill.quantity, fill.currency)
+        comm_krw = self.fx.to_krw(fill.commission, fill.currency)
+        if fill.side == Side.BUY:
+            self.cash["KRW"] = self.cash.get("KRW", 0.0) - notional_krw - comm_krw
+            self._pos[key] = self._pos.get(key, 0) + fill.quantity
+        else:
+            self.cash["KRW"] = self.cash.get("KRW", 0.0) + notional_krw - comm_krw
+            self._pos[key] = self._pos.get(key, 0) - fill.quantity
         self._sym[key] = fill.symbol
         self._mark.setdefault(key, fill.price)
     def mark(self, bar: BarEvent) -> None:
