@@ -416,3 +416,155 @@ class KisClient:
 
         # TODO: domestic (KOSPI) fill inquiry — VTTC0081R — not yet implemented
         return fills
+
+    # ------------------------------------------------------------------
+    # Balance inquiry
+    # ------------------------------------------------------------------
+
+    def domestic_balance(self) -> dict:
+        """GET /uapi/domestic-stock/v1/trading/inquire-balance (VTTC8434R paper).
+
+        Returns the parsed JSON body with:
+          output1: list of position rows (pdno, hldg_qty, prpr, ...)
+          output2: list with one summary row (dnca_tot_amt = 예수금총금액,
+                   prvs_rcdl_excc_amt = 전일매도정산금 — we use dnca_tot_amt
+                   as available KRW cash; see account_snapshot docstring).
+
+        Raises RuntimeError if rt_cd != "0".
+        """
+        cano = self.account
+        self._throttle()
+        resp = self._c.get(
+            "/uapi/domestic-stock/v1/trading/inquire-balance",
+            headers=self._headers("VTTC8434R"),
+            params={
+                "CANO": cano,
+                "ACNT_PRDT_CD": "01",
+                "AFHR_FLPR_YN": "N",
+                "OFL_YN": "",
+                "INQR_DVSN": "02",
+                "UNPR_DVSN": "01",
+                "FUND_STTL_ICLD_YN": "N",
+                "FNCG_AMT_AUTO_RDPT_YN": "N",
+                "PRCS_DVSN": "00",
+                "CTX_AREA_FK100": "",
+                "CTX_AREA_NK100": "",
+            },
+        )
+        resp.raise_for_status()
+        body = resp.json()
+        if body.get("rt_cd") != "0":
+            raise RuntimeError(
+                f"KIS domestic_balance error [{body.get('rt_cd')}]: {body.get('msg1', body)}"
+            )
+        return body
+
+    def overseas_balance(self, exchange: str = "NASD", ccy: str = "USD") -> dict:
+        """GET /uapi/overseas-stock/v1/trading/inquire-balance (VTTS3012R paper).
+
+        Args:
+            exchange: KIS exchange code e.g. "NASD" (NASDAQ).
+            ccy: Currency code e.g. "USD".
+
+        Returns the parsed JSON body with:
+          output1: list of position rows (ovrs_pdno, ovrs_cblc_qty, now_pric2, ...)
+
+        Raises RuntimeError if rt_cd != "0".
+        """
+        cano = self.account
+        self._throttle()
+        resp = self._c.get(
+            "/uapi/overseas-stock/v1/trading/inquire-balance",
+            headers=self._headers("VTTS3012R"),
+            params={
+                "CANO": cano,
+                "ACNT_PRDT_CD": "01",
+                "OVRS_EXCG_CD": exchange,
+                "TR_CRCY_CD": ccy,
+                "CTX_AREA_FK200": "",
+                "CTX_AREA_NK200": "",
+            },
+        )
+        resp.raise_for_status()
+        body = resp.json()
+        if body.get("rt_cd") != "0":
+            raise RuntimeError(
+                f"KIS overseas_balance error [{body.get('rt_cd')}]: {body.get('msg1', body)}"
+            )
+        return body
+
+    def account_snapshot(self) -> dict:
+        """Return a normalized account snapshot combining domestic + overseas balances.
+
+        Structure:
+            {
+                "cash_krw": float,            # KRW available cash (dnca_tot_amt from domestic output2)
+                "positions": {(market, ticker): qty},   # int qty; market is "KOSPI" or "NASDAQ"
+                "marks":     {(market, ticker): price}, # float last price in native currency
+            }
+
+        Cash note: we use `dnca_tot_amt` (예수금총금액 — total deposit amount) from
+        domestic output2[0] as the base KRW cash figure.  This is the gross available
+        cash before settlement netting; it is the most reliably present field across
+        KIS paper accounts.  Overseas USD cash is a TODO (folded later via FX).
+
+        Defensively casts all string fields to float/int; skips zero-qty rows.
+        """
+        dom = self.domestic_balance()
+        ovr = self.overseas_balance()
+
+        # --- KRW cash ---
+        dom_summary = dom.get("output2", [{}])
+        summary_row = dom_summary[0] if dom_summary else {}
+        cash_krw = _safe_float(summary_row.get("dnca_tot_amt", "0"))
+
+        positions: dict[tuple[str, str], int] = {}
+        marks: dict[tuple[str, str], float] = {}
+
+        # --- Domestic positions (KOSPI) ---
+        for row in dom.get("output1", []):
+            ticker = row.get("pdno", "").strip()
+            qty = _safe_int(row.get("hldg_qty", "0"))
+            price = _safe_float(row.get("prpr", "0"))
+            if not ticker or qty == 0:
+                continue
+            key = ("KOSPI", ticker)
+            positions[key] = qty
+            marks[key] = price
+
+        # --- Overseas positions (NASDAQ) ---
+        for row in ovr.get("output1", []):
+            ticker = row.get("ovrs_pdno", "").strip()
+            qty = _safe_int(row.get("ovrs_cblc_qty", "0"))
+            price = _safe_float(row.get("now_pric2", "0"))
+            if not ticker or qty == 0:
+                continue
+            key = ("NASDAQ", ticker)
+            positions[key] = qty
+            marks[key] = price
+
+        return {
+            "cash_krw": cash_krw,
+            "positions": positions,
+            "marks": marks,
+        }
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _safe_float(val, default: float = 0.0) -> float:
+    """Cast string/number to float; return default on failure."""
+    try:
+        return float(val) if val not in (None, "", "-") else default
+    except (ValueError, TypeError):
+        return default
+
+
+def _safe_int(val, default: int = 0) -> int:
+    """Cast string/number to int; return default on failure."""
+    try:
+        return int(float(val)) if val not in (None, "", "-") else default
+    except (ValueError, TypeError):
+        return default
