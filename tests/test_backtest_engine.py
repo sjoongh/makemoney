@@ -29,3 +29,21 @@ def test_backtest_runs_and_takes_a_position():
     BacktestEngine(feed, eng, ex, pf).run()
     assert pf.position(SYM) > 0          # 상승추세에서 매수 진입
     assert pf.equity_krw() > 0
+
+
+def test_backtest_rejects_live_only_news_source():
+    """BacktestEngine must raise ValueError when FusionEngine contains a live-only source."""
+    import pytest
+    from trader.signals.news.source import NewsSignalSource
+    from trader.signals.news.providers import MockNewsProvider
+    from trader.signals.news.sentiment import MockSentimentScorer
+
+    fx = FxRates({"USD": 1300.0, "KRW": 1.0})
+    pf = Portfolio({"KRW": 13_000_000.0}, fx)
+    news = NewsSignalSource(MockNewsProvider([]), MockSentimentScorer())
+    eng = FusionEngine([TechnicalSignalSource(2, 4), news], pf, RiskManager(0.5), OrderFactory())
+    ex = SimulatedExecutionHandler(BpsCostModel(0.0))
+    feed = InMemoryDailyFeed(_bars([1, 2, 3, 4, 5]))
+
+    with pytest.raises(ValueError, match="live-only signal source 'news_llm' cannot be used in backtest"):
+        BacktestEngine(feed, eng, ex, pf)

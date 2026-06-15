@@ -9,6 +9,11 @@ class BacktestEngine:
     """표준 이벤트 루프. live/engine.py와 동일한 순서를 따른다 (패리티의 근간)."""
     def __init__(self, feed: DataFeed, strategy: FusionEngine,
                  execution: ExecutionHandler, portfolio: Portfolio, audit=None):
+        for src in strategy.sources:
+            if getattr(src, "supports_backtest", True) is False:
+                raise ValueError(
+                    f"live-only signal source '{src.name}' cannot be used in backtest"
+                )
         self.feed, self.strategy, self.execution, self.portfolio = feed, strategy, execution, portfolio
         self.audit = audit
     def run(self) -> None:
