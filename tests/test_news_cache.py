@@ -91,3 +91,28 @@ def test_cache_hit_does_not_invoke_scorer_again():
     # second call — must NOT increment counter
     cache.get_or_score(item, scorer, symbol="AAPL", as_of=AS_OF)
     assert scorer.call_count["n3"] == 1
+
+
+def test_same_item_id_different_symbols_scored_independently():
+    """Same item.id for two different symbols must call scorer once per symbol."""
+    cache = SentimentCache()
+    scorer = CountingFakeScorer()
+    item = _item("shared_id")
+
+    cache.get_or_score(item, scorer, symbol="NASDAQ:AAPL", as_of=AS_OF)
+    cache.get_or_score(item, scorer, symbol="KOSPI:005930", as_of=AS_OF)
+
+    # scorer must have been called twice — once per symbol
+    assert scorer.call_count["shared_id"] == 2
+
+
+def test_same_symbol_and_id_is_deduped():
+    """Same symbol + same item.id → scorer called only once (cache hit)."""
+    cache = SentimentCache()
+    scorer = CountingFakeScorer()
+    item = _item("dedup_id")
+
+    cache.get_or_score(item, scorer, symbol="NASDAQ:AAPL", as_of=AS_OF)
+    cache.get_or_score(item, scorer, symbol="NASDAQ:AAPL", as_of=AS_OF)
+
+    assert scorer.call_count["dedup_id"] == 1
