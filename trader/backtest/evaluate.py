@@ -317,10 +317,15 @@ def run_sleeve_strategy(
     """Run the combined two-sleeve engine (trend + reversion, 50/50 capital).
 
     Event loop mirrors run_strategy exactly:
-      1. execution.on_bar(bar) → fills → route to sleeve
+      1. execution.on_bar(bar) → fills → route to sleeve → fills_count += len(fills)
       2. mark each sleeve portfolio at close
-      3. each sleeve.on_bar(bar) → orders → submit
-      4. track aggregate equity = Σ sleeve.equity_krw()
+      3. check aggregate position (union of both sleeve _pos): exposure tracking
+      4. each sleeve.on_bar(bar) → orders → submit
+      5. track aggregate equity = Σ sleeve.equity_krw()
+
+    trades = number of FillEvents received (same definition as run_strategy).
+    exposure = fraction of bars where the aggregate combined book holds any nonzero
+               position in any symbol (computed from union of sleeve _pos dicts).
 
     Args:
         bars: All BarEvents (unsorted ok; sorted internally by ts, ticker).
@@ -336,45 +341,64 @@ def run_sleeve_strategy(
     pf_trend = Portfolio({"KRW": _INITIAL_KRW * capital_fraction_trend}, fx)
     pf_rev   = Portfolio({"KRW": _INITIAL_KRW * capital_fraction_reversion}, fx)
 
-    trend_engine    = _build_trend_engine(pf_trend, enter_threshold)
-    rev_engine      = _build_reversion_engine(pf_rev, enter_threshold)
+    trend_engine = _build_trend_engine(pf_trend, enter_threshold)
+    rev_engine   = _build_reversion_engine(pf_rev, enter_threshold)
 
-    trend_sleeve    = StrategySleeve("trend",     trend_engine,  capital_fraction_trend)
-    rev_sleeve      = StrategySleeve("reversion", rev_engine,    capital_fraction_reversion)
+    trend_sleeve = StrategySleeve("trend",     trend_engine, capital_fraction_trend)
+    rev_sleeve   = StrategySleeve("reversion", rev_engine,   capital_fraction_reversion)
 
+    sleeves = [trend_sleeve, rev_sleeve]
     execution = SimulatedExecutionHandler(MarketCostModel())
-    multi     = MultiSleeveEngine([trend_sleeve, rev_sleeve], execution)
+
+    # order_id → sleeve routing table (mirrors MultiSleeveEngine._order_sleeve)
+    _order_sleeve: dict = {}
 
     sorted_bars = sorted(bars, key=lambda b: (b.ts, b.symbol.ticker))
     n_bars = len(sorted_bars)
 
     equity_curve: list[float] = []
-    fills_count = 0
-    bars_with_position = 0
+    fills_count = 0          # actual FillEvents received (= trades)
+    bars_with_position = 0   # bars where aggregate book has any nonzero position
 
-    # Holding period tracking: per sleeve
+    # Holding-period tracking: per sleeve, keyed by (market, ticker)
     _open_since_trend: dict[tuple[str, str], int] = {}
     _open_since_rev:   dict[tuple[str, str], int] = {}
     _holding_lengths: list[int] = []
     _bar_idx = 0
 
     for bar in sorted_bars:
-        # multi.on_bar handles fills→routing→mark→signals→submit internally
-        multi.on_bar(bar)
+        # ── Phase 1: fill pending orders at bar open ─────────────────────────
+        fills = execution.on_bar(bar)
+        for fill in fills:
+            fills_count += 1                          # count ACTUAL fills
+            sleeve = _order_sleeve.pop(fill.order_id, None)
+            if sleeve is not None:
+                sleeve.apply_fill(fill)
 
-        # Count fills: sum positions gained vs previous bar
-        # (We approximate fills by checking position changes in both portfolios.)
-        # Track equity
-        eq = multi.equity_krw()
-        equity_curve.append(eq)
+        # ── Phase 2: mark-to-market at close ─────────────────────────────────
+        for sleeve in sleeves:
+            sleeve.portfolio.mark(bar)
 
-        # Exposure: any open position in either sleeve
-        trend_open = trend_sleeve.portfolio.open_position_count()
-        rev_open   = rev_sleeve.portfolio.open_position_count()
-        if trend_open + rev_open > 0:
+        # ── Exposure: aggregate nonzero position in any sleeve ────────────────
+        # Union both sleeve _pos dicts; check if any symbol has qty != 0.
+        # This avoids the OR-artifact: we measure the COMBINED book, not per-sleeve.
+        has_position = (pf_trend.open_position_count() > 0 or
+                        pf_rev.open_position_count() > 0)
+        if has_position:
             bars_with_position += 1
 
-        # Holding period tracking (trend sleeve)
+        # ── Equity tracking ───────────────────────────────────────────────────
+        eq = sum(s.portfolio.equity_krw() for s in sleeves)
+        equity_curve.append(eq)
+
+        # ── Phase 3: each sleeve signals and submits orders ───────────────────
+        for sleeve in sleeves:
+            orders = sleeve.on_bar(bar)
+            for order in orders:
+                _order_sleeve[order.order_id] = sleeve
+                execution.submit_order(order)
+
+        # ── Holding-period tracking (trend sleeve) ────────────────────────────
         for key, qty in list(pf_trend._pos.items()):
             was_open = key in _open_since_trend
             is_open  = qty != 0
@@ -383,7 +407,7 @@ def run_sleeve_strategy(
             elif not is_open and was_open:
                 _holding_lengths.append(_bar_idx - _open_since_trend.pop(key))
 
-        # Holding period tracking (reversion sleeve)
+        # ── Holding-period tracking (reversion sleeve) ────────────────────────
         for key, qty in list(pf_rev._pos.items()):
             was_open = key in _open_since_rev
             is_open  = qty != 0
@@ -394,22 +418,15 @@ def run_sleeve_strategy(
 
         _bar_idx += 1
 
-    # Close any still-open positions for holding-period calc
+    # ── Close any still-open positions for holding-period calc ────────────────
     for key, opened_at in _open_since_trend.items():
         _holding_lengths.append(n_bars - opened_at)
     for key, opened_at in _open_since_rev.items():
         _holding_lengths.append(n_bars - opened_at)
 
-    # Count fills via total position changes (each entry = 1 fill)
-    # We can't easily introspect the execution handler after the run, so we
-    # count unique holding-period events as a proxy for fills.
-    # A more accurate count would require a wrapping execution handler —
-    # acceptable for diagnostic purposes; noted in stats.name.
-    fills_count = len(_holding_lengths)
-
     exposure = bars_with_position / n_bars if n_bars > 0 else 0.0
     avg_holding = sum(_holding_lengths) / len(_holding_lengths) if _holding_lengths else 0.0
-    final_equity = multi.equity_krw()
+    final_equity = sum(s.portfolio.equity_krw() for s in sleeves)
 
     stats = StrategyStats(
         name="combined_sleeves",

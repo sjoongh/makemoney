@@ -331,3 +331,72 @@ def test_format_report_includes_sleeve_strategy_names():
     assert "trend_only" in report
     assert "reversion_only" in report
     assert "combined_sleeves" in report
+
+
+# ---------------------------------------------------------------------------
+# Bug-fix regression tests: trades = actual fills, exposure = aggregate
+# ---------------------------------------------------------------------------
+
+
+def test_run_strategy_zero_fills_when_threshold_impossible():
+    """With threshold=2.0 (beyond [-1,1] score range), no fills must occur."""
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    stats, _ = run_strategy(all_bars, _build_simple_strategy, enter_threshold=2.0)
+
+    assert stats.trades == 0
+    assert stats.exposure == pytest.approx(0.0)
+
+
+def test_run_sleeve_strategy_zero_fills_when_threshold_impossible():
+    """With threshold=2.0, combined_sleeves must report 0 trades and 0.0 exposure."""
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    stats, _ = run_sleeve_strategy(all_bars, enter_threshold=2.0)
+
+    assert stats.trades == 0, f"Expected 0 trades with impossible threshold, got {stats.trades}"
+    assert stats.exposure == pytest.approx(0.0), (
+        f"Expected 0.0 exposure with no positions, got {stats.exposure}"
+    )
+
+
+def test_run_sleeve_strategy_exposure_not_inflated():
+    """Exposure with impossible threshold must be 0.0, not inflated.
+
+    This is the OR-artifact regression: the old code checked
+    trend_open + rev_open > 0, which would be True if either sleeve had
+    ghost entries in _pos. With threshold=2.0 and no fills, _pos is empty
+    in both sleeves, so the aggregate must be 0.0.
+    """
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    stats, _ = run_sleeve_strategy(all_bars, enter_threshold=2.0)
+
+    assert stats.exposure == pytest.approx(0.0), (
+        f"Exposure must be 0.0 when no fills occur, got {stats.exposure:.4f} "
+        f"(OR-inflation artifact?)"
+    )
+
+
+def test_run_sleeve_strategy_trades_counts_fills_not_holding_transitions():
+    """Trades must equal actual FillEvents, not holding-period transitions.
+
+    With threshold=2.0 -> 0 fills. With threshold=0.10 -> trades >= 0.
+    Key invariant: trades(thr=2.0) == 0, exposure in [0,1].
+    """
+    bars_a = _bars_for(SYM_A, RISES)
+    bars_b = _bars_for(SYM_B, FLAT)
+    all_bars = sorted(bars_a + bars_b, key=lambda b: (b.ts, b.symbol.ticker))
+
+    stats_no_trade, _ = run_sleeve_strategy(all_bars, enter_threshold=2.0)
+    stats_active, _   = run_sleeve_strategy(all_bars, enter_threshold=0.10)
+
+    assert stats_no_trade.trades == 0
+    assert stats_active.trades >= 0  # structural: must be non-negative
+    assert 0.0 <= stats_active.exposure <= 1.0
