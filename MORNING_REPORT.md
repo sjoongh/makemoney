@@ -26,5 +26,7 @@
 
 | 01:20 | B5 ✅ | AvgHold/노출 정의 단일·정직화(단일·sleeve 경로 일치), 테스트 추가, 패리티 green | 5aac68e |
 
+| 02:30 | B4 ✅ | 비용모델 정밀화 — KOSPI STT 20bps 2026확정, NASDAQ 자동환전 10bps(APPROX) 반영, KOSDAQ 주석화. 패리티 green | aca98e1 |
+
 ### ⚠️ 사람 확인 필요 (B1 상세)
 VTRP6504R `output3`: `tot_asst_amt=382,983,974`, `frcr_evlu_tota=382,983,974` (포지션 0·외화현금 0인데 383M). `output2`는 5개 통화(CNY/HKD/USD/JPY/EUR) 행, 전부 `frcr_dncl_amt_2=0`. 국내 VTTC8434R는 100M KRW. **이 383M의 정체를 확인하기 전엔 account_snapshot을 VTRP6504R 기반으로 바꾸지 않음.** 현재는 국내 KRW현금만 사용(보수적·안전).
