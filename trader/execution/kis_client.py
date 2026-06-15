@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 import os
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 import httpx
@@ -171,6 +171,171 @@ class KisClient:
         # Sort ascending by timestamp
         bars.sort(key=lambda b: b.ts)
         return bars
+
+    def daily_bars_history(
+        self,
+        ticker: str,
+        market: str,
+        currency: str,
+        *,
+        lookback_days: int = 730,
+        max_pages: int = 12,
+    ) -> list[BarEvent]:
+        """Fetch multiple pages of daily bars to build deep history.
+
+        Paginates backward through time, stitching pages together, deduplicating
+        by date, and returning bars sorted ascending.
+
+        Anchor note: the cutoff date is derived from the DATA returned by the
+        first page (its maximum date), not from the wall clock. This makes the
+        function deterministic and testable without mocking time.
+
+        Args:
+            ticker: e.g. "AAPL" or "005930".
+            market: "NASDAQ" or "KOSPI".
+            currency: "USD" or "KRW".
+            lookback_days: Stop fetching once the earliest bar is older than
+                this many days before the anchor date (first page's max date).
+            max_pages: Hard cap on number of API pages to fetch.
+
+        Returns:
+            Ascending list of BarEvents with unique dates.
+        """
+        if market == "NASDAQ":
+            return self._daily_bars_history_overseas(
+                ticker, market, currency, lookback_days=lookback_days, max_pages=max_pages
+            )
+        elif market == "KOSPI":
+            return self._daily_bars_history_domestic(
+                ticker, market, currency, lookback_days=lookback_days, max_pages=max_pages
+            )
+        else:
+            raise ValueError(f"Unsupported market: {market}")
+
+    def _daily_bars_history_overseas(
+        self,
+        ticker: str,
+        market: str,
+        currency: str,
+        *,
+        lookback_days: int,
+        max_pages: int,
+    ) -> list[BarEvent]:
+        """Paginate NASDAQ daily bars backward using BYMD anchor."""
+        sym = Symbol(ticker, Market(market), currency)
+        seen_dates: set[str] = set()
+        all_bars: list[BarEvent] = []
+
+        bymd: str = ""   # empty = most recent page
+        anchor_date: Optional[datetime] = None  # set from first page
+
+        for page_num in range(max_pages):
+            bars = self._daily_bars_overseas(sym, ticker, bymd)
+
+            if not bars:
+                break  # empty page → stop
+
+            # Determine anchor from first page's maximum date (not wall clock)
+            if anchor_date is None:
+                anchor_date = max(b.ts for b in bars)
+
+            cutoff = anchor_date - timedelta(days=lookback_days)
+
+            # Accumulate unique bars
+            new_bars_added = False
+            for b in bars:
+                date_key = b.ts.strftime("%Y%m%d")
+                if date_key not in seen_dates:
+                    seen_dates.add(date_key)
+                    all_bars.append(b)
+                    new_bars_added = True
+
+            if not new_bars_added:
+                break  # all dates already seen → stop
+
+            # Find earliest bar in this page to set next BYMD anchor
+            earliest = min(b.ts for b in bars)
+
+            # Stop if we've gone past the lookback window
+            if earliest <= cutoff:
+                break
+
+            # Next page: anchor at (earliest - 1 day)
+            next_anchor = earliest - timedelta(days=1)
+            bymd = next_anchor.strftime("%Y%m%d")
+
+        all_bars.sort(key=lambda b: b.ts)
+        return all_bars
+
+    def _daily_bars_history_domestic(
+        self,
+        ticker: str,
+        market: str,
+        currency: str,
+        *,
+        lookback_days: int,
+        max_pages: int,
+        window_days: int = 100,
+    ) -> list[BarEvent]:
+        """Paginate KOSPI daily bars backward using sliding date windows."""
+        sym = Symbol(ticker, Market(market), currency)
+        seen_dates: set[str] = set()
+        all_bars: list[BarEvent] = []
+
+        anchor_date: Optional[datetime] = None
+
+        # First page: use today as end to get anchor from data
+        first_end = datetime.now(timezone.utc).strftime("%Y%m%d")
+        first_start = (datetime.now(timezone.utc) - timedelta(days=window_days)).strftime("%Y%m%d")
+        first_bars = self._daily_bars_domestic(sym, ticker, first_start, first_end)
+
+        if not first_bars:
+            return []
+
+        # Set anchor from data (max date in first page), not wall clock
+        anchor_date = max(b.ts for b in first_bars)
+        cutoff = anchor_date - timedelta(days=lookback_days)
+
+        for b in first_bars:
+            date_key = b.ts.strftime("%Y%m%d")
+            if date_key not in seen_dates:
+                seen_dates.add(date_key)
+                all_bars.append(b)
+
+        # Sliding window: walk backward
+        window_end_dt = anchor_date - timedelta(days=window_days)
+
+        for page_num in range(1, max_pages):
+            if window_end_dt <= cutoff:
+                break
+
+            window_end_str = window_end_dt.strftime("%Y%m%d")
+            window_start_str = (window_end_dt - timedelta(days=window_days)).strftime("%Y%m%d")
+
+            bars = self._daily_bars_domestic(sym, ticker, window_start_str, window_end_str)
+
+            if not bars:
+                break
+
+            new_bars_added = False
+            for b in bars:
+                date_key = b.ts.strftime("%Y%m%d")
+                if date_key not in seen_dates:
+                    seen_dates.add(date_key)
+                    all_bars.append(b)
+                    new_bars_added = True
+
+            if not new_bars_added:
+                break
+
+            earliest = min(b.ts for b in bars)
+            if earliest <= cutoff:
+                break
+
+            window_end_dt = earliest - timedelta(days=1)
+
+        all_bars.sort(key=lambda b: b.ts)
+        return all_bars
 
     # ------------------------------------------------------------------
     # Overseas (NASDAQ)
