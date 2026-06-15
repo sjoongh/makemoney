@@ -16,8 +16,6 @@ combined_conf  = min(1.0, max(w_i * result_i.confidence for all i))
 
 Emit None when there are zero relevant items in the window.
 Otherwise always emit (signal persists/fades across bars via decay).
-Mark all current item ids as seen for dedup tracking (reserved for
-future sparse-emission tuning; current policy always emits when items > 0).
 """
 from __future__ import annotations
 
@@ -58,13 +56,16 @@ class NewsSignalSource:
         halflife_days: float = 3.0,
         source_name: str = "news_llm",
     ) -> None:
+        if halflife_days <= 0:
+            raise ValueError("halflife_days must be > 0")
+        if lookback <= timedelta(0):
+            raise ValueError("lookback must be positive")
         self.provider = provider
         self.scorer = scorer
         self.cache: SentimentCache = cache if cache is not None else SentimentCache()
         self.lookback = lookback
         self.halflife_days = halflife_days
         self.name = source_name
-        self._seen_ids: set[str] = set()
 
     def on_bar(self, bar: BarEvent) -> Optional[NormalizedSignal]:
         """Process one closed bar and return an aggregated sentiment signal or None.
@@ -74,7 +75,7 @@ class NewsSignalSource:
         2. Defensive re-filter: drop anything with published_at > bar.ts.
         3. Score ALL items in the window via cache (each item scored exactly once).
         4. Time-decay weighted aggregation → combined_score, combined_conf.
-        5. Return None if no items; otherwise emit NormalizedSignal and update seen set.
+        5. Return None if no items; otherwise emit NormalizedSignal.
         """
         # Step 1: fetch
         raw_items = self.provider.fetch_as_of(
@@ -122,10 +123,7 @@ class NewsSignalSource:
         # ceiling; stale items shrink their own contribution via w < 1.
         combined_conf = _clamp(max(decayed_confs), 0.0, 1.0)
 
-        # Step 5: mark seen, emit signal
-        for item in items:
-            self._seen_ids.add(item.id)
-
+        # Step 5: emit signal
         return NormalizedSignal(
             source=self.name,
             symbol=bar.symbol,

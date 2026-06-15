@@ -217,3 +217,15 @@ def test_name_attribute():
     """source.name must equal 'news_llm'."""
     src = NewsSignalSource(MockNewsProvider([]), MockSentimentScorer())
     assert src.name == "news_llm"
+
+
+def test_invalid_config_rejected():
+    import pytest
+    from datetime import timedelta
+    from trader.signals.news.source import NewsSignalSource
+    from trader.signals.news.providers import MockNewsProvider
+    from trader.signals.news.sentiment import MockSentimentScorer
+    with pytest.raises(ValueError):
+        NewsSignalSource(MockNewsProvider([]), MockSentimentScorer(), halflife_days=0)
+    with pytest.raises(ValueError):
+        NewsSignalSource(MockNewsProvider([]), MockSentimentScorer(), lookback=timedelta(0))

@@ -111,6 +111,14 @@ class NewsSignalSource:           # SignalSource 구현
 - [ ] **Phase 1 패리티/백테스트 테스트 회귀 없음**(뉴스는 백테스트 미주입).
 - [ ] mock 기반 단위테스트 + 키 있으면 라이브 스모크.
 
+## 9.5 실 키 연결 전 처리 (codex 최종 리뷰)
+
+라이브 Finnhub/DART/Claude 키를 붙이기 전 반드시:
+1. ✅ (완료) `NewsSignalSource`에서 `halflife_days>0`/`lookback>0` 검증.
+2. **캐시 키 네임스페이싱** — `SentimentCache`를 `(provider, symbol, item.id, model/prompt_version)`로 키잉(현재 `item.id`만 → 다중 provider 시 id 충돌 위험).
+3. **라이브 provider 타임스탬프** — UTC tz-aware 정규화 + `as_of-lookback <= published_at <= as_of` 양방향 경계 강제.
+4. (정책) 백테스트 우회 경로 — `BacktestEngine` 가드가 막지만, `BacktestEngine` 없이 `FusionEngine.on_bar`를 커스텀 루프에서 직접 호출하면 우회 가능 → 문서/정책으로 금지.
+
 ## 10. 비범위
 - 뉴스 백테스트(point-in-time 아카이브) — 후속 Phase.
 - ML 예측 신호(원 비전 ③) — 별도 Phase.
