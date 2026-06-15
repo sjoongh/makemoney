@@ -13,14 +13,7 @@ from trader.data.storage import load_bars
 class _FakeClient:
     """Minimal stand-in for KisClient that returns one hard-coded bar per call."""
 
-    def daily_bars(
-        self,
-        ticker: str,
-        market: str,
-        currency: str,
-        start: str | None = None,
-        end: str | None = None,
-    ) -> list[BarEvent]:
+    def _one_bar(self, ticker: str, market: str, currency: str) -> list[BarEvent]:
         return [
             BarEvent(
                 Symbol(ticker, Market(market), currency),
@@ -32,6 +25,25 @@ class _FakeClient:
                 volume=100,
             )
         ]
+
+    def daily_bars(
+        self,
+        ticker: str,
+        market: str,
+        currency: str,
+        start: str | None = None,
+        end: str | None = None,
+    ) -> list[BarEvent]:
+        return self._one_bar(ticker, market, currency)
+
+    def daily_bars_history(
+        self,
+        ticker: str,
+        market: str,
+        currency: str,
+        lookback_days: int = 730,
+    ) -> list[BarEvent]:
+        return self._one_bar(ticker, market, currency)
 
 
 def test_fetch_saves_bars(tmp_path):
@@ -115,3 +127,60 @@ def test_load_dotenv_does_not_overwrite_existing(tmp_path, monkeypatch):
 
     # Pre-existing env var must win
     assert os.environ["FAKE_EXISTING"] == "from_env"
+
+
+def test_fetch_uses_paginated_history_when_no_start_end(tmp_path):
+    """When start/end are omitted, fetch() calls daily_bars_history (paginated path)."""
+    from trader.app import fetch_data
+
+    history_calls: list[dict] = []
+
+    class _CapturingHistoryClient:
+        def daily_bars_history(self, ticker, market, currency, lookback_days=730):
+            history_calls.append({"ticker": ticker, "lookback_days": lookback_days})
+            return [
+                BarEvent(
+                    Symbol(ticker, Market(market), currency),
+                    datetime(2026, 1, 2, tzinfo=timezone.utc),
+                    1.0, 2.0, 0.5, 1.5, 100,
+                )
+            ]
+
+    out = str(tmp_path / "hist.parquet")
+    n = fetch_data.fetch(
+        [("AAPL", "NASDAQ", "USD")], out,
+        lookback_days=365,
+        client=_CapturingHistoryClient(),
+    )
+    assert n == 1
+    assert len(history_calls) == 1
+    assert history_calls[0]["ticker"] == "AAPL"
+    assert history_calls[0]["lookback_days"] == 365
+
+
+def test_fetch_uses_single_page_when_start_and_end_given(tmp_path):
+    """When start AND end are given, fetch() uses daily_bars (legacy single-page path)."""
+    from trader.app import fetch_data
+
+    daily_calls: list[dict] = []
+
+    class _CapturingDailyClient:
+        def daily_bars(self, ticker, market, currency, start=None, end=None):
+            daily_calls.append({"ticker": ticker, "start": start, "end": end})
+            return [
+                BarEvent(
+                    Symbol(ticker, Market(market), currency),
+                    datetime(2026, 1, 2, tzinfo=timezone.utc),
+                    1.0, 2.0, 0.5, 1.5, 100,
+                )
+            ]
+
+    out = str(tmp_path / "dated.parquet")
+    fetch_data.fetch(
+        [("AAPL", "NASDAQ", "USD")], out,
+        start="20260101", end="20260131",
+        client=_CapturingDailyClient(),
+    )
+    assert len(daily_calls) == 1
+    assert daily_calls[0]["start"] == "20260101"
+    assert daily_calls[0]["end"] == "20260131"

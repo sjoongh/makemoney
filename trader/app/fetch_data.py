@@ -58,16 +58,25 @@ def fetch(
     start: str | None = None,
     end: str | None = None,
     client: KisClient | None = None,
+    lookback_days: int = 730,
 ) -> int:
     """Fetch daily bars for *symbols* and write parquet to *out_path*.
+
+    Uses daily_bars_history for paginated deep history (up to lookback_days of
+    daily bars per symbol). Falls back to a single daily_bars call only when
+    both start and end are explicitly provided (legacy date-range mode).
 
     Args:
         symbols: List of (ticker, market, currency) tuples.
         out_path: Destination parquet file path.
-        start: Optional start date YYYYMMDD (domestic markets only).
+        start: Optional start date YYYYMMDD. When provided together with end,
+               uses single-page daily_bars (legacy mode).
         end: Optional end date YYYYMMDD.
         client: Optional pre-built client (useful for testing). Defaults to
                 build_client() when None.
+        lookback_days: Number of calendar days of history to fetch via
+                       pagination (default 730 ≈ 2 years). Ignored when both
+                       start and end are set.
 
     Returns:
         Total number of bars saved.
@@ -77,7 +86,17 @@ def fetch(
 
     bars = []
     for ticker, market, currency in symbols:
-        bars.extend(client.daily_bars(ticker, market, currency, start=start, end=end))
+        if start is not None and end is not None:
+            # Legacy explicit date-range: single page call
+            bars.extend(client.daily_bars(ticker, market, currency, start=start, end=end))
+        else:
+            # Paginated deep history
+            bars.extend(
+                client.daily_bars_history(
+                    ticker, market, currency,
+                    lookback_days=lookback_days,
+                )
+            )
 
     save_bars(bars, out_path)
     return len(bars)
