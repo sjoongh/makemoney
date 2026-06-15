@@ -40,25 +40,26 @@ def test_kospi_sell_much_greater_than_buy():
     assert sell > buy * 10  # tax asymmetry: SELL is >>10x more expensive
 
 # --- NASDAQ ---
-def test_nasdaq_buy_is_25bps_notional():
+def test_nasdaq_buy_is_35bps_notional():
     # qty=100, price=100 USD
     # notional = 10_000
-    # bps = 25.0
-    # cost = 10_000 * 25.0/10_000 = 25.0
+    # bps = 25.0 (commission) + 10.0 (FX auto-convert spread) = 35.0
+    # cost = 10_000 * 35.0/10_000 = 35.0
     m = MarketCostModel()
     cost = m.commission(price=100.0, quantity=100, market=Market.NASDAQ, side=Side.BUY)
-    assert abs(cost - 25.0) < 1e-9
+    assert abs(cost - 35.0) < 1e-9
 
 def test_nasdaq_sell_adds_sec_and_taf():
     # qty=100, price=100 USD
     # notional = 10_000
-    # bps = 25.0 (comm) + 0.206 (SEC sell) = 25.206
-    # cost_bps = 10_000 * 25.206/10_000 = 25.206
+    # bps = 25.0 (comm) + 0.206 (SEC sell) = 25.206  [FX applied separately]
+    # cost_bps_component = 10_000 * 25.206/10_000 = 25.206
+    # FX spread = 10_000 * 10.0/10_000 = 10.0
     # FINRA TAF = min(0.000195 * 100, 9.79) = min(0.0195, 9.79) = 0.0195
-    # total = 25.206 + 0.0195 = 25.2255
+    # total = 25.206 + 10.0 + 0.0195 = 35.2255
     m = MarketCostModel()
     cost = m.commission(price=100.0, quantity=100, market=Market.NASDAQ, side=Side.SELL)
-    assert abs(cost - 25.2255) < 0.0001
+    assert abs(cost - 35.2255) < 0.0001
 
 def test_nasdaq_sell_greater_than_buy():
     m = MarketCostModel()
@@ -73,10 +74,11 @@ def test_finra_taf_cap_applied():
     cost_big = m.commission(price=100.0, quantity=51_000, market=Market.NASDAQ, side=Side.SELL)
     cost_bigger = m.commission(price=100.0, quantity=100_000, market=Market.NASDAQ, side=Side.SELL)
     # TAF portion should be capped at 9.79 for both large quantities
-    # difference is only from SEC fee on the notional difference, not TAF
+    # difference is only from bps (commission + SEC + FX) on the notional difference, not TAF
+    # effective bps on sell = 25.0 (comm) + 0.206 (SEC) + 10.0 (FX) = 35.206
     notional_big    = 100.0 * 51_000
     notional_bigger = 100.0 * 100_000
-    bps_diff = (notional_bigger - notional_big) * 25.206 / 10_000
+    bps_diff = (notional_bigger - notional_big) * 35.206 / 10_000
     assert abs((cost_bigger - cost_big) - bps_diff) < 0.01
 
 def test_unknown_market_raises():

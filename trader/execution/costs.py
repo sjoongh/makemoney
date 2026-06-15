@@ -81,26 +81,32 @@ class MarketCostConfig:
 DEFAULT_COSTS: dict[Market, MarketCostConfig] = {
     # KOSPI via KIS domestic account
     # commission: ~1.40527 bps (both sides) — KIS retail schedule 2026
-    # sell tax: 0.20% = 20.0 bps — APPROXIMATE; KR securities transaction tax
-    #   is being phased down; verify current rate before production use.
+    # sell tax: 0.20% = 20.0 bps — CONFIRMED 2026
+    #   증권거래세 0.05% + 농어촌특별세 0.15% = 0.20% total; source MOFE 2026
     Market.KOSPI: MarketCostConfig(
         commission_bps=1.40527,
-        sell_tax_bps=20.0,       # APPROX — verify KR STT phase-down schedule
+        sell_tax_bps=20.0,       # CONFIRMED 2026 (STT 0.05% + 농특세 0.15%); source MOFE 2026
     ),
 
     # NASDAQ via KIS overseas account (USD)
     # commission: 25.0 bps (both sides) — KIS US stock commission schedule 2026
     # SEC fee: 0.206 bps on sells — APPROXIMATE; Section 31 rate changes annually
     # FINRA TAF: $0.000195/share on sells, capped $9.79/trade — 2026 schedule
-    # fx_bps_per_conversion: KRW↔USD auto-FX spread ~40 bps is an ESTIMATE;
-    #   default 0 so callers opt-in explicitly.
+    # fx_bps_per_conversion: KRW-funded account auto-converts KRW→USD per fill
+    #   via KIS auto-FX; honest cost includes this spread. Est. ~10 bps retail
+    #   (range 5–40, account-specific). APPROX — verify with your KIS account terms.
     Market.NASDAQ: MarketCostConfig(
         commission_bps=25.0,
         sec_sell_bps=0.206,      # APPROX — SEC Section 31, changes annually
         finra_taf_per_share=0.000195,
         finra_taf_cap=9.79,
-        fx_bps_per_conversion=0.0,   # set to ~40 to model KRW-auto-FX spread
+        fx_bps_per_conversion=10.0,  # APPROX — retail KIS auto-FX spread est. ~10bps (range 5-40, account-specific)
     ),
+
+    # KOSDAQ: Market enum only has NASDAQ/KOSPI (adding KOSDAQ is out of scope).
+    # For reference: KOSDAQ 2026 STT = 0.20% (증권거래세 0.20%, no 농특세) = 20.0 bps
+    # sell_tax_bps — same total as KOSPI but different tax composition.
+    # To add KOSDAQ support, extend the Market enum and add an entry here.
 }
 
 
