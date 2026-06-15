@@ -305,12 +305,26 @@ class KisClient:
         seen_dates: set[str] = set()
         all_bars: list[BarEvent] = []
 
+        import httpx as _httpx_first
+
         anchor_date: Optional[datetime] = None
 
-        # First page: use today as end to get anchor from data
-        first_end = datetime.now(timezone.utc).strftime("%Y%m%d")
-        first_start = (datetime.now(timezone.utc) - timedelta(days=window_days)).strftime("%Y%m%d")
-        first_bars = self._daily_bars_domestic(sym, ticker, first_start, first_end)
+        # First page: use today as end to get anchor from data.
+        # KIS paper API returns HTTP 500 when end date lands on a non-trading
+        # day (weekend / holiday).  Retry up to 7 times stepping back 1 day.
+        first_end_dt = datetime.now(timezone.utc)
+        first_bars: list[BarEvent] = []
+        for _retry in range(7):
+            first_end = first_end_dt.strftime("%Y%m%d")
+            first_start = (first_end_dt - timedelta(days=window_days)).strftime("%Y%m%d")
+            try:
+                first_bars = self._daily_bars_domestic(sym, ticker, first_start, first_end)
+                break
+            except _httpx_first.HTTPStatusError as exc:
+                if exc.response.status_code == 500:
+                    first_end_dt -= timedelta(days=1)
+                    continue
+                raise
 
         if not first_bars:
             return []
