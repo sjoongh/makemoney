@@ -27,6 +27,7 @@ class FusionEngine:
             num += s.score * w; den += w
         return num / den if den else 0.0
     def on_bar(self, bar: BarEvent) -> list[OrderEvent]:
+        self.risk.on_bar(bar, self.portfolio)  # two-phase: update ATR + daily loss state first
         signals = [s for src in self.sources if (s := src.on_bar(bar)) is not None]
         combined = self._combine(signals)
         if combined >= self.enter_threshold:
@@ -35,5 +36,6 @@ class FusionEngine:
             weight = 0.0
         else:
             return []  # 중립 구간: 포지션 유지, 주문 없음
-        sized = self.risk.size_target(TargetPosition(bar.symbol, weight, reason=f"combined={combined:.2f}"))
+        sized = self.risk.size_target(TargetPosition(bar.symbol, weight, reason=f"combined={combined:.2f}"),
+                                      self.portfolio, bar)
         return self.order_factory.orders_for_target(sized, self.portfolio, price=bar.close, ts=bar.ts)
