@@ -22,11 +22,14 @@ class TechnicalSignalSource:
     name = "technical"
     def __init__(self, fast: int = 20, slow: int = 50):
         self.fast, self.slow = fast, slow
-        self._closes: deque[float] = deque(maxlen=max(slow, 60))
+        self._windows: dict[tuple[str, str], deque[float]] = {}
     def on_bar(self, bar: BarEvent) -> NormalizedSignal | None:
-        self._closes.append(bar.close)
-        if len(self._closes) < self.slow: return None
-        c = list(self._closes)
+        key = (bar.symbol.market.value, bar.symbol.ticker)
+        if key not in self._windows:
+            self._windows[key] = deque(maxlen=max(self.slow, 60))
+        self._windows[key].append(bar.close)
+        if len(self._windows[key]) < self.slow: return None
+        c = list(self._windows[key])
         ma_fast = sum(c[-self.fast:]) / self.fast
         ma_slow = sum(c[-self.slow:]) / self.slow
         ma_score = max(-1.0, min(1.0, ((ma_fast - ma_slow) / ma_slow if ma_slow else 0.0) * 10))
