@@ -221,7 +221,14 @@ class KisClient:
         lookback_days: int,
         max_pages: int,
     ) -> list[BarEvent]:
-        """Paginate NASDAQ daily bars backward using BYMD anchor."""
+        """Paginate NASDAQ daily bars backward using BYMD anchor.
+
+        KIS paper API returns HTTP 500 when BYMD lands on a non-trading day
+        (weekend / holiday). We retry stepping back by 1 day up to 7 times
+        before treating the page as exhausted (break).
+        """
+        import httpx as _httpx
+
         sym = Symbol(ticker, Market(market), currency)
         seen_dates: set[str] = set()
         all_bars: list[BarEvent] = []
@@ -230,10 +237,26 @@ class KisClient:
         anchor_date: Optional[datetime] = None  # set from first page
 
         for page_num in range(max_pages):
-            bars = self._daily_bars_overseas(sym, ticker, bymd)
+            # Try the current bymd; if KIS returns 500 (non-trading day),
+            # step back by 1 day up to 7 retries then give up.
+            bars: list[BarEvent] = []
+            candidate = bymd
+            for _retry in range(7):
+                try:
+                    bars = self._daily_bars_overseas(sym, ticker, candidate)
+                    break
+                except _httpx.HTTPStatusError as exc:
+                    if exc.response.status_code == 500 and candidate:
+                        # Non-trading day anchor — step back 1 day and retry
+                        dt = datetime.strptime(candidate, "%Y%m%d").replace(
+                            tzinfo=timezone.utc
+                        )
+                        candidate = (dt - timedelta(days=1)).strftime("%Y%m%d")
+                        continue
+                    raise  # other HTTP errors propagate
 
             if not bars:
-                break  # empty page → stop
+                break  # empty page or exhausted retries → stop
 
             # Determine anchor from first page's maximum date (not wall clock)
             if anchor_date is None:
@@ -303,16 +326,30 @@ class KisClient:
                 all_bars.append(b)
 
         # Sliding window: walk backward
+        # KIS paper API returns HTTP 500 for certain date ranges (weekends,
+        # holidays, or out-of-range windows). Retry up to 7 times by shrinking
+        # the window_end back 1 day each attempt.
+        import httpx as _httpx
+
         window_end_dt = anchor_date - timedelta(days=window_days)
 
         for page_num in range(1, max_pages):
             if window_end_dt <= cutoff:
                 break
 
-            window_end_str = window_end_dt.strftime("%Y%m%d")
-            window_start_str = (window_end_dt - timedelta(days=window_days)).strftime("%Y%m%d")
-
-            bars = self._daily_bars_domestic(sym, ticker, window_start_str, window_end_str)
+            bars: list[BarEvent] = []
+            candidate_end = window_end_dt
+            for _retry in range(7):
+                window_end_str = candidate_end.strftime("%Y%m%d")
+                window_start_str = (candidate_end - timedelta(days=window_days)).strftime("%Y%m%d")
+                try:
+                    bars = self._daily_bars_domestic(sym, ticker, window_start_str, window_end_str)
+                    break
+                except _httpx.HTTPStatusError as exc:
+                    if exc.response.status_code == 500:
+                        candidate_end -= timedelta(days=1)
+                        continue
+                    raise
 
             if not bars:
                 break
