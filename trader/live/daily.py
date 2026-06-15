@@ -55,6 +55,8 @@ class DailyActEngine:
         dry_run: bool = True,
         ledger=None,
         max_staleness_days: int = 4,
+        journal=None,
+        run_id: str | None = None,
     ):
         self.kis = kis_client
         self.strategy = strategy
@@ -64,6 +66,8 @@ class DailyActEngine:
         self.dry_run = dry_run
         self.ledger = ledger
         self.max_staleness_days = max_staleness_days
+        self.journal = journal
+        self.run_id = run_id
 
     def run(self) -> list[OrderEvent]:
         # ── 1. Account snapshot → Portfolio ──────────────────────────────────
@@ -144,7 +148,22 @@ class DailyActEngine:
                 self.strategy.warmup_bar(latest_bar)
             else:
                 portfolio.mark(latest_bar)
-                orders.extend(self.strategy.on_bar(latest_bar))
+                signals = self.strategy.observe_bar(latest_bar)
+                combined = self.strategy.combined_score(signals)
+                new_orders = self.strategy.decide_orders(latest_bar, signals)
+                orders.extend(new_orders)
+                if self.journal is not None and self.run_id is not None:
+                    from trader.live.journal import build_record
+                    rec = build_record(
+                        engine=getattr(self.strategy, "name", "fusion_v1"),
+                        run_id=self.run_id,
+                        bar=latest_bar,
+                        signals=signals,
+                        combined=combined,
+                        target_weight=combined,
+                        orders=new_orders,
+                    )
+                    self.journal.append(rec)
 
         # ── 4. Submit or dry-run ──────────────────────────────────────────────
         if self.dry_run:

@@ -26,6 +26,7 @@ import httpx
 
 from trader.app.config import AppConfig
 from trader.live.daily import DailyActEngine
+from trader.live.journal import SignalJournal
 from trader.live.ledger import RunLedger
 from trader.signals.technical import TechnicalSignalSource  # kept for parity tests
 from trader.signals.technical_indicator_source import TechnicalIndicatorSource
@@ -144,6 +145,10 @@ def main(dry_run: bool = True, market: str = "ALL") -> None:
 
     ledger = RunLedger() if not dry_run else None
 
+    journal = SignalJournal(root="paper_forward")
+    from datetime import date
+    run_id = f"run-{date.today().isoformat()}"
+
     engine = DailyActEngine(
         kis_client=kis,
         strategy=strategy,
@@ -152,6 +157,8 @@ def main(dry_run: bool = True, market: str = "ALL") -> None:
         band=0.01,
         dry_run=dry_run,
         ledger=ledger,
+        journal=journal,
+        run_id=run_id,
     )
 
     mode = "DRY-RUN" if dry_run else "LIVE"
