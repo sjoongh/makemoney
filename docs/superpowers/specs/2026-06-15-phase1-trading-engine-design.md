@@ -288,6 +288,14 @@ BarEvent → SignalSource(s) → FusionEngine(융합=목표의도)
 
 ---
 
+## 14. 알려진 Phase 1 단순화 (Phase 2 전 처리 권장)
+
+최종 리뷰(Claude+Codex)에서 식별. Phase 1 완료를 막지 않지만 Phase 2(뉴스/ML 신호) 추가 전 정리 권장:
+
+1. **FX 현금 정산 정책 미정** — `Portfolio`는 통화별 현금 버킷을 두는데, KRW만 펀딩한 상태에서 USD 종목을 매수하면 USD 현금이 음수가 된다(암묵적 FX 차입). 평가액은 포지션가치와 상쇄돼 대략 맞지만, **명시적 정책 필요**: (a) 체결 시 KRW→해당통화 자동 환전(KRW 버킷에서 차감), 또는 (b) 음수 현금=FX 차입으로 명시 모델링. → **사용자 결정 대기 항목.**
+2. **MACD 라벨** — `technical.py`의 `macd_hist` feature는 실제로는 MACD line(EMA12−EMA26)이며 히스토그램(MACD−signal)이 아님. 신호 방향성엔 문제없으나 Phase 2에서 정명/시그널선 추가 권장.
+3. **체결 대사 깊이** — `KisPaperExecutionHandler`는 중복 폴링 de-dupe + order_id 보존까지 구현(수정 완료). 부분체결(partial fill) 누적 추적은 실제 KIS API 응답 형태 확인 후 Phase 2에서 정교화.
+
 ## 부록: 설계 출처
 - Codex(gpt-5.5) 독립 설계 원문: `.omc/artifacts/ask/codex-you-are-a-senior-quant-...-2026-06-15T06-05-27-137Z.md`
 - 합의: 이벤트 드리븐·모드 무지 전략·정규화 신호·다음봉 체결·프레임워크 금지.
