@@ -15,6 +15,18 @@ The runner:
   5. Acts (decides orders) only on the latest bar.
   6. dry_run=True  → prints the orders it WOULD place, submits nothing.
      dry_run=False → submits limit orders with protective band, guarded by ledger.
+
+Live-trading hard gate (ALL three conditions must be satisfied):
+  1. --live flag passed on the command line.
+  2. Environment variable LIVE_TRADING_ENABLED=true (case-insensitive).
+  3. The configured KIS_ACCOUNT is listed in KIS_LIVE_ACCOUNT_ALLOWLIST
+     (comma-separated env var).
+
+If --live is passed but the gate is not fully satisfied, the runner falls
+back to dry-run and prints a clear refusal message.
+
+Additionally, if the durable KillSwitch is active, the runner refuses to
+run live (falls back to dry-run) and prints the reason.
 """
 from __future__ import annotations
 
@@ -28,6 +40,8 @@ from trader.app.config import AppConfig
 from trader.live.daily import DailyActEngine
 from trader.live.journal import SignalJournal
 from trader.live.ledger import RunLedger
+from trader.live.killswitch import KillSwitch
+from trader.live.pretrade import PreTradeLimits, PreTradeRiskGate, RunCircuitBreaker
 from trader.signals.technical import TechnicalSignalSource  # kept for parity tests
 from trader.signals.technical_indicator_source import TechnicalIndicatorSource
 from trader.signals.indicators import (
@@ -79,6 +93,70 @@ def _load_dotenv(path: str = ".env") -> None:
                 os.environ[key] = value
 
 
+# ---------------------------------------------------------------------------
+# Hard live-trading gate (pure function — fully unit-testable)
+# ---------------------------------------------------------------------------
+
+def live_allowed(
+    args_live: bool,
+    env: dict,
+    account: str,
+    killswitch_path: str = ".kill_switch.json",
+) -> tuple[bool, str]:
+    """Determine whether live order submission is permitted.
+
+    This is a pure-logic function (reads env dict + disk via KillSwitch)
+    with no side-effects beyond the KillSwitch file read.
+
+    Args:
+        args_live: True if --live was passed on the command line.
+        env: Mapping of environment variables (typically ``os.environ``).
+        account: The configured KIS account number.
+        killswitch_path: Path to the kill-switch JSON file.
+
+    Returns:
+        (allowed: bool, reason: str)
+          allowed=True  → live submission is permitted; reason is "".
+          allowed=False → blocked; reason describes WHY.
+    """
+    if not args_live:
+        return False, "dry-run mode (--live not passed)"
+
+    # Check kill switch first (fastest block, no env check needed)
+    ks = KillSwitch(path=killswitch_path)
+    if ks.is_active():
+        status = ks.status()
+        return False, f"kill switch active: {status.get('reason', 'unknown reason')}"
+
+    # LIVE_TRADING_ENABLED must be exactly "true" (case-insensitive)
+    enabled_raw = env.get("LIVE_TRADING_ENABLED", "")
+    if enabled_raw.strip().lower() != "true":
+        return False, (
+            "LIVE_TRADING_ENABLED env var is not set to 'true' "
+            f"(got: {enabled_raw!r})"
+        )
+
+    # Account allowlist
+    allowlist_raw = env.get("KIS_LIVE_ACCOUNT_ALLOWLIST", "")
+    allowlist = [a.strip() for a in allowlist_raw.split(",") if a.strip()]
+    if not allowlist:
+        return False, (
+            "KIS_LIVE_ACCOUNT_ALLOWLIST env var is empty or not set; "
+            "add the account number to permit live trading"
+        )
+    if account not in allowlist:
+        return False, (
+            f"account {account!r} is not in KIS_LIVE_ACCOUNT_ALLOWLIST "
+            f"(allowlist: {allowlist})"
+        )
+
+    return True, ""
+
+
+# ---------------------------------------------------------------------------
+# KisClient factory
+# ---------------------------------------------------------------------------
+
 def build_kis_client():
     """Build a live KisClient from environment / .env."""
     from trader.execution.kis_client import KisClient
@@ -97,13 +175,56 @@ def build_kis_client():
     )
 
 
+# ---------------------------------------------------------------------------
+# Main entry point
+# ---------------------------------------------------------------------------
+
 def main(dry_run: bool = True, market: str = "ALL") -> None:
     symbols = filter_symbols_by_market(SYMBOLS, market)
     if not symbols:
         print(f"No symbols match market={market!r}. Exiting.")
         return
 
-    print(f"Market filter: {market}  →  symbols: {symbols}")
+    # ── Resolve effective dry_run after gate check ────────────────────────
+    # dry_run=False means --live was passed; re-evaluate through the hard gate.
+    if not dry_run:
+        if "KIS_APP_KEY" not in os.environ:
+            _load_dotenv()
+        cfg = AppConfig.from_env()
+        allowed, gate_reason = live_allowed(
+            args_live=True,
+            env=dict(os.environ),
+            account=cfg.kis_account,
+        )
+        if not allowed:
+            print(
+                f"\n[LIVE GATE REFUSED] Live submission blocked: {gate_reason}"
+            )
+            print("[LIVE GATE REFUSED] Falling back to DRY-RUN mode.\n")
+            dry_run = True
+        else:
+            print("\n[LIVE GATE PASSED] All live-trading conditions satisfied.")
+    else:
+        print("\n[MODE] DRY-RUN (no gate envs required)")
+
+    # ── Startup banner ────────────────────────────────────────────────────
+    ks = KillSwitch()
+    ks_status = ks.status()
+    kill_active = ks_status.get("active", False)
+
+    print("=" * 60)
+    print(f"  Mode            : {'LIVE' if not dry_run else 'DRY-RUN'}")
+    print(f"  Market filter   : {market}")
+    print(f"  Symbols         : {symbols}")
+    print(f"  Kill switch     : {'ACTIVE — ' + ks_status.get('reason', '') if kill_active else 'inactive'}")
+    ks_source = ks_status.get('source', '')
+    if kill_active and ks_source:
+        print(f"  Kill switch src : {ks_source}")
+    print(f"  LIVE gate env   : LIVE_TRADING_ENABLED={os.environ.get('LIVE_TRADING_ENABLED', '(not set)')!r}")
+    print(f"  Allowlist       : KIS_LIVE_ACCOUNT_ALLOWLIST={os.environ.get('KIS_LIVE_ACCOUNT_ALLOWLIST', '(not set)')!r}")
+    print("=" * 60)
+
+    print(f"\nMarket filter: {market}  →  symbols: {symbols}")
     kis = build_kis_client()
 
     # Fetch live USD/KRW rate via VTRP6504R; falls back to 1380.0 if unavailable.
@@ -149,6 +270,19 @@ def main(dry_run: bool = True, market: str = "ALL") -> None:
     from datetime import date
     run_id = f"run-{date.today().isoformat()}"
 
+    # Wire PreTradeRiskGate explicitly so the entrypoint shows active limits.
+    limits = PreTradeLimits()
+    gate = PreTradeRiskGate(limits, fx)
+    breaker = RunCircuitBreaker(limits.max_orders_per_run)
+
+    print(
+        f"\n[PreTradeRiskGate] active limits: "
+        f"max_order_notional_krw={limits.max_order_notional_krw:,.0f} "
+        f"max_position_weight={limits.max_position_weight:.0%} "
+        f"fat_finger_qty={limits.fat_finger_qty:,} "
+        f"max_orders_per_run={limits.max_orders_per_run}"
+    )
+
     engine = DailyActEngine(
         kis_client=kis,
         strategy=strategy,
@@ -159,6 +293,8 @@ def main(dry_run: bool = True, market: str = "ALL") -> None:
         ledger=ledger,
         journal=journal,
         run_id=run_id,
+        gate=gate,
+        breaker=breaker,
     )
 
     mode = "DRY-RUN" if dry_run else "LIVE"

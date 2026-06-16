@@ -17,3 +17,4 @@ money.txt
 logs/
 .omc/state/
 paper_forward/
+.kill_switch.json
