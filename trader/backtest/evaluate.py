@@ -19,7 +19,7 @@ from typing import Callable
 
 from trader.backtest.metrics import max_drawdown, total_return
 from trader.core.events import BarEvent
-from trader.execution.costs import MarketCostModel
+from trader.execution.costs import MarketCostModel, SlippageModel
 from trader.research.disclaimers import SURVIVORSHIP_WARNING
 from trader.execution.simulated import SimulatedExecutionHandler
 from trader.signals.indicators import (
@@ -277,6 +277,7 @@ def run_strategy(
     build_strategy: Callable[[Portfolio, float], FusionEngine],
     *,
     enter_threshold: float,
+    slippage: SlippageModel | None = None,
 ) -> tuple[StrategyStats, list[float]]:
     """Run a single strategy configuration over bars and collect diagnostics.
 
@@ -291,13 +292,15 @@ def run_strategy(
         bars: All BarEvents, unsorted is fine — sorted internally by (ts, ticker).
         build_strategy: Factory callable(portfolio, enter_threshold) → FusionEngine.
         enter_threshold: Signal threshold to pass to build_strategy.
+        slippage: Optional SlippageModel.  None (default) → no slippage (parity-safe).
+                  Pass SlippageModel(enabled=True) for pessimistic-cost scenario.
 
     Returns:
         (StrategyStats, equity_curve_krw)  where equity_curve has one entry per bar.
     """
     pf, _ = _make_portfolio()
     strategy = build_strategy(pf, enter_threshold)
-    execution = SimulatedExecutionHandler(MarketCostModel())
+    execution = SimulatedExecutionHandler(MarketCostModel(), slippage=slippage)
 
     sorted_bars = sorted(bars, key=lambda b: (b.ts, b.symbol.ticker))
     n_bars = len(sorted_bars)
@@ -659,6 +662,99 @@ def evaluate(
         "n_bars": len(bars),
         "thresholds": thresholds,
     }
+
+
+# ---------------------------------------------------------------------------
+# pessimistic_cost_comparison — A/B: slippage OFF vs ON
+# ---------------------------------------------------------------------------
+
+def pessimistic_cost_comparison(
+    bars: list[BarEvent],
+    build_strategy: Callable[[Portfolio, float], FusionEngine],
+    *,
+    enter_threshold: float,
+    slippage: SlippageModel | None = None,
+) -> dict:
+    """Run strategy twice: baseline (slippage OFF) and pessimistic (slippage ON).
+
+    The pessimistic run uses the provided slippage model (defaulting to
+    SlippageModel(enabled=True) with DEFAULT_SLIPPAGE_BPS if none given).
+    The delta shows how much spread/impact costs eat into the strategy's edge.
+
+    "Real results lie at or below the pessimistic-cost line."  If the
+    pessimistic run is still positive and robust, the strategy has a cost
+    cushion.  If it flips negative, the edge is too thin to survive realistic
+    execution costs.
+
+    Args:
+        bars:             BarEvents to replay.
+        build_strategy:   Factory callable(portfolio, threshold) → FusionEngine.
+        enter_threshold:  Signal threshold for both runs.
+        slippage:         Pessimistic SlippageModel.  Defaults to
+                          SlippageModel(enabled=True) (DEFAULT_SLIPPAGE_BPS).
+
+    Returns:
+        dict with keys:
+            baseline_stats    : StrategyStats (no slippage)
+            pessimistic_stats : StrategyStats (with slippage)
+            delta_return      : pessimistic.total_return - baseline.total_return
+            delta_final_krw   : pessimistic.final_equity_krw - baseline.final_equity_krw
+            slippage_model    : the SlippageModel used for the pessimistic run
+    """
+    if slippage is None:
+        slippage = SlippageModel(enabled=True)
+
+    baseline_stats, _baseline_curve = run_strategy(
+        bars, build_strategy, enter_threshold=enter_threshold, slippage=None
+    )
+    pessimistic_stats, _pessimistic_curve = run_strategy(
+        bars, build_strategy, enter_threshold=enter_threshold, slippage=slippage
+    )
+
+    return {
+        "baseline_stats":    baseline_stats,
+        "pessimistic_stats": pessimistic_stats,
+        "delta_return":      pessimistic_stats.total_return - baseline_stats.total_return,
+        "delta_final_krw":   pessimistic_stats.final_equity_krw - baseline_stats.final_equity_krw,
+        "slippage_model":    slippage,
+    }
+
+
+def format_pessimistic_comparison(ab: dict) -> str:
+    """Format the A/B pessimistic-cost comparison result as a plain-text table.
+
+    Args:
+        ab: dict returned by pessimistic_cost_comparison().
+
+    Returns:
+        Multi-line string with baseline vs pessimistic side-by-side.
+    """
+    b: StrategyStats = ab["baseline_stats"]
+    p: StrategyStats = ab["pessimistic_stats"]
+    sm: SlippageModel = ab["slippage_model"]
+
+    lines = [
+        "",
+        "  ── PESSIMISTIC-COST A/B COMPARISON ──────────────────────────────────────────",
+        "  Real results lie AT OR BELOW the pessimistic-cost line.",
+        "  Slippage model: conservative spread+impact (APPROX — not calibrated to live fills)",
+        f"  Spread bps by market : {dict(sm.spread_bps_by_market)}",
+        f"  Open/close extra bps : {sm.open_close_extra_bps}",
+        "",
+        f"  {'Metric':<30} {'Baseline (no slip)':>20} {'Pessimistic (slip ON)':>22} {'Delta':>10}",
+        f"  {'-'*30} {'-'*20} {'-'*22} {'-'*10}",
+        f"  {'Total Return':<30} {b.total_return:>+19.2%} {p.total_return:>+21.2%} {ab['delta_return']:>+9.2%}",
+        f"  {'Max Drawdown':<30} {b.max_drawdown:>+19.2%} {p.max_drawdown:>+21.2%} {'':>10}",
+        f"  {'Trades':<30} {b.trades:>20d} {p.trades:>22d} {'':>10}",
+        f"  {'Final Equity (M KRW)':<30} {b.final_equity_krw/1e6:>19.4f} {p.final_equity_krw/1e6:>21.4f} {ab['delta_final_krw']/1e6:>+9.4f}",
+        f"  {'Exposure':<30} {b.exposure:>19.2%} {p.exposure:>21.2%} {'':>10}",
+        f"  {'Avg Hold (bars)':<30} {b.avg_holding_days:>19.1f} {p.avg_holding_days:>21.1f} {'':>10}",
+        "",
+        "  NOTE: Slippage bps are APPROX estimates — verify against your execution data.",
+        "  ─────────────────────────────────────────────────────────────────────────────",
+        "",
+    ]
+    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------------------

@@ -4,7 +4,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Optional, Protocol, runtime_checkable
 
-from trader.core.events import Market, Side
+from trader.core.events import BarEvent, Market, Side
 
 
 # ---------------------------------------------------------------------------
@@ -160,3 +160,111 @@ class MarketCostModel:
             cost += taf
 
         return cost
+
+
+# ---------------------------------------------------------------------------
+# DEFAULT_SLIPPAGE_BPS — conservative retail half-spread + market-impact est.
+# APPROX: based on typical retail KIS order-book spreads + intraday impact.
+#   KOSPI  8 bps : large-cap average quoted half-spread ~3–5 bps + ~2–3 bps
+#                  impact for retail order sizes; 8 bps is deliberately
+#                  conservative (small/mid caps will be wider). SOURCE: APPROX.
+#   NASDAQ 3 bps : US large-cap half-spread ~1–2 bps at market open + small
+#                  impact; 3 bps is conservative for retail sizes.
+#                  SOURCE: APPROX — verify against your actual execution data.
+# These are ESTIMATED FLOORS, not calibrated to any live execution data.
+# Real results can be better or worse; treat as pessimistic baseline.
+# ---------------------------------------------------------------------------
+
+DEFAULT_SLIPPAGE_BPS: dict[Market, float] = {
+    Market.KOSPI:  8.0,   # APPROX — conservative retail half-spread + impact
+    Market.NASDAQ: 3.0,   # APPROX — conservative retail half-spread + impact
+}
+
+
+@dataclass(frozen=True)
+class SlippageModel:
+    """Conservative, OPT-IN slippage model.
+
+    Models two adverse-fill components:
+      1. spread_bps_by_market: per-market half-spread + market-impact estimate.
+         Applied on every fill (cost of crossing the spread + small impact).
+      2. open_close_extra_bps: additional cost at open or close bars, where
+         order-book is thinner and fills are worse (default 5 bps).
+
+    Design choices:
+      - enabled=False by default → zero cost, parity tests are unaffected.
+      - Cost is ALWAYS POSITIVE regardless of side (buying costs the ask,
+        selling costs the bid — both are adverse to the trader).
+      - Modelled as an addition to FillEvent.commission (not as fill-price
+        adjustment) so portfolio accounting captures the cost without
+        requiring a mutable FillEvent.  The fill price remains bar.open for
+        auditability; the slippage is visible as a separate commission add-on.
+      - Fills at bar.open → at_open_or_close=True should be passed by the
+        execution handler (open is structurally thinner, especially KR).
+
+    Args:
+        spread_bps_by_market: Per-market half-spread + impact in bps.
+                              Defaults to DEFAULT_SLIPPAGE_BPS if not supplied.
+        open_close_extra_bps: Extra adverse-fill cost at open/close in bps
+                              (default 5.0).  APPROX.
+        enabled:              Master switch.  False (default) → always 0.0.
+    """
+
+    spread_bps_by_market: dict = field(default_factory=lambda: dict(DEFAULT_SLIPPAGE_BPS))
+    open_close_extra_bps: float = 5.0   # APPROX
+    enabled: bool = False
+
+    def slippage(
+        self,
+        price: float,
+        quantity: int,
+        market: Market,
+        side: Side,
+        *,
+        at_open_or_close: bool = True,
+    ) -> float:
+        """Compute adverse-fill slippage cost in the fill currency.
+
+        Args:
+            price:             Fill price (bar.open).
+            quantity:          Number of shares/units.
+            market:            Market enum (KOSPI / NASDAQ).
+            side:              Side.BUY or Side.SELL (cost is positive for both).
+            at_open_or_close:  True if this fill is at open or close bar
+                               (adds open_close_extra_bps).
+
+        Returns:
+            Non-negative float cost in the fill currency.
+            0.0 if not enabled or market not in spread_bps_by_market.
+        """
+        if not self.enabled:
+            return 0.0
+
+        spread_bps = self.spread_bps_by_market.get(market, 0.0)
+        extra_bps = self.open_close_extra_bps if at_open_or_close else 0.0
+        total_bps = spread_bps + extra_bps
+
+        notional = price * quantity
+        return notional * total_bps / 10_000.0
+
+
+# ---------------------------------------------------------------------------
+# tradable — pure liquidity/sanity filter for research/eval use
+# ---------------------------------------------------------------------------
+
+def tradable(bar: BarEvent, *, min_price: float = 1.0, min_volume: int = 0) -> bool:
+    """Return True if the bar passes minimum liquidity/sanity thresholds.
+
+    Use this in research and evaluation loops to skip names that are too
+    illiquid or penny-stock-priced to trade at realistic costs.  NOT wired
+    into the live engine — purely a helper for offline filtering.
+
+    Args:
+        bar:        BarEvent to test.
+        min_price:  Minimum close price (default 1.0 — rejects penny stocks).
+        min_volume: Minimum bar volume (default 0 — rejects zero-volume bars).
+
+    Returns:
+        True if bar.close >= min_price AND bar.volume >= min_volume.
+    """
+    return bar.close >= min_price and bar.volume >= min_volume
