@@ -68,5 +68,7 @@ KOSPI 005930 1주 시장가 매수(VTTC0012U, ODNO 6321)→매도(VTTC0011U, ODN
 
 | (낮) B ✅ | 키없는 리서치 데이터 어댑터(Yahoo US 24.8년/AAPL 6227봉, Naver KR 5년/삼성 1223봉) + parquet캐시 + fetch_research CLI. 리서치전용(라이브무영향), 464테스트 | c76165c |
 
+| (낮) B-검증 | 삼성 5년(1223봉) 깊은 백테스트: 전략 +53%/MDD-8.6% vs Buy&Hold +311%. 추세 대형주서 리스크관리형은 상방 양보(설계특성), 엣지 미증명 확인. AAPL 24년은 Yahoo 429 해제 후. | — |
+
 ### ⚠️ 사람 확인 필요 (B1 상세)
 VTRP6504R `output3`: `tot_asst_amt=382,983,974`, `frcr_evlu_tota=382,983,974` (포지션 0·외화현금 0인데 383M). `output2`는 5개 통화(CNY/HKD/USD/JPY/EUR) 행, 전부 `frcr_dncl_amt_2=0`. 국내 VTTC8434R는 100M KRW. **이 383M의 정체를 확인하기 전엔 account_snapshot을 VTRP6504R 기반으로 바꾸지 않음.** 현재는 국내 KRW현금만 사용(보수적·안전).
