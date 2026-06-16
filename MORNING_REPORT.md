@@ -93,6 +93,8 @@ KOSPI 005930 1주 시장가 매수(VTTC0012U, ODNO 6321)→매도(VTTC0011U, ODN
 
 | 18:55 | F6 ✅ | 슬리피지 모델(opt-in·기본off·패리티안전, KOSPI8/NASDAQ3+5bps APPROX) + tradable() 유동성필터 + 비관적비용 A/B(삼성 -3.17%, 전략 생존). 43테스트 | e22e176 |
 
+| 22:40 | F7 ✅ | 다중검정 규율 — 실험로그(JSONL,시행카운트) + 시간순 train/val/locked-holdout 분할 + research-protocol.md + 과적합 경고(sqrt(2lnN)). 61테스트, 패리티 green | 6303a07 |
+
 ### 🚨 데이터 오염 발견 (F1 성과)
 - KOSPI_035420(Naver): 불가능한 OHLC 19개+비양수가격3개 → 격리(`research_data/_quarantine/`). **이전 모멘텀 결과는 이 오염 포함이라 무효.** 재페치+재검증 필요.
 - 교훈: **데이터 검증 없이 돌린 모든 결과는 의심해야 함**(네 불안이 정확했음). 이제 validate_data로 게이트.
