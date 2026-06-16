@@ -27,6 +27,9 @@ account_snapshot에 USD현금 폴딩 여부 — VTRP6504R `tot_asst_amt=383M` vs
 ### 자동으로 계속 도는 것
 cron(dry-run)이 매일 페이퍼-포워드 로그 적재 → 시간 두고 `run_reconcile`로 신호 적중률 분석 가능(데이터 쌓여야 의미). caffeinate는 ~10h 후 만료(이후 맥 절전 정상).
 
+## ✅ B3 완료 (09:09 KST, 사용자 승인 후)
+KOSPI 005930 1주 시장가 매수(VTTC0012U, ODNO 6321)→매도(VTTC0011U, ODNO 6352)→**FLAT**. 국내 주문 TR_ID 실체결 검증 완료. 모의계좌, 잔고 정리됨.
+
 ## 셋업 완료
 - `caffeinate -ims -t 36000` — 맥 잠들지 않게(야간작업/cron 동작용, ~10h)
 - cron 설치(dry-run only): KRX 16:00 KST / US 06:00 KST / 주간 reconcile 토 07:00 KST → 페이퍼-포워드 로그 자동 축적

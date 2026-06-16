@@ -27,7 +27,7 @@ tr_cont: ""        # 연속조회 시 "N"
 | 해외 일봉 | `GET /uapi/overseas-price/v1/quotations/dailyprice` | `HHDFS76240000` | ✅ AAPL 실데이터 수신 |
 | 국내 일봉 | `GET /uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice` | `FHKST03010100` | ⚠️ 스펙OK(레이트리밋만 겪음) |
 | 해외 주문 | `POST /uapi/overseas-stock/v1/trading/order` | 매수 `VTTT1002U` / 매도 `VTTT1001U` | ✅✅ **장중 실체결 검증**(2026-06-15) — AAPL 1주 매수 $295.85 체결→매도 flat 완료. ⚠️ 매도는 `VTTT1006U` 아님(모의 거부 "해당업무 미제공") → **`VTTT1001U` + body `SLL_TYPE="00"`** 필수. |
-| 국내 주문 | `POST /uapi/domestic-stock/v1/trading/order-cash` | 매수 `VTTC0012U` / 매도 `VTTC0011U` | ⬜ 미검증 (단위테스트만) |
+| 국내 주문 | `POST /uapi/domestic-stock/v1/trading/order-cash` | 매수 `VTTC0012U` / 매도 `VTTC0011U` | ✅✅ **장중 실체결 검증**(2026-06-16) — 005930 1주 시장가 매수→매도 flat (ODNO 6321/6352) |
 | 해외 체결조회 | `GET /uapi/overseas-stock/v1/trading/inquire-ccnl` | `VTTS3035R` | ✅ rt_cd=0, 빈 리스트 반환 (정상 수락) |
 | 국내 체결조회 | `GET /uapi/domestic-stock/v1/trading/inquire-daily-ccld` | 3개월내 `VTTC0081R` | ✅ rt_cd=0 정상 수락 (2026-06-15, 빈 리스트 — 당일 국내 거래 없음) |
 | 현재잔고/환율 | `GET /uapi/overseas-stock/v1/trading/inquire-present-balance` | `VTRP6504R` | ✅ 라이브 검증 — `output2[].frst_bltn_exrt` USD/KRW=1520.40 수신 확인 (2026-06-15) |
