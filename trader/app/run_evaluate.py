@@ -18,6 +18,7 @@ import tempfile
 from trader.app.fetch_data import _load_dotenv, build_client, fetch
 from trader.backtest.evaluate import evaluate, format_report
 from trader.data.storage import load_bars
+from trader.data.manifest import load_manifest, print_manifest_stamp
 
 SYMBOLS = [
     ("AAPL", "NASDAQ", "USD"),
@@ -47,6 +48,16 @@ def main() -> None:
         print()
 
         bars = load_bars(out_path)
+
+        # Stamp manifest if sidecar exists
+        manifest_path = out_path + ".manifest.json"
+        if os.path.exists(manifest_path):
+            try:
+                m = load_manifest(manifest_path)
+                print_manifest_stamp(m, bars)
+                print()
+            except Exception as exc:
+                print(f"[MANIFEST] Could not load sidecar: {exc}")
 
         # Show what we got per symbol
         by_sym: dict[str, list] = {}

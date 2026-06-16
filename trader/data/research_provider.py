@@ -30,6 +30,14 @@ import httpx
 
 from trader.core.events import BarEvent, Market, Symbol
 from trader.data.storage import load_bars, save_bars
+from trader.data.manifest import (
+    DatasetManifest,
+    current_git_commit,
+    load_manifest,
+    save_bars_with_manifest,
+    verify,
+)
+from trader.data.quality import validate_bars
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -129,16 +137,62 @@ class ResearchDataProvider:
         market_upper = market.upper()
         cache_path = self._cache_path(ticker, market_upper)
 
+        manifest_path = cache_path + ".manifest.json"
+
         if not refresh and os.path.exists(cache_path):
-            return load_bars(cache_path)
+            bars = load_bars(cache_path)
+            # If sidecar manifest exists, verify hash matches on load
+            if os.path.exists(manifest_path):
+                try:
+                    m = load_manifest(manifest_path)
+                    if not verify(m, bars):
+                        import warnings
+                        warnings.warn(
+                            f"[MANIFEST] Hash mismatch for {cache_path} — "
+                            "data changed since manifest was written.",
+                            stacklevel=2,
+                        )
+                except Exception:
+                    pass  # best-effort; don't break cache hits
+            return bars
 
         if market_upper == "KOSPI":
             bars = self._fetch_naver(ticker, years=years)
+            provider_name = "Naver"
+            adjustment = "raw"
         else:
             bars = self._fetch_yahoo(ticker, market_upper, years=years, use_adjusted=use_adjusted)
+            provider_name = "Yahoo"
+            adjustment = "adjusted" if use_adjusted else "raw"
 
         os.makedirs(self._cache_dir, exist_ok=True)
-        save_bars(bars, cache_path)
+
+        # Quality check for manifest
+        quality_passed: bool | None = None
+        if bars:
+            try:
+                report = validate_bars(bars)
+                quality_passed = report.passed
+            except Exception:
+                quality_passed = None
+
+        created_ts = datetime.now(tz=timezone.utc).isoformat()
+        dataset_id = f"{market_upper}_{ticker}"
+
+        if bars:
+            save_bars_with_manifest(
+                bars,
+                cache_path,
+                provider=provider_name,
+                adjustment=adjustment,
+                created_ts=created_ts,
+                dataset_id=dataset_id,
+                code_commit=current_git_commit(),
+                quality_passed=quality_passed,
+            )
+        else:
+            save_bars(bars, cache_path)
+
         return bars
 
     # ------------------------------------------------------------------

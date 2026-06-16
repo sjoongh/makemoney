@@ -34,6 +34,7 @@ import logging
 from trader.data.research_provider import ResearchDataProvider
 from trader.core.events import Market, Symbol
 from trader.research.momentum import cross_sectional_momentum, format_momentum_report
+from trader.data.manifest import load_manifest, print_manifest_stamp
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s  %(message)s")
 log = logging.getLogger(__name__)
@@ -151,6 +152,23 @@ def main() -> None:
     except ValueError as e:
         print(f"\n  ERROR running backtest: {e}")
         sys.exit(1)
+
+    # --- Print dataset manifest stamps ---
+    print(f"\n{'─'*72}")
+    print("  DATASET MANIFESTS (reproducibility stamps):")
+    print(f"{'─'*72}")
+    for ticker, bars in sorted(bars_by_symbol.items()):
+        # Derive cache path same way ResearchDataProvider does
+        market_upper = "NASDAQ" if ticker in US_TICKERS else "KOSPI"
+        cache_path = provider._cache_path(ticker, market_upper)
+        manifest_path = cache_path + ".manifest.json"
+        if bars and __import__("os").path.exists(manifest_path):
+            try:
+                m = load_manifest(manifest_path)
+                print_manifest_stamp(m, bars)
+            except Exception:
+                pass
+    print()
 
     # --- Print report ---
     print(format_momentum_report(result))
