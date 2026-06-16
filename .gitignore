@@ -18,3 +18,4 @@ logs/
 .omc/state/
 paper_forward/
 .kill_switch.json
+research_data/
