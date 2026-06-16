@@ -89,6 +89,8 @@ KOSPI 005930 1주 시장가 매수(VTTC0012U, ODNO 6321)→매도(VTTC0011U, ODN
 
 | 17:10 | F4 ✅ | 재현성 — 데이터셋 매니페스트+콘텐츠해시(provider/adjustment/dates/hash/code_commit/quality), 백테스트가 데이터+코드 스탬프 기록, 해시불일치 경고. 테스트 green | 6cf0063 |
 
+| 17:25 | F5 ✅ | 생존편향 정직 — SURVIVORSHIP_WARNING 전 리포트 배너, 동일가중 벤치마크, docs/data-limitations.md(지지/불가 주장표). P0기반 F1~F5 완료. 661통과 | b4f0e51 |
+
 ### 🚨 데이터 오염 발견 (F1 성과)
 - KOSPI_035420(Naver): 불가능한 OHLC 19개+비양수가격3개 → 격리(`research_data/_quarantine/`). **이전 모멘텀 결과는 이 오염 포함이라 무효.** 재페치+재검증 필요.
 - 교훈: **데이터 검증 없이 돌린 모든 결과는 의심해야 함**(네 불안이 정확했음). 이제 validate_data로 게이트.
