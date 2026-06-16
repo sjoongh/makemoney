@@ -62,5 +62,7 @@ KOSPI 005930 1주 시장가 매수(VTTC0012U, ODNO 6321)→매도(VTTC0011U, ODN
 
 | (낮) A1 ✅ | 사전거래 리스크게이트(명목한도·매수여력·fat-finger·가격sanity·비중) + 주문수 서킷브레이커, DailyActEngine 배선, TDD | 2786104 |
 
+| (낮) A2 ✅ | 주문 실패처리(transient/terminal/unknown 분류·백오프재시도·재제출전 비재시도) + 내구성 킬스위치 + LIVE_TRADING_ENABLED 하드게이트(+allowlist+킬스위치) + run_daily 게이트 명시배선, +40테스트 | 862f975 |
+
 ### ⚠️ 사람 확인 필요 (B1 상세)
 VTRP6504R `output3`: `tot_asst_amt=382,983,974`, `frcr_evlu_tota=382,983,974` (포지션 0·외화현금 0인데 383M). `output2`는 5개 통화(CNY/HKD/USD/JPY/EUR) 행, 전부 `frcr_dncl_amt_2=0`. 국내 VTTC8434R는 100M KRW. **이 383M의 정체를 확인하기 전엔 account_snapshot을 VTRP6504R 기반으로 바꾸지 않음.** 현재는 국내 KRW현금만 사용(보수적·안전).
