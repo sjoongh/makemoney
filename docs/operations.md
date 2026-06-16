@@ -86,6 +86,64 @@ No external calendar or holiday library is needed.
 
 ---
 
+---
+
+## Historical-data Accumulator (Research Only)
+
+`trader/app/accumulate_data.py` builds a local Parquet dataset of daily OHLCV
+bars for a broad universe (S&P 500 + KOSPI large-caps) in small daily batches
+without triggering Yahoo Finance 429 rate-limits.
+
+**SURVIVORSHIP BIAS CAVEAT:** Both the S&P 500 and KOSPI large-cap lists reflect
+*current* index membership. Symbols removed (delisted, merged, reclassified)
+before today are absent. Not suitable for point-in-time backtests without
+further historical membership correction.
+
+### How it works
+
+- A JSON manifest at `research_data/_manifest.json` tracks per-symbol status
+  (`pending` / `ok` / `cooldown` / `error`) and dates.
+- Each run fetches the next N un-done symbols (default 25) sleeping 25 s between
+  each (well under Yahoo's undocumented rate limit).
+- On a 429 the symbol enters a 24-hour cooldown and the run halts immediately.
+- Re-running resumes from where the previous run left off (fully resumable).
+- After ~1–2 weeks of daily cron runs the full ~150-symbol universe is populated.
+
+### Run manually
+
+```bash
+# Default: next 25 symbols from top-120 S&P500 + all KOSPI large-caps
+.venv/bin/python -m trader.app.accumulate_data
+
+# Quick smoke-test (4 symbols from a tiny 8-symbol US slice, no KOSPI)
+.venv/bin/python -m trader.app.accumulate_data --per-run 4 --us-limit 8 --no-kr
+```
+
+### Schedule with cron (install manually via `crontab -e`)
+
+Run once per day — picks up where the previous run left off.
+
+```cron
+# Historical-data accumulator — runs once daily at 09:00 local time
+0 9 * * * cd /path/to/makemoney && .venv/bin/python -m trader.app.accumulate_data >> logs/accumulate_data.log 2>&1
+```
+
+Replace `/path/to/makemoney` with the absolute path to your repo.
+Logs go to `logs/accumulate_data.log`.  The manifest at
+`research_data/_manifest.json` tracks progress across runs.
+
+### Inspecting manifest progress
+
+```bash
+# Show raw manifest
+cat research_data/_manifest.json | python -m json.tool | head -40
+
+# Summarise (done / pending counts) — run the accumulator dry:
+.venv/bin/python -m trader.app.accumulate_data --per-run 0
+```
+
+---
+
 ## Inspecting state
 
 ```bash
