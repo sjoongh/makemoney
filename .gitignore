@@ -19,3 +19,4 @@ logs/
 paper_forward/
 .kill_switch.json
 research_data/
+experiments/
