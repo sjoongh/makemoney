@@ -6,6 +6,7 @@ import logging
 from typing import Optional
 
 from trader.core.events import BarEvent, OrderEvent, Side
+from trader.live.pretrade import PreTradeLimits, PreTradeRiskGate, RunCircuitBreaker
 from trader.strategy.portfolio import FxRates, Portfolio
 
 logger = logging.getLogger(__name__)
@@ -57,6 +58,8 @@ class DailyActEngine:
         max_staleness_days: int = 4,
         journal=None,
         run_id: str | None = None,
+        gate: PreTradeRiskGate | None = None,
+        breaker: RunCircuitBreaker | None = None,
     ):
         self.kis = kis_client
         self.strategy = strategy
@@ -68,6 +71,13 @@ class DailyActEngine:
         self.max_staleness_days = max_staleness_days
         self.journal = journal
         self.run_id = run_id
+        # Pre-trade gate and circuit breaker.
+        # None = caller did not opt in; checks are skipped (backward-compatible).
+        # Pass explicit instances to activate.
+        self.gate: PreTradeRiskGate | None = gate
+        self.breaker: RunCircuitBreaker | None = breaker
+        # Collect blocked orders for observability
+        self.blocked: list[dict] = []
 
     def run(self) -> list[OrderEvent]:
         # ── 1. Account snapshot → Portfolio ──────────────────────────────────
@@ -167,6 +177,24 @@ class DailyActEngine:
 
         # ── 4. Submit or dry-run ──────────────────────────────────────────────
         if self.dry_run:
+            # In dry-run, report which orders would be blocked by the gate
+            # (informational only — does not prevent returning orders)
+            if self.gate is not None:
+                for order in orders:
+                    sym_key = (order.symbol.market.value, order.symbol.ticker)
+                    sym_latest = latest_bars.get(sym_key)
+                    last_close = sym_latest.close if sym_latest else (order.limit_price or 0.0)
+                    result = self.gate.check_order(
+                        order,
+                        decision_price=last_close,
+                        last_close=last_close,
+                        portfolio=portfolio,
+                    )
+                    if not result.approved:
+                        logger.info(
+                            "dry_run gate block: %s/%s reason=%s",
+                            order.symbol.market.value, order.symbol.ticker, result.reason,
+                        )
             return orders
 
         submitted: list[OrderEvent] = []
@@ -187,6 +215,38 @@ class DailyActEngine:
             # Compute protective limit price from the last close for this symbol
             last_close = sym_latest.close if sym_latest else (order.limit_price or 0.0)
             limit = protective_limit_price(order.side, last_close, self.band)
+
+            # ── Pre-trade risk gate (only when explicitly wired) ──────────────
+            if self.gate is not None:
+                gate_result = self.gate.check_order(
+                    order,
+                    decision_price=last_close,
+                    last_close=last_close,
+                    portfolio=portfolio,
+                )
+                if not gate_result.approved:
+                    logger.warning(
+                        "Pre-trade gate BLOCKED %s/%s side=%s qty=%d reason=%s",
+                        market_str, ticker, order.side.value,
+                        order.quantity, gate_result.reason,
+                    )
+                    self.blocked.append({
+                        "order": order,
+                        "reason": gate_result.reason,
+                    })
+                    continue
+
+            # ── Circuit breaker (only when explicitly wired) ──────────────────
+            if self.breaker is not None and not self.breaker.allow():
+                logger.warning(
+                    "Circuit breaker TRIPPED — skipping %s/%s (max_orders_per_run=%d reached)",
+                    market_str, ticker, self.breaker._max,
+                )
+                self.blocked.append({
+                    "order": order,
+                    "reason": "CIRCUIT_BREAKER",
+                })
+                continue
 
             self.kis.submit_order(
                 ticker=ticker,
