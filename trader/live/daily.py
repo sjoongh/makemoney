@@ -209,7 +209,18 @@ class DailyActEngine:
                         target_weight=combined,
                         orders=new_orders,
                     )
-                    self.journal.append(rec)
+                    # A journaling discrepancy must NEVER crash the run. A same-day
+                    # re-run with a changed decision (forming intraday bar, live FX
+                    # move) raises ValueError from the integrity guard — keep the
+                    # first decision-of-day on record, warn, and continue.
+                    try:
+                        self.journal.append(rec)
+                    except ValueError as e:
+                        if self.monitor is not None:
+                            self.monitor.alert(
+                                "WARN", "JOURNAL_DECISION_CHANGED",
+                                {"key": getattr(rec, "key", ""), "error": str(e)},
+                            )
 
         # ── 4. Submit or dry-run ──────────────────────────────────────────────
         if self.dry_run:

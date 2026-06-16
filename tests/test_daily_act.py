@@ -501,3 +501,44 @@ class TestDailyActEngineMultiSymbolLedger:
         assert len(fake_kis_2.submit_calls) == 0, (
             f"Re-run must not submit either ticker again; got {fake_kis_2.submit_calls}"
         )
+
+
+
+def test_journal_hash_mismatch_does_not_crash_run(tmp_path):
+    """같은 trade-date에 다른 결정(종가 변동)으로 재실행해도 run()이 크래시하지 않는다."""
+    from datetime import datetime, timezone, timedelta
+    from trader.core.events import Symbol, Market, BarEvent
+    from trader.live.daily import DailyActEngine
+    from trader.live.journal import SignalJournal
+    from trader.strategy.portfolio import Portfolio, FxRates
+    from trader.strategy.risk import RiskManager
+    from trader.strategy.order_factory import OrderFactory
+    from trader.strategy.fusion_engine import FusionEngine
+    from trader.signals.technical_indicator_source import TechnicalIndicatorSource
+    from trader.signals.indicators import MovingAverageCross
+
+    sym = Symbol("005930", "KOSPI", "KRW")  # Market accepts str? use enum
+    sym = Symbol("005930", Market.KOSPI, "KRW")
+    t0 = datetime(2026, 1, 1, tzinfo=timezone.utc)
+
+    def make_kis(final_close):
+        closes = [100,101,102,103,104,105,106,108,110, final_close]
+        bars = [BarEvent(sym, t0+timedelta(days=i), c,c,c,c,100) for i,c in enumerate(closes)]
+        class FakeKis:
+            def account_snapshot(self): return {"cash_krw": 1e8, "positions": {}, "marks": {}}
+            def daily_bars(self, t, m, c): return list(bars)
+        return FakeKis()
+
+    fx = FxRates({"USD": 1380.0, "KRW": 1.0})
+    def engine():
+        return FusionEngine(
+            [TechnicalIndicatorSource(name="technical.ma", indicator=MovingAverageCross(2,4))],
+            Portfolio({"KRW": 1e8}, fx), RiskManager(0.3), OrderFactory())
+    root = str(tmp_path / "journal")
+
+    # run 1: final close 112
+    DailyActEngine(make_kis(112), engine(), fx, [("005930","KOSPI","KRW")],
+                   dry_run=True, journal=SignalJournal(root=root), run_id="r1").run()
+    # run 2: SAME last date, DIFFERENT close (140) → different decision hash → must NOT raise
+    DailyActEngine(make_kis(140), engine(), fx, [("005930","KOSPI","KRW")],
+                   dry_run=True, journal=SignalJournal(root=root), run_id="r2").run()
