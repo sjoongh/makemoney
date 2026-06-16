@@ -18,10 +18,32 @@ logger = logging.getLogger(__name__)
 # For daily bars, residual unfilled orders are conceptually cancelled at EOD:
 #   - Market orders are expected to fill within the same session.
 #   - Limit orders that go unfilled are treated as expired at day-end.
-# TODO: hook a real cancel API call here (e.g. VTTT1004U for overseas,
-#       domestic equivalent for KOSPI) once live cancel is supported.
-# Do NOT implement live cancel now — this constant records the policy intent.
+# Implemented: eod_unfilled_policy="cancel" calls cancel_order for any submitted
+# ODNO with no matching confirmed fill.  Cancel failure → CRITICAL alert +
+# kill switch trip (cancel-failed is a known dangerous state).
 EOD_UNFILLED_POLICY = "cancel"
+
+
+# ---------------------------------------------------------------------------
+# EOD reconciliation helper
+# ---------------------------------------------------------------------------
+
+def _reconcile_unfilled(
+    submitted_odnos: list[str],
+    confirmed_fill_odnos: set[str],
+) -> list[str]:
+    """Return the subset of submitted_odnos that have no confirmed fill.
+
+    Pure function — no I/O.  Used by the live EOD reconcile step.
+
+    Args:
+        submitted_odnos: ODNOs returned by submit_order during this run.
+        confirmed_fill_odnos: Set of order_ids present in filled_orders() output.
+
+    Returns:
+        List of unfilled ODNOs (order: same as submitted_odnos, stable).
+    """
+    return [odno for odno in submitted_odnos if odno not in confirmed_fill_odnos]
 
 
 def protective_limit_price(side: Side, last_close: float, band: float = 0.01) -> float:
@@ -272,6 +294,10 @@ class DailyActEngine:
             )
 
         submitted: list[OrderEvent] = []
+        # Track submitted ODNOs with their order metadata for EOD reconciliation.
+        # Each entry: {"odno": str, "order": OrderEvent}
+        _submitted_odno_meta: list[dict] = []
+
         for order in orders:
             market_str = order.symbol.market.value
             ticker = order.symbol.ticker
@@ -358,6 +384,13 @@ class DailyActEngine:
 
                 if status == "SUBMITTED":
                     submitted.append(order)
+                    if result.get("odno"):
+                        _submitted_odno_meta.append({
+                            "odno": result["odno"],
+                            "order": order,
+                            "ticker": ticker,
+                            "market": market_str,
+                        })
 
                 elif status == "REJECTED":
                     logger.warning(
@@ -406,7 +439,7 @@ class DailyActEngine:
 
             else:
                 # Legacy path: no submitter wired — call kis directly
-                self.kis.submit_order(
+                _odno = self.kis.submit_order(
                     ticker=ticker,
                     market=market_str,
                     side=order.side.value,
@@ -415,6 +448,17 @@ class DailyActEngine:
                     order_type="00",  # limit
                 )
                 submitted.append(order)
+                if _odno:
+                    _submitted_odno_meta.append({
+                        "odno": _odno,
+                        "order": order,
+                        "ticker": ticker,
+                        "market": market_str,
+                    })
+
+        # ── EOD unfilled reconciliation (live only, eod_unfilled_policy="cancel") ──
+        if _submitted_odno_meta:
+            self._eod_reconcile_and_cancel(_submitted_odno_meta)
 
         # ── Live run: emit run-end INFO ───────────────────────────────────────
         if self.monitor is not None:
@@ -425,3 +469,112 @@ class DailyActEngine:
             )
 
         return submitted
+
+    def _eod_reconcile_and_cancel(
+        self, submitted_odno_meta: list[dict]
+    ) -> None:
+        """Query fills and cancel any submitted orders with no confirmed fill.
+
+        For EOD_UNFILLED_POLICY="cancel":
+          - dry_run=True  → report would-cancel via WARN alert, no API call.
+          - dry_run=False → call cancel_order; on failure → CRITICAL alert +
+                            trip kill switch (cancel-failed is a dangerous state).
+
+        Args:
+            submitted_odno_meta: list of {"odno", "order", "ticker", "market"}.
+        """
+        # Collect confirmed fill ODNOs from the broker
+        try:
+            fills = self.kis.filled_orders()
+        except Exception as exc:
+            logger.error("EOD reconcile: failed to query fills — %s", exc)
+            if self.monitor is not None:
+                self.monitor.alert(
+                    "WARN",
+                    "EOD_FILLS_QUERY_FAILED",
+                    {"error": str(exc)},
+                )
+            return
+
+        confirmed_fill_odnos: set[str] = {f["order_id"] for f in fills}
+        submitted_odnos = [m["odno"] for m in submitted_odno_meta]
+        unfilled_odnos = _reconcile_unfilled(submitted_odnos, confirmed_fill_odnos)
+
+        if not unfilled_odnos:
+            return  # all orders filled — nothing to do
+
+        # Build a lookup for metadata by ODNO
+        meta_by_odno = {m["odno"]: m for m in submitted_odno_meta}
+
+        for odno in unfilled_odnos:
+            meta = meta_by_odno[odno]
+            order: OrderEvent = meta["order"]
+            ticker = meta["ticker"]
+            market = meta["market"]
+
+            if self.dry_run:
+                # dry_run guard: report would-cancel, no API call
+                logger.warning(
+                    "EOD unfilled (dry_run) — would cancel ODNO=%s %s/%s qty=%d",
+                    odno, market, ticker, order.quantity,
+                )
+                if self.monitor is not None:
+                    self.monitor.alert(
+                        "WARN",
+                        "EOD_UNFILLED_WOULD_CANCEL",
+                        {
+                            "odno": odno,
+                            "ticker": ticker,
+                            "market": market,
+                            "qty": order.quantity,
+                            "dry_run": True,
+                        },
+                    )
+                continue
+
+            # Live: attempt the cancel
+            logger.warning(
+                "EOD unfilled — cancelling ODNO=%s %s/%s qty=%d",
+                odno, market, ticker, order.quantity,
+            )
+            if self.monitor is not None:
+                self.monitor.alert(
+                    "WARN",
+                    "EOD_CANCEL_ATTEMPT",
+                    {
+                        "odno": odno,
+                        "ticker": ticker,
+                        "market": market,
+                        "qty": order.quantity,
+                    },
+                )
+
+            try:
+                self.kis.cancel_order(
+                    market=market,
+                    original_odno=odno,
+                    ticker=ticker,
+                    quantity=order.quantity,
+                )
+            except Exception as exc:
+                # Cancel failed — dangerous state: CRITICAL alert + kill switch
+                logger.error(
+                    "EOD cancel FAILED for ODNO=%s %s/%s — tripping kill switch. error=%s",
+                    odno, market, ticker, exc,
+                )
+                if self.killswitch is not None:
+                    self.killswitch.trip(
+                        reason="EOD_CANCEL_FAILED",
+                        source="DailyActEngine",
+                    )
+                if self.monitor is not None:
+                    self.monitor.alert(
+                        "CRITICAL",
+                        "EOD_CANCEL_FAILED",
+                        {
+                            "odno": odno,
+                            "ticker": ticker,
+                            "market": market,
+                            "error": str(exc),
+                        },
+                    )

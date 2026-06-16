@@ -30,6 +30,8 @@ tr_cont: ""        # 연속조회 시 "N"
 | 국내 주문 | `POST /uapi/domestic-stock/v1/trading/order-cash` | 매수 `VTTC0012U` / 매도 `VTTC0011U` | ✅✅ **장중 실체결 검증**(2026-06-16) — 005930 1주 시장가 매수→매도 flat (ODNO 6321/6352) |
 | 해외 체결조회 | `GET /uapi/overseas-stock/v1/trading/inquire-ccnl` | `VTTS3035R` | ✅ rt_cd=0, 빈 리스트 반환 (정상 수락) |
 | 국내 체결조회 | `GET /uapi/domestic-stock/v1/trading/inquire-daily-ccld` | 3개월내 `VTTC0081R` | ✅ rt_cd=0 정상 수락 (2026-06-15, 빈 리스트 — 당일 국내 거래 없음) |
+| 해외 주문취소 | `POST /uapi/overseas-stock/v1/trading/order-rvsecncl` | `VTTT1004U` | ⬜ mock-tested, live-verify when market open |
+| 국내 주문취소 | `POST /uapi/domestic-stock/v1/trading/order-rvsecncl` | `VTTC0013U` | ⬜ mock-tested, live-verify when market open |
 | 현재잔고/환율 | `GET /uapi/overseas-stock/v1/trading/inquire-present-balance` | `VTRP6504R` | ✅ 라이브 검증 — `output2[].frst_bltn_exrt` USD/KRW=1520.40 수신 확인 (2026-06-15) |
 
 ### VTRP6504R 파라미터 메모
@@ -45,6 +47,10 @@ tr_cont: ""        # 연속조회 시 "N"
     - `avg_prvs` — 평균가 ⚠️ 라이브 row 없어 미확인; 없으면 `tot_ccld_amt`/qty 사용
     - `tot_ccld_amt` — 총체결금액 (평균가 fallback용) ⚠️ 미확인
   - rt_cd=0 정상 수락 확인; 실체결 row 파싱은 실거래 발생 시 재검증 필요.
+
+### 주문취소 파라미터 메모 (⬜ mock-tested, live-verify when market open)
+- **해외 주문취소** (`VTTT1004U`): body `CANO`, `ACNT_PRDT_CD="01"`, `OVRS_EXCG_CD="NASD"`, `PDNO=ticker`, `ORGN_ODNO=original_odno`, `RVSE_CNCL_DVSN_CD="02"`(취소; 01=정정), `ORD_QTY=str(qty)`, `OVRS_ORD_UNPR="0"`, `CTAC_TLNO=""`, `MGCO_APTM_ODNO=""`, `ORD_SVR_DVSN_CD="0"`. 응답 `output.ODNO` = 취소 주문번호.
+- **국내 주문취소** (`VTTC0013U`): body `CANO`, `ACNT_PRDT_CD="01"`, `KRX_FWDG_ORD_ORGNO=order_branch`, `ORGN_ODNO=original_odno`, `ORD_DVSN="00"`, `RVSE_CNCL_DVSN_CD="02"`, `ORD_QTY=str(qty)`, `ORD_UNPR="0"`, `QTY_ALL_ORD_YN="Y"`. 응답 `output.ODNO` = 취소 주문번호.
 
 ### 파라미터 메모
 - **해외 일봉**: query `AUTH=""`, `EXCD="NAS"`(NASDAQ), `SYMB="AAPL"`, `GUBN="0"`(일), `BYMD=""`(기준일, 빈값=최근), `MODP="0"`. 응답 `output2[]` 각 행: `xymd`(YYYYMMDD), `open/high/low/clos`, `tvol`.

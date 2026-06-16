@@ -561,6 +561,87 @@ class KisClient:
         return odno
 
     # ------------------------------------------------------------------
+    # Order cancellation
+    # ------------------------------------------------------------------
+
+    def cancel_order(
+        self,
+        *,
+        market: str,
+        original_odno: str,
+        ticker: str,
+        quantity: int,
+        order_branch: str = "",
+    ) -> str:
+        """Cancel an open order and return the new cancel ODNO.
+
+        Args:
+            market: "NASDAQ" or "KOSPI".
+            original_odno: The broker order number (ODNO) to cancel.
+            ticker: e.g. "AAPL" or "005930".
+            quantity: Number of shares to cancel (full qty of original order).
+            order_branch: KRX_FWDG_ORD_ORGNO for domestic orders (branch code).
+                          Usually empty string for paper trading.
+
+        Returns:
+            ODNO of the cancel order (string).
+
+        Raises:
+            RuntimeError: if rt_cd != "0" in the KIS response.
+
+        Note:
+            TR_IDs VTTT1004U (overseas) and VTTC0013U (domestic) are
+            best-known from KIS API documentation.
+            # live-verify when market open
+        """
+        if market == "NASDAQ":
+            # Overseas cancel: VTTT1004U  # live-verify when market open
+            tr_id = "VTTT1004U"
+            path = "/uapi/overseas-stock/v1/trading/order-rvsecncl"
+            body = {
+                "CANO": self.account,
+                "ACNT_PRDT_CD": "01",
+                "OVRS_EXCG_CD": "NASD",
+                "PDNO": ticker,
+                "ORGN_ODNO": original_odno,
+                "RVSE_CNCL_DVSN_CD": "02",  # 02 = cancel (01 = revise)
+                "ORD_QTY": str(quantity),
+                "OVRS_ORD_UNPR": "0",
+                "CTAC_TLNO": "",
+                "MGCO_APTM_ODNO": "",
+                "ORD_SVR_DVSN_CD": "0",
+            }
+        elif market == "KOSPI":
+            # Domestic cancel: VTTC0013U  # live-verify when market open
+            tr_id = "VTTC0013U"
+            path = "/uapi/domestic-stock/v1/trading/order-rvsecncl"
+            body = {
+                "CANO": self.account,
+                "ACNT_PRDT_CD": "01",
+                "KRX_FWDG_ORD_ORGNO": order_branch,
+                "ORGN_ODNO": original_odno,
+                "ORD_DVSN": "00",
+                "RVSE_CNCL_DVSN_CD": "02",  # 02 = cancel
+                "ORD_QTY": str(quantity),
+                "ORD_UNPR": "0",
+                "QTY_ALL_ORD_YN": "Y",
+            }
+        else:
+            raise ValueError(f"Unsupported market: {market}")
+
+        self._throttle()
+        resp = self._c.post(path, headers=self._headers(tr_id), json=body)
+        resp.raise_for_status()
+        data = resp.json()
+        if data.get("rt_cd") != "0":
+            raise RuntimeError(
+                f"KIS cancel_order error [{data.get('rt_cd')}]: {data.get('msg1', data)}"
+            )
+
+        output = data.get("output", {})
+        return output.get("ODNO", "")
+
+    # ------------------------------------------------------------------
     # Fill inquiry
     # ------------------------------------------------------------------
 
