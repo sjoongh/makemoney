@@ -20,6 +20,7 @@ from typing import Callable
 from trader.backtest.metrics import max_drawdown, total_return
 from trader.core.events import BarEvent
 from trader.execution.costs import MarketCostModel
+from trader.research.disclaimers import SURVIVORSHIP_WARNING
 from trader.execution.simulated import SimulatedExecutionHandler
 from trader.signals.indicators import (
     BollingerReversion,
@@ -67,6 +68,81 @@ _DISCLAIMER = """\
 ║  Sleeve strategies (trend_only / reversion_only / combined_sleeves) show    ║
 ║  BEHAVIOURAL separation only — NOT optimised allocation or signal tuning.   ║
 ╚══════════════════════════════════════════════════════════════════════════════╝"""
+
+
+# ---------------------------------------------------------------------------
+# Benchmarks
+# ---------------------------------------------------------------------------
+
+def equal_weight_buyhold(
+    bars_by_symbol: dict[str, list[BarEvent]],
+) -> tuple[list[float], dict]:
+    """Compute an equal-weight buy-and-hold equity curve and summary metrics.
+
+    Each symbol receives 1/N of the initial capital (_INITIAL_KRW) at bar 0
+    and is held to the end without rebalancing.  No transaction costs are
+    modelled (gross benchmark).
+
+    This gives the return of simply owning the ENTIRE opportunity set that
+    the strategy was allowed to trade, which is a more informative baseline
+    than a single-stock buy-and-hold when evaluating multi-symbol strategies.
+
+    NOTE: if an externally-provided market-index return series is available
+    (e.g. SPY or KOSPI index), supply it directly rather than this function —
+    that removes the same survivorship bias that affects the strategy universe.
+    See docs/data-limitations.md.
+
+    Args:
+        bars_by_symbol: dict mapping symbol name → list[BarEvent] (any order).
+                        Each symbol's bars are sorted internally by timestamp.
+
+    Returns:
+        (curve, metrics) where:
+          curve   — list[float] equity values at each unique date (ascending),
+                    one entry per unique date across all symbols.
+          metrics — dict with keys: total_return (float), n_symbols (int),
+                    n_dates (int).  Returns zeros/empty if no bars provided.
+    """
+    if not bars_by_symbol:
+        return [], {"total_return": 0.0, "n_symbols": 0, "n_dates": 0}
+
+    # Collect all unique timestamps (sorted)
+    all_ts: list = sorted({b.ts for bars in bars_by_symbol.values() for b in bars})
+    n_dates = len(all_ts)
+    n_syms = len(bars_by_symbol)
+    if n_syms == 0 or n_dates == 0:
+        return [], {"total_return": 0.0, "n_symbols": 0, "n_dates": 0}
+
+    capital_per_sym = _INITIAL_KRW / n_syms
+
+    # Build per-symbol price lookup: ts → close
+    price_by_sym: dict[str, dict] = {}
+    first_close: dict[str, float] = {}
+    for sym, bars in bars_by_symbol.items():
+        sorted_bars = sorted(bars, key=lambda b: b.ts)
+        price_by_sym[sym] = {b.ts: b.close for b in sorted_bars}
+        first_close[sym] = sorted_bars[0].close if sorted_bars else 0.0
+
+    curve: list[float] = []
+    for ts in all_ts:
+        equity = 0.0
+        for sym in bars_by_symbol:
+            px0 = first_close[sym]
+            px1 = price_by_sym[sym].get(ts)
+            if px0 and px0 > 0 and px1 is not None:
+                equity += capital_per_sym * (px1 / px0)
+            else:
+                # Symbol not yet started or price missing → hold at cost basis
+                equity += capital_per_sym
+        curve.append(equity)
+
+    total_ret = (curve[-1] / _INITIAL_KRW - 1.0) if curve else 0.0
+    metrics = {
+        "total_return": total_ret,
+        "n_symbols": n_syms,
+        "n_dates": n_dates,
+    }
+    return curve, metrics
 
 
 # ---------------------------------------------------------------------------
@@ -568,8 +644,17 @@ def evaluate(
     sleeve_results = evaluate_sleeves(bars, thresholds)
     strategies_result.update(sleeve_results)
 
+    # Build bars_by_symbol for equal_weight_buyhold benchmark
+    bars_by_symbol: dict[str, list[BarEvent]] = {}
+    for b in bars:
+        key = f"{b.symbol.ticker}[{b.symbol.market.value}]"
+        bars_by_symbol.setdefault(key, []).append(b)
+
+    _ewbh_curve, _ewbh_metrics = equal_weight_buyhold(bars_by_symbol)
+
     return {
         "buy_and_hold": buy_and_hold_return(bars),
+        "equal_weight_buyhold": _ewbh_metrics,
         "strategies": strategies_result,
         "n_bars": len(bars),
         "thresholds": thresholds,
@@ -587,12 +672,15 @@ def format_report(result: dict) -> str:
     """
     lines: list[str] = []
     lines.append("")
+    lines.append(SURVIVORSHIP_WARNING)
+    lines.append("")
     lines.append(_DISCLAIMER)
     lines.append("")
 
     n_bars = result.get("n_bars", "?")
     thresholds = result.get("thresholds", ())
     bnh = result["buy_and_hold"]
+    ewbh = result.get("equal_weight_buyhold", {})
 
     lines.append(f"  Total bars in dataset : {n_bars}")
     lines.append(f"  Thresholds (fixed grid): {', '.join(f'{t:.2f}' for t in thresholds)}")
@@ -601,9 +689,23 @@ def format_report(result: dict) -> str:
     lines.append(f"  FX rate (fixed)        : 1 USD = {_FX_USD_KRW:,.1f} KRW")
     lines.append("")
 
-    # ── Buy & Hold reference ────────────────────────────────────────────────
-    lines.append("  Buy & Hold (equal-weight, no costs)")
-    lines.append(f"    Return : {bnh:+.2%}")
+    # ── Benchmark section ───────────────────────────────────────────────────
+    lines.append("  ── BENCHMARKS (gross, no costs; survivorship-biased — same universe) ──")
+    lines.append("")
+    lines.append("  [1] Buy & Hold — equal-weight average of symbols in the backtest")
+    lines.append(f"      Return : {bnh:+.2%}")
+    lines.append("")
+    if ewbh:
+        ewbh_ret = ewbh.get("total_return", 0.0)
+        ewbh_n = ewbh.get("n_symbols", "?")
+        lines.append(f"  [2] Equal-Weight Buy & Hold — full opportunity set ({ewbh_n} symbols)")
+        lines.append(f"      Return : {ewbh_ret:+.2%}")
+        lines.append(f"      (Owns all symbols the strategy was allowed to trade.)")
+        lines.append("")
+    lines.append("  NOTE: To benchmark against a market index (e.g. SPY, KOSPI index),")
+    lines.append("  supply an external return series — index data is not fetched here")
+    lines.append("  to avoid live network calls and rate-limit issues.")
+    lines.append("  See docs/data-limitations.md for guidance.")
     lines.append("")
 
     # ── Per-strategy table ──────────────────────────────────────────────────

@@ -28,6 +28,7 @@ from typing import Any
 
 from trader.core.events import BarEvent, Market, Side
 from trader.execution.costs import MarketCostModel
+from trader.research.disclaimers import SURVIVORSHIP_WARNING
 
 # ---------------------------------------------------------------------------
 # Public API
@@ -352,6 +353,8 @@ def format_momentum_report(result: dict) -> str:
         return f"{v:.{dp}f}"
 
     lines = [
+        SURVIVORSHIP_WARNING,
+        "",
         "=" * 72,
         "  CROSS-SECTIONAL MOMENTUM RESEARCH BACKTEST",
         "  Signal: 12-1 (lookback=252d, skip=21d) | Top 30% | Equal-Weight Long-Only",
@@ -393,9 +396,10 @@ def format_momentum_report(result: dict) -> str:
         f"{'':>10}",
         "",
         "=" * 72,
-        "  !! RESEARCH/DIAGNOSTIC — small hand-picked universe has survivorship bias;",
-        "  !! positive in-sample result at this N is NOT credible evidence of edge;",
-        "  !! needs large survivorship-free universe + walk-forward.",
+        "  !! RESEARCH/DIAGNOSTIC — universe = current constituents; survivorship bias",
+        "  !! inflates all momentum/trend results; positive in-sample result is",
+        "  !! NOT credible evidence of edge; needs point-in-time membership + walk-forward.",
+        "  !! See docs/data-limitations.md for the full list of data limitations.",
         "=" * 72,
     ]
     return "\n".join(lines)

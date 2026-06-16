@@ -11,6 +11,8 @@ SURVIVORSHIP BIAS WARNING:
   removed (delisted, merged, reclassified) are absent.  KOSPI_LARGECAP is a
   hardcoded snapshot of current large-caps.  Both lists are survivorship-biased
   and unsuitable for point-in-time research without further correction.
+
+  See docs/data-limitations.md for a full account of all data limitations.
 """
 from __future__ import annotations
 
@@ -144,11 +146,17 @@ def universe(us_limit: int = 120, kr: bool = True) -> list[tuple[str, str]]:
       - All KOSPI_LARGECAP symbols tagged as "KOSPI" (if kr=True).
 
     SURVIVORSHIP BIAS WARNING: both lists reflect current membership only.
+    Delisted and historically-removed names are excluded — results derived
+    from this universe will be inflated.  See docs/data-limitations.md.
 
     Args:
         us_limit: Maximum number of S&P 500 symbols to include (default 120).
         kr:       Include KOSPI large-caps (default True).
     """
+    logger.warning(
+        "universe() called — SURVIVORSHIP-BIASED: current constituents only; "
+        "excludes delisted/removed names; see docs/data-limitations.md"
+    )
     sp500 = load_sp500()
     result: list[tuple[str, str]] = [
         (ticker, "NASDAQ") for ticker in sp500[:us_limit]
