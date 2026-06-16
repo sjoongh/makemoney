@@ -608,6 +608,16 @@ def evaluate_sleeves(
 def evaluate(
     bars: list[BarEvent],
     thresholds: tuple[float, ...] = (0.10, 0.20, 0.35),
+    *,
+    experiment_log=None,
+    experiment_id: str | None = None,
+    created_ts: str | None = None,
+    strategy: str = "evaluate",
+    params: dict | None = None,
+    universe: list[str] | None = None,
+    dataset_manifest_id: str | None = None,
+    code_commit: str | None = None,
+    notes: str = "",
 ) -> dict:
     """Run both strategies across the threshold grid and compute buy-and-hold.
 
@@ -655,13 +665,52 @@ def evaluate(
 
     _ewbh_curve, _ewbh_metrics = equal_weight_buyhold(bars_by_symbol)
 
-    return {
+    result = {
         "buy_and_hold": buy_and_hold_return(bars),
         "equal_weight_buyhold": _ewbh_metrics,
         "strategies": strategies_result,
         "n_bars": len(bars),
         "thresholds": thresholds,
     }
+
+    # Optional: log this experiment and surface trial-count warning
+    if experiment_log is not None:
+        import uuid as _uuid
+        from trader.research.experiment_log import ExperimentRecord, multiple_testing_warning
+
+        _exp_id = experiment_id or str(_uuid.uuid4())
+        _ts     = created_ts or "unknown"
+        _sym_keys = sorted(bars_by_symbol.keys())
+        _params = dict(params or {})
+        _params.setdefault("thresholds", list(thresholds))
+
+        # Flatten a simple metrics summary (best single_avg Sharpe is not
+        # computed here — store buy_and_hold as the summary metric)
+        _metrics = {
+            "buy_and_hold": result["buy_and_hold"],
+            "n_bars": result["n_bars"],
+        }
+
+        rec = ExperimentRecord(
+            experiment_id=_exp_id,
+            created_ts=_ts,
+            kind="evaluate",
+            strategy=strategy,
+            params=_params,
+            universe=universe if universe is not None else _sym_keys,
+            date_start=bars[0].ts.date().isoformat() if bars else "",
+            date_end=bars[-1].ts.date().isoformat() if bars else "",
+            dataset_manifest_id=dataset_manifest_id,
+            code_commit=code_commit,
+            metrics=_metrics,
+            notes=notes,
+        )
+        experiment_log.append(rec)
+        n_trials = experiment_log.trial_count(kind="evaluate", strategy=strategy)
+        result["multiple_testing_warning"] = multiple_testing_warning(n_trials)
+        result["trial_count"] = n_trials
+
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -867,5 +916,14 @@ def format_report(result: dict) -> str:
         "  fixed pre-chosen sensitivity grid for engine validation purposes."
     )
     lines.append("")
+
+    # Include multiple-testing warning when the log is attached
+    mtw = result.get("multiple_testing_warning")
+    if mtw:
+        lines.append("")
+        lines.append("  ── MULTIPLE-TESTING WARNING ─────────────────────────────────────────────────")
+        lines.append(f"  {mtw}")
+        lines.append("  ─────────────────────────────────────────────────────────────────────────────")
+        lines.append("")
 
     return "\n".join(lines)

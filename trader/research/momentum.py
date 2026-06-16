@@ -43,6 +43,12 @@ def cross_sectional_momentum(
     min_k: int = 3,
     max_k: int = 6,
     init_capital: float = 10_000_000,
+    experiment_log=None,
+    experiment_id: str | None = None,
+    created_ts: str | None = None,
+    dataset_manifest_id: str | None = None,
+    code_commit: str | None = None,
+    notes: str = "",
 ) -> dict:
     """Run cross-sectional momentum backtest on the provided price history.
 
@@ -318,7 +324,7 @@ def cross_sectional_momentum(
         else:
             diff_metrics[key] = None
 
-    return {
+    result = {
         "strategy_equity":  strat_curve,
         "benchmark_equity": bench_curve,
         "strategy_metrics": strat_metrics,
@@ -326,6 +332,53 @@ def cross_sectional_momentum(
         "diff_metrics":     diff_metrics,
         "rebalance_log":    rebalance_log,
     }
+
+    # Optional: log this experiment and surface trial-count warning
+    if experiment_log is not None:
+        import uuid as _uuid
+        from trader.research.experiment_log import ExperimentRecord, multiple_testing_warning
+
+        _exp_id  = experiment_id or str(_uuid.uuid4())
+        _ts      = created_ts or "unknown"
+        _universe = sorted(bars_by_symbol.keys())
+        _params  = {
+            "lookback": lookback,
+            "skip": skip,
+            "top_pct": top_pct,
+            "min_k": min_k,
+            "max_k": max_k,
+            "init_capital": init_capital,
+        }
+        _metrics = {
+            k: strat_metrics.get(k)
+            for k in ("cagr", "sharpe", "max_dd", "calmar", "ann_vol")
+        }
+
+        d_start = str(strat_metrics.get("start_date", ""))
+        d_end   = str(strat_metrics.get("end_date",   ""))
+
+        rec = ExperimentRecord(
+            experiment_id=_exp_id,
+            created_ts=_ts,
+            kind="momentum",
+            strategy="cross_sectional_momentum",
+            params=_params,
+            universe=_universe,
+            date_start=d_start,
+            date_end=d_end,
+            dataset_manifest_id=dataset_manifest_id,
+            code_commit=code_commit,
+            metrics=_metrics,
+            notes=notes,
+        )
+        experiment_log.append(rec)
+        n_trials = experiment_log.trial_count(
+            kind="momentum", strategy="cross_sectional_momentum"
+        )
+        result["multiple_testing_warning"] = multiple_testing_warning(n_trials)
+        result["trial_count"] = n_trials
+
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -402,6 +455,17 @@ def format_momentum_report(result: dict) -> str:
         "  !! See docs/data-limitations.md for the full list of data limitations.",
         "=" * 72,
     ]
+
+    # Include multiple-testing warning when the log is attached
+    mtw = result.get("multiple_testing_warning")
+    if mtw:
+        lines += [
+            "",
+            "── MULTIPLE-TESTING WARNING " + "─" * 45,
+            mtw,
+            "─" * 72,
+        ]
+
     return "\n".join(lines)
 
 
