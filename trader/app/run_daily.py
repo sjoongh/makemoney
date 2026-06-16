@@ -41,6 +41,8 @@ from trader.live.daily import DailyActEngine
 from trader.live.journal import SignalJournal
 from trader.live.ledger import RunLedger
 from trader.live.killswitch import KillSwitch
+from trader.live.monitor import LogAlertSink, Monitor
+from trader.live.order_exec import ResilientSubmitter
 from trader.live.pretrade import PreTradeLimits, PreTradeRiskGate, RunCircuitBreaker
 from trader.signals.technical import TechnicalSignalSource  # kept for parity tests
 from trader.signals.technical_indicator_source import TechnicalIndicatorSource
@@ -283,6 +285,21 @@ def main(dry_run: bool = True, market: str = "ALL") -> None:
         f"max_orders_per_run={limits.max_orders_per_run}"
     )
 
+    # ── P0 safety components ──────────────────────────────────────────────
+    monitor = Monitor([LogAlertSink()])
+    if not dry_run:
+        submitter = ResilientSubmitter(kis)
+        killswitch = KillSwitch()
+        print(
+            "\n[P0 Safety] ResilientSubmitter + KillSwitch + Monitor(LogAlertSink) ACTIVE"
+        )
+    else:
+        submitter = None
+        killswitch = None
+        print(
+            "\n[P0 Safety] Monitor(LogAlertSink) active (dry-run: no submitter/killswitch)"
+        )
+
     engine = DailyActEngine(
         kis_client=kis,
         strategy=strategy,
@@ -295,6 +312,9 @@ def main(dry_run: bool = True, market: str = "ALL") -> None:
         run_id=run_id,
         gate=gate,
         breaker=breaker,
+        submitter=submitter,
+        killswitch=killswitch,
+        monitor=monitor,
     )
 
     mode = "DRY-RUN" if dry_run else "LIVE"

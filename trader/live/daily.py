@@ -11,6 +11,18 @@ from trader.strategy.portfolio import FxRates, Portfolio
 
 logger = logging.getLogger(__name__)
 
+# ---------------------------------------------------------------------------
+# EOD unfilled policy
+# ---------------------------------------------------------------------------
+#
+# For daily bars, residual unfilled orders are conceptually cancelled at EOD:
+#   - Market orders are expected to fill within the same session.
+#   - Limit orders that go unfilled are treated as expired at day-end.
+# TODO: hook a real cancel API call here (e.g. VTTT1004U for overseas,
+#       domestic equivalent for KOSPI) once live cancel is supported.
+# Do NOT implement live cancel now — this constant records the policy intent.
+EOD_UNFILLED_POLICY = "cancel"
+
 
 def protective_limit_price(side: Side, last_close: float, band: float = 0.01) -> float:
     """Return a limit price with a protective band around last_close.
@@ -60,6 +72,9 @@ class DailyActEngine:
         run_id: str | None = None,
         gate: PreTradeRiskGate | None = None,
         breaker: RunCircuitBreaker | None = None,
+        submitter=None,
+        killswitch=None,
+        monitor=None,
     ):
         self.kis = kis_client
         self.strategy = strategy
@@ -76,10 +91,31 @@ class DailyActEngine:
         # Pass explicit instances to activate.
         self.gate: PreTradeRiskGate | None = gate
         self.breaker: RunCircuitBreaker | None = breaker
+        # P0 safety: resilient submitter, kill switch, monitor (all optional).
+        # None = caller did not opt in; legacy path is preserved.
+        self.submitter = submitter
+        self.killswitch = killswitch
+        self.monitor = monitor
         # Collect blocked orders for observability
         self.blocked: list[dict] = []
 
     def run(self) -> list[OrderEvent]:
+        # ── Kill-switch check (live-only; dry_run path skips) ─────────────────
+        if not self.dry_run and self.killswitch is not None:
+            if self.killswitch.is_active():
+                status = self.killswitch.status()
+                reason = status.get("reason", "unknown")
+                logger.warning(
+                    "KillSwitch is ACTIVE — aborting live run. reason=%s", reason
+                )
+                if self.monitor is not None:
+                    self.monitor.alert(
+                        "CRITICAL",
+                        "KILLSWITCH_ACTIVE_AT_START",
+                        {"reason": reason, "source": status.get("source", "")},
+                    )
+                return []
+
         # ── 1. Account snapshot → Portfolio ──────────────────────────────────
         snapshot = self.kis.account_snapshot()
         portfolio = Portfolio.from_snapshot(snapshot, self.fx)
@@ -195,7 +231,34 @@ class DailyActEngine:
                             "dry_run gate block: %s/%s reason=%s",
                             order.symbol.market.value, order.symbol.ticker, result.reason,
                         )
+                        if self.monitor is not None:
+                            self.monitor.alert(
+                                "WARN",
+                                "GATE_BLOCK",
+                                {
+                                    "ticker": order.symbol.ticker,
+                                    "market": order.symbol.market.value,
+                                    "side": order.side.value,
+                                    "reason": result.reason,
+                                    "dry_run": True,
+                                },
+                            )
+            # Emit run-end INFO in dry-run
+            if self.monitor is not None:
+                self.monitor.alert(
+                    "INFO",
+                    "RUN_END",
+                    {"mode": "dry_run", "orders_generated": len(orders)},
+                )
             return orders
+
+        # ── Live run: emit run-start INFO ─────────────────────────────────────
+        if self.monitor is not None:
+            self.monitor.alert(
+                "INFO",
+                "RUN_START",
+                {"mode": "live", "orders_pending": len(orders)},
+            )
 
         submitted: list[OrderEvent] = []
         for order in orders:
@@ -234,6 +297,17 @@ class DailyActEngine:
                         "order": order,
                         "reason": gate_result.reason,
                     })
+                    if self.monitor is not None:
+                        self.monitor.alert(
+                            "WARN",
+                            "GATE_BLOCK",
+                            {
+                                "ticker": ticker,
+                                "market": market_str,
+                                "side": order.side.value,
+                                "reason": gate_result.reason,
+                            },
+                        )
                     continue
 
             # ── Circuit breaker (only when explicitly wired) ──────────────────
@@ -246,16 +320,97 @@ class DailyActEngine:
                     "order": order,
                     "reason": "CIRCUIT_BREAKER",
                 })
+                if self.monitor is not None:
+                    self.monitor.alert(
+                        "WARN",
+                        "CIRCUIT_BREAKER_TRIP",
+                        {
+                            "ticker": ticker,
+                            "market": market_str,
+                            "max_orders_per_run": self.breaker._max,
+                        },
+                    )
                 continue
 
-            self.kis.submit_order(
-                ticker=ticker,
-                market=market_str,
-                side=order.side.value,
-                quantity=order.quantity,
-                price=limit,
-                order_type="00",  # limit
+            # ── Order submission ──────────────────────────────────────────────
+            if self.submitter is not None:
+                # Route through ResilientSubmitter
+                result = self.submitter.submit(
+                    ticker=ticker,
+                    market=market_str,
+                    side=order.side.value,
+                    quantity=order.quantity,
+                    price=limit,
+                    order_type="00",  # limit
+                )
+                status = result["status"]
+
+                if status == "SUBMITTED":
+                    submitted.append(order)
+
+                elif status == "REJECTED":
+                    logger.warning(
+                        "Order REJECTED %s/%s side=%s reason=%s",
+                        market_str, ticker, order.side.value, result["reason"],
+                    )
+                    if self.monitor is not None:
+                        self.monitor.alert(
+                            "WARN",
+                            "ORDER_REJECTED",
+                            {
+                                "ticker": ticker,
+                                "market": market_str,
+                                "side": order.side.value,
+                                "reason": result["reason"],
+                                "attempts": result["attempts"],
+                            },
+                        )
+                    # REJECTED: log and continue (no portfolio change)
+
+                elif status == "UNKNOWN":
+                    logger.error(
+                        "Order UNKNOWN state %s/%s side=%s — tripping kill switch. reason=%s",
+                        market_str, ticker, order.side.value, result["reason"],
+                    )
+                    # Trip the kill switch to prevent further submissions
+                    if self.killswitch is not None:
+                        self.killswitch.trip(
+                            reason="ORDER_UNKNOWN_STATE",
+                            source="DailyActEngine",
+                        )
+                    if self.monitor is not None:
+                        self.monitor.alert(
+                            "CRITICAL",
+                            "ORDER_UNKNOWN_STATE",
+                            {
+                                "ticker": ticker,
+                                "market": market_str,
+                                "side": order.side.value,
+                                "reason": result["reason"],
+                                "attempts": result["attempts"],
+                            },
+                        )
+                    # Do NOT resubmit; stop processing further orders
+                    break
+
+            else:
+                # Legacy path: no submitter wired — call kis directly
+                self.kis.submit_order(
+                    ticker=ticker,
+                    market=market_str,
+                    side=order.side.value,
+                    quantity=order.quantity,
+                    price=limit,
+                    order_type="00",  # limit
+                )
+                submitted.append(order)
+
+        # ── Live run: emit run-end INFO ───────────────────────────────────────
+        if self.monitor is not None:
+            self.monitor.alert(
+                "INFO",
+                "RUN_END",
+                {"mode": "live", "orders_submitted": len(submitted)},
             )
-            submitted.append(order)
 
         return submitted
