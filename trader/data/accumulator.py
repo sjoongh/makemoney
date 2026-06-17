@@ -164,15 +164,22 @@ class DataAccumulator:
           1. status == "pending"  (never fetched)
           2. status == "ok" but last_success older than _STALE_DAYS days
         Symbols currently in cooldown (cooldown_until > now) are skipped.
-        Within each group, nulls-first ordering on last_success ensures
+        Within each provider group, nulls-first ordering on last_success ensures
         never-fetched symbols come before stale ones.
+
+        The batch is assembled by round-robin across providers so that both
+        yahoo (US) and naver (KR) symbols appear even when the universe is
+        predominantly US.  This prevents a Yahoo 429 throttle from starving
+        Naver/KR accumulation.
         """
         manifest = self._load_manifest()
         now = self._now()
         stale_cutoff = now - _STALE_DAYS * 86400
 
-        pending: list[tuple[str, str]] = []
-        stale: list[tuple[str, str]] = []
+        # Collect eligible symbols grouped by provider, preserving
+        # within-provider order: pending/error first, then stale.
+        # dict preserves insertion order (Python 3.7+).
+        per_provider: dict[str, list[tuple[str, str]]] = {}
 
         for ticker, market in self._universe:
             k = _key(market, ticker)
@@ -186,21 +193,43 @@ class DataAccumulator:
             status = entry.get("status", "pending")
             last_success = entry.get("last_success")  # ISO string or None
 
+            eligible = False
             if status == "pending" or last_success is None:
-                pending.append((ticker, market))
+                eligible = True
             elif status == "ok":
-                # Convert last_success ISO → epoch for comparison
                 try:
                     ls_epoch = datetime.fromisoformat(last_success).timestamp()
                 except (ValueError, TypeError):
                     ls_epoch = 0.0
                 if ls_epoch < stale_cutoff:
-                    stale.append((ticker, market))
-            # status == "error" or "cooldown" with expired window → treat as pending
+                    eligible = True
             elif status in ("error", "cooldown"):
-                pending.append((ticker, market))
+                eligible = True
 
-        selected = (pending + stale)[: self._per_run]
+            if eligible:
+                prov = provider_for(market)
+                if prov not in per_provider:
+                    per_provider[prov] = []
+                per_provider[prov].append((ticker, market))
+
+        # Round-robin across providers up to per_run total.
+        # Use indices to advance through each provider's list.
+        provider_lists = list(per_provider.values())
+        indices = [0] * len(provider_lists)
+        selected: list[tuple[str, str]] = []
+
+        while len(selected) < self._per_run:
+            added_this_round = False
+            for i, lst in enumerate(provider_lists):
+                if len(selected) >= self._per_run:
+                    break
+                if indices[i] < len(lst):
+                    selected.append(lst[indices[i]])
+                    indices[i] += 1
+                    added_this_round = True
+            if not added_this_round:
+                break  # all providers exhausted
+
         return selected
 
     # ------------------------------------------------------------------

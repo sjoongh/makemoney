@@ -504,3 +504,96 @@ class TestPerProviderCooldown:
         assert s2["fetched"] >= 1
         called_run2 = prov.calls[1:]  # calls after run 1
         assert any(t == "MSFT" for t, _ in called_run2)
+
+
+# ---------------------------------------------------------------------------
+# Provider-interleaved selection — KR(Naver) must not be starved by US(Yahoo)
+# ---------------------------------------------------------------------------
+
+class TestSelectNextInterleaved:
+    def test_batch_contains_naver_symbols(self, tmp_path):
+        """KEY REGRESSION: with many US then few KR symbols all pending,
+        select_next must include KR/Naver symbols (not be all-Yahoo)."""
+        # 10 US symbols followed by 3 KR symbols — all pending
+        us_symbols = [(f"US{i:02d}", "NASDAQ") for i in range(10)]
+        kr_symbols = [("005930", "KOSPI"), ("000660", "KOSPI"), ("035420", "KOSPI")]
+        uni = us_symbols + kr_symbols
+        prov = FakeProvider()
+        acc, _ = _acc(prov, uni, tmp_path, per_run=6)
+
+        selected = acc.select_next()
+
+        providers_selected = {provider_for(mkt) for _, mkt in selected}
+        assert "naver" in providers_selected, (
+            "select_next returned all-Yahoo batch — KR symbols starved"
+        )
+
+    def test_round_robin_two_providers_splits_evenly(self, tmp_path):
+        """per_run=4, 2 providers with >=2 symbols each → ~2 from each."""
+        uni = [
+            ("US00", "NASDAQ"), ("US01", "NASDAQ"), ("US02", "NASDAQ"),
+            ("005930", "KOSPI"), ("000660", "KOSPI"), ("035420", "KOSPI"),
+        ]
+        prov = FakeProvider()
+        acc, _ = _acc(prov, uni, tmp_path, per_run=4)
+
+        selected = acc.select_next()
+
+        assert len(selected) == 4
+        yahoo_count = sum(1 for _, m in selected if provider_for(m) == "yahoo")
+        naver_count = sum(1 for _, m in selected if provider_for(m) == "naver")
+        # Round-robin: 2 from each provider
+        assert yahoo_count == 2
+        assert naver_count == 2
+
+    def test_single_provider_no_error(self, tmp_path):
+        """When only one provider has eligible symbols, batch is just that provider."""
+        uni = [("AAPL", "NASDAQ"), ("MSFT", "NASDAQ"), ("GOOG", "NASDAQ")]
+        prov = FakeProvider()
+        acc, _ = _acc(prov, uni, tmp_path, per_run=5)
+
+        selected = acc.select_next()
+
+        assert len(selected) == 3
+        assert all(provider_for(m) == "yahoo" for _, m in selected)
+
+    def test_run_once_yahoo_429_naver_fetched(self, tmp_path):
+        """Full run_once sim: all yahoo 429 → naver symbols still fetched (manifest ok)."""
+        us_symbols = [(f"US{i:02d}", "NASDAQ") for i in range(5)]
+        kr_symbols = [("005930", "KOSPI"), ("000660", "KOSPI")]
+        uni = us_symbols + kr_symbols
+
+        # All NASDAQ raise 429; KOSPI always succeeds
+        prov = FakeProviderMixed(yahoo_429_tickers={t for t, _ in us_symbols})
+        acc, manifest_path = _acc(prov, uni, tmp_path, per_run=8)
+
+        summary = acc.run_once()
+
+        # KR symbols must be in the batch AND fetched
+        called_markets = [m for _, m in prov.calls]
+        assert "KOSPI" in called_markets, "KOSPI symbols never entered the batch"
+        assert summary["fetched"] == 2  # only naver succeeded
+        assert summary["cooled"] >= 1   # at least one yahoo was cooled
+
+        with open(manifest_path) as f:
+            m = json.load(f)
+        assert m["KOSPI|005930"]["status"] == "ok"
+        assert m["KOSPI|000660"]["status"] == "ok"
+
+    def test_more_yahoo_than_naver_fills_remainder_from_yahoo(self, tmp_path):
+        """Round-robin exhausts naver early; remaining slots filled with yahoo."""
+        # 6 yahoo, 2 naver, per_run=6
+        uni = [(f"US{i:02d}", "NASDAQ") for i in range(6)] + [
+            ("005930", "KOSPI"), ("000660", "KOSPI")
+        ]
+        prov = FakeProvider()
+        acc, _ = _acc(prov, uni, tmp_path, per_run=6)
+
+        selected = acc.select_next()
+
+        assert len(selected) == 6
+        naver_count = sum(1 for _, m in selected if provider_for(m) == "naver")
+        yahoo_count = sum(1 for _, m in selected if provider_for(m) == "yahoo")
+        # All 2 naver symbols included; remaining 4 slots filled from yahoo
+        assert naver_count == 2
+        assert yahoo_count == 4
