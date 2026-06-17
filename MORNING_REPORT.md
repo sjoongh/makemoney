@@ -99,6 +99,8 @@ KOSPI 005930 1주 시장가 매수(VTTC0012U, ODNO 6321)→매도(VTTC0011U, ODN
 
 | 06-17 10:25 | 🎯 KR데이터 누적 | **한국 23종목×10년 확보**(Naver). F1이 오염 7개 적발·격리(Naver ~23% 불량). 이제 KR 유니버스로 신뢰성↑ 백테스트 가능(여전히 생존편향·KR한정). validate_data 전부 PASS | — |
 
+| 06-17 10:40 | 누적fix2 ✅ | select_next provider 교차 — cron 배치가 US만 안 고르고 KR도 포함. 이제 Yahoo throttle와 무관하게 KR 자동누적. 29/29 누적테스트 | 42ac624 |
+
 ### 🚨 데이터 오염 발견 (F1 성과)
 - KOSPI_035420(Naver): 불가능한 OHLC 19개+비양수가격3개 → 격리(`research_data/_quarantine/`). **이전 모멘텀 결과는 이 오염 포함이라 무효.** 재페치+재검증 필요.
 - 교훈: **데이터 검증 없이 돌린 모든 결과는 의심해야 함**(네 불안이 정확했음). 이제 validate_data로 게이트.
