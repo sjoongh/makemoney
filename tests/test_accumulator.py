@@ -857,3 +857,273 @@ class TestQualityValidation:
         assert prog["quality_fail"] == 1
         assert prog["done"] == 1
         assert prog["pending"] == 0
+
+
+# ---------------------------------------------------------------------------
+# Keep-last-known-good: transient corrupt re-fetch must NOT destroy clean data
+# ---------------------------------------------------------------------------
+
+class FakeProviderWithParquetAndPrior:
+    """Fake provider that, on the SECOND call for a key, returns corrupt bars.
+
+    First call writes a clean parquet (simulating a prior successful fetch).
+    Second call writes a corrupt parquet over it (simulating Naver transient bad data).
+    """
+
+    def __init__(self, cache_dir: str, corrupt_on_second: set[str] | None = None, bars_count: int = 3):
+        self._cache_dir = cache_dir
+        self._corrupt_on_second = corrupt_on_second or set()
+        self._bars_count = bars_count
+        self._call_count: dict[str, int] = {}
+        self.calls: list[tuple[str, str]] = []
+
+    def daily_history(self, ticker: str, market: str, *, refresh: bool = False) -> list[BarEvent]:
+        self.calls.append((ticker, market))
+        key = f"{market}|{ticker}"
+        self._call_count[key] = self._call_count.get(key, 0) + 1
+        call_n = self._call_count[key]
+
+        sym = Symbol(ticker, Market(market), "USD" if market == "NASDAQ" else "KRW")
+
+        if key in self._corrupt_on_second and call_n >= 2:
+            # Corrupt bars: high < low violates OHLC consistency → FAIL
+            bars = [
+                BarEvent(sym, datetime(2024, 1, 2 + i, tzinfo=timezone.utc),
+                         100.0, 50.0, 200.0, 100.0, 1000)
+                for i in range(self._bars_count)
+            ]
+        else:
+            bars = [
+                BarEvent(sym, datetime(2024, 1, 2 + i, tzinfo=timezone.utc),
+                         100.0, 110.0, 90.0, 105.0, 1000)
+                for i in range(self._bars_count)
+            ]
+
+        os.makedirs(self._cache_dir, exist_ok=True)
+        parquet_path = os.path.join(self._cache_dir, f"{market.upper()}_{ticker}.parquet")
+        save_bars(bars, parquet_path)
+        return bars
+
+
+class TestKeepLastKnownGood:
+    """Transient corrupt re-fetch must not destroy previously-clean cached data."""
+
+    def _setup_previously_clean(self, tmp_path, ticker="005930", market="KOSPI"):
+        """Write a clean parquet and manifest entry, simulating a prior successful fetch."""
+        sym = Symbol(ticker, Market(market), "KRW")
+        stale_ts = datetime(2020, 1, 1, tzinfo=timezone.utc)
+        clean_bars = [
+            BarEvent(sym, datetime(2024, 1, 2 + i, tzinfo=timezone.utc),
+                     100.0, 110.0, 90.0, 105.0, 1000)
+            for i in range(5)
+        ]
+        parquet_path = str(tmp_path / f"{market.upper()}_{ticker}.parquet")
+        save_bars(clean_bars, parquet_path)
+
+        manifest_path = str(tmp_path / "_manifest.json")
+        manifest = {
+            f"{market}|{ticker}": {
+                "status": "ok",
+                "last_success": stale_ts.isoformat(),  # stale so select_next picks it up
+                "first_date": "2024-01-02",
+                "last_date": "2024-01-06",
+                "error_count": 0,
+                "last_error": None,
+                "cooldown_until": None,
+            }
+        }
+        with open(manifest_path, "w") as f:
+            json.dump(manifest, f)
+
+        return clean_bars, parquet_path, manifest_path
+
+    def test_previously_clean_refetch_corrupt_backup_restored(self, tmp_path):
+        """CORE: previously-clean symbol re-fetched with corrupt data → clean data preserved."""
+        ticker, market = "005930", "KOSPI"
+        clean_bars, parquet_path, manifest_path = self._setup_previously_clean(tmp_path)
+
+        from trader.data.storage import load_bars
+        clean_bar_count = len(load_bars(parquet_path))
+
+        # Provider's second call returns corrupt data and overwrites the parquet
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        uni = [(ticker, market)]
+        acc, _, quarantine_dir = _acc_with_quarantine(prov, uni, tmp_path)
+
+        summary = acc.run_once()
+
+        # 1. Clean data must be RESTORED at the cache path (not the corrupt data)
+        assert os.path.exists(parquet_path), "Parquet was deleted entirely — clean data lost"
+        restored_bars = load_bars(parquet_path)
+        assert len(restored_bars) == clean_bar_count, (
+            f"Restored bar count {len(restored_bars)} != original clean {clean_bar_count}"
+        )
+        # Restored bars must be clean (all OHLC consistent)
+        for b in restored_bars:
+            assert b.high >= b.low, "Restored bar has corrupt OHLC"
+
+        # 2. Must NOT be in quarantine (clean data was kept)
+        quarantined = os.path.join(quarantine_dir, f"{market.upper()}_{ticker}.parquet")
+        assert not os.path.exists(quarantined), (
+            "Previously-clean symbol was incorrectly quarantined"
+        )
+
+        # 3. Status must be 'quality_fail_transient' (not 'quality_fail')
+        with open(manifest_path) as f:
+            m = json.load(f)
+        entry = m[f"{market}|{ticker}"]
+        assert entry["status"] == "quality_fail_transient", (
+            f"Expected 'quality_fail_transient', got '{entry['status']}'"
+        )
+
+        # 4. NOT counted as ok-fetched
+        assert summary["fetched"] == 0
+
+    def test_previously_clean_refetch_corrupt_not_quarantined(self, tmp_path):
+        """Regression: never quarantine a symbol that had clean cached data."""
+        ticker, market = "005930", "KOSPI"
+        self._setup_previously_clean(tmp_path)
+
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        uni = [(ticker, market)]
+        acc, _, quarantine_dir = _acc_with_quarantine(prov, uni, tmp_path)
+
+        acc.run_once()
+
+        quarantined = os.path.join(quarantine_dir, f"{market.upper()}_{ticker}.parquet")
+        assert not os.path.exists(quarantined)
+
+    def test_never_cached_corrupt_still_quarantined(self, tmp_path):
+        """Never-cached symbol with corrupt fetch → quarantined + 'quality_fail' (permanent)."""
+        ticker, market = "005930", "KOSPI"
+        uni = [(ticker, market)]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        acc, manifest_path, quarantine_dir = _acc_with_quarantine(prov, uni, tmp_path)
+
+        summary = acc.run_once()
+
+        # Must be quarantined
+        quarantined = os.path.join(quarantine_dir, f"{market.upper()}_{ticker}.parquet")
+        assert os.path.exists(quarantined), "Never-cached corrupt symbol should be quarantined"
+
+        # Status must be permanent 'quality_fail'
+        with open(manifest_path) as f:
+            m = json.load(f)
+        entry = m[f"{market}|{ticker}"]
+        assert entry["status"] == "quality_fail", (
+            f"Expected permanent 'quality_fail', got '{entry['status']}'"
+        )
+
+        # Not counted as fetched
+        assert summary["fetched"] == 0
+
+    def test_quality_fail_transient_reselected_next_run(self, tmp_path):
+        """'quality_fail_transient' symbol is eligible for re-fetch on a subsequent run."""
+        ticker, market = "005930", "KOSPI"
+        self._setup_previously_clean(tmp_path)
+
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        uni = [(ticker, market)]
+        acc, manifest_path, _ = _acc_with_quarantine(prov, uni, tmp_path)
+
+        # Run 1: gets quality_fail_transient
+        acc.run_once()
+
+        with open(manifest_path) as f:
+            m = json.load(f)
+        assert m[f"{market}|{ticker}"]["status"] == "quality_fail_transient"
+
+        # select_next on a new acc instance must include this symbol
+        acc2, _, _ = _acc_with_quarantine(prov, uni, tmp_path)
+        selected = acc2.select_next()
+        tickers = [t for t, _ in selected]
+        assert ticker in tickers, (
+            "'quality_fail_transient' symbol was not re-selected on subsequent run"
+        )
+
+    def test_quality_fail_permanent_not_reselected(self, tmp_path):
+        """'quality_fail' (permanent) symbol must NOT be re-selected."""
+        ticker, market = "005930", "KOSPI"
+        uni = [(ticker, market)]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        acc, manifest_path, _ = _acc_with_quarantine(prov, uni, tmp_path)
+
+        # Run once: never-cached → permanent quality_fail
+        acc.run_once()
+
+        with open(manifest_path) as f:
+            m = json.load(f)
+        assert m[f"{market}|{ticker}"]["status"] == "quality_fail"
+
+        # Must NOT be re-selected
+        acc2, _, _ = _acc_with_quarantine(prov, uni, tmp_path)
+        selected = acc2.select_next()
+        tickers = [t for t, _ in selected]
+        assert ticker not in tickers, "Permanent quality_fail symbol was re-selected"
+
+    def test_clean_fetch_with_prior_backup_discards_backup(self, tmp_path):
+        """Clean re-fetch: backup is discarded, new clean data kept, status 'ok'."""
+        ticker, market = "005930", "KOSPI"
+        self._setup_previously_clean(tmp_path)
+
+        # Provider returns clean data (no corrupt keys)
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys=set(),
+        )
+        uni = [(ticker, market)]
+        acc, manifest_path, quarantine_dir = _acc_with_quarantine(prov, uni, tmp_path)
+
+        summary = acc.run_once()
+
+        # Status must be ok
+        with open(manifest_path) as f:
+            m = json.load(f)
+        entry = m[f"{market}|{ticker}"]
+        assert entry["status"] == "ok"
+        assert summary["fetched"] == 1
+
+        # Parquet still exists (new clean data)
+        parquet_path = str(tmp_path / f"{market.upper()}_{ticker}.parquet")
+        assert os.path.exists(parquet_path)
+
+        # No backup file left behind (temp files cleaned up)
+        import glob
+        backups = glob.glob(str(tmp_path / "*.backup"))
+        assert len(backups) == 0, f"Backup file(s) not cleaned up: {backups}"
+
+    def test_transient_fail_count_incremented(self, tmp_path):
+        """Each transient fail increments transient_fail_count in manifest entry."""
+        ticker, market = "005930", "KOSPI"
+        self._setup_previously_clean(tmp_path)
+
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        uni = [(ticker, market)]
+        acc, manifest_path, _ = _acc_with_quarantine(prov, uni, tmp_path)
+
+        acc.run_once()
+
+        with open(manifest_path) as f:
+            m = json.load(f)
+        entry = m[f"{market}|{ticker}"]
+        assert entry.get("transient_fail_count", 0) >= 1, (
+            "transient_fail_count must be incremented on quality_fail_transient"
+        )

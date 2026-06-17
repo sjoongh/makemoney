@@ -205,7 +205,8 @@ class DataAccumulator:
             status = entry.get("status", "pending")
             last_success = entry.get("last_success")  # ISO string or None
 
-            # quality_fail is terminal — never re-pick automatically
+            # quality_fail (permanent) is terminal — never re-pick automatically.
+            # quality_fail_transient is eligible again (kept good data, retry later).
             if status == "quality_fail":
                 continue
 
@@ -219,7 +220,7 @@ class DataAccumulator:
                     ls_epoch = 0.0
                 if ls_epoch < stale_cutoff:
                     eligible = True
-            elif status in ("error", "cooldown"):
+            elif status in ("error", "cooldown", "quality_fail_transient"):
                 eligible = True
 
             if eligible:
@@ -299,6 +300,20 @@ class DataAccumulator:
             entry = manifest.get(k, _default_entry())
 
             try:
+                # ----------------------------------------------------------
+                # Keep-last-known-good: back up any existing cached parquet
+                # BEFORE the provider overwrites it.  If the fetch returns
+                # corrupt data we restore the backup so clean data is never
+                # destroyed by a transient bad fetch.
+                # ----------------------------------------------------------
+                cache_filename = f"{market.upper()}_{ticker}.parquet"
+                cache_dir = os.path.dirname(self._manifest_path) or "research_data"
+                cached_parquet = os.path.join(cache_dir, cache_filename)
+                backup_parquet = cached_parquet + ".backup"
+                had_prior_cache = os.path.exists(cached_parquet)
+                if had_prior_cache:
+                    shutil.copy2(cached_parquet, backup_parquet)
+
                 bars = self._provider.daily_history(ticker, market, refresh=True)
 
                 # Quality-gate: validate before accepting the fetch as "ok"
@@ -312,32 +327,48 @@ class DataAccumulator:
                         issue_codes = [i.code for i in report.issues if i.severity == "FAIL"]
 
                 if not quality_passed:
-                    # Move the just-cached parquet to quarantine
-                    cache_filename = f"{market.upper()}_{ticker}.parquet"
-                    cache_dir = os.path.dirname(self._manifest_path) or "research_data"
-                    cached_parquet = os.path.join(cache_dir, cache_filename)
-                    if os.path.exists(cached_parquet):
-                        os.makedirs(self._quarantine_dir, exist_ok=True)
-                        dest = os.path.join(self._quarantine_dir, cache_filename)
-                        shutil.move(cached_parquet, dest)
+                    if had_prior_cache:
+                        # Previously-clean symbol: restore backup, mark as transient fail
+                        if os.path.exists(backup_parquet):
+                            shutil.copy2(backup_parquet, cached_parquet)
+                            os.unlink(backup_parquet)
                         logger.warning(
-                            "QUARANTINED %s:%s → %s  issues=%s",
-                            market, ticker, dest, issue_codes,
+                            "TRANSIENT_FAIL %s:%s — restored prior clean data, issues=%s",
+                            market, ticker, issue_codes,
                         )
+                        entry["status"] = "quality_fail_transient"
+                        entry["last_error"] = f"quality_fail_transient: {issue_codes}"
+                        entry["transient_fail_count"] = entry.get("transient_fail_count", 0) + 1
+                        entry["cooldown_until"] = None
                     else:
-                        logger.warning(
-                            "QUARANTINED %s:%s (no parquet found at %s)  issues=%s",
-                            market, ticker, cached_parquet, issue_codes,
-                        )
-                    print(f"QUARANTINED {market}:{ticker}: {issue_codes}")
-                    entry["status"] = "quality_fail"
-                    entry["last_error"] = f"quality_fail: {issue_codes}"
-                    entry["cooldown_until"] = None
+                        # Never had clean cached data: quarantine + permanent fail
+                        if os.path.exists(cached_parquet):
+                            os.makedirs(self._quarantine_dir, exist_ok=True)
+                            dest = os.path.join(self._quarantine_dir, cache_filename)
+                            shutil.move(cached_parquet, dest)
+                            logger.warning(
+                                "QUARANTINED %s:%s → %s  issues=%s",
+                                market, ticker, dest, issue_codes,
+                            )
+                        else:
+                            logger.warning(
+                                "QUARANTINED %s:%s (no parquet found at %s)  issues=%s",
+                                market, ticker, cached_parquet, issue_codes,
+                            )
+                        # Clean up backup if somehow it exists (shouldn't happen)
+                        if os.path.exists(backup_parquet):
+                            os.unlink(backup_parquet)
+                        print(f"QUARANTINED {market}:{ticker}: {issue_codes}")
+                        entry["status"] = "quality_fail"
+                        entry["last_error"] = f"quality_fail: {issue_codes}"
+                        entry["cooldown_until"] = None
                     manifest[k] = entry
                     self._save_manifest(manifest)
                     # Do NOT increment fetched — corrupt data is not a success
                 else:
-                    # Clean fetch — update manifest as "ok"
+                    # Clean fetch — discard backup (new data is good), update manifest as "ok"
+                    if os.path.exists(backup_parquet):
+                        os.unlink(backup_parquet)
                     entry["status"] = "ok"
                     entry["last_success"] = _now_iso()
                     entry["cooldown_until"] = None
@@ -385,7 +416,7 @@ class DataAccumulator:
             status = entry.get("status", "pending")
             cooldown_until = entry.get("cooldown_until")
             in_cooldown = cooldown_until is not None and cooldown_until > now
-            if not in_cooldown and status in ("pending", "error"):
+            if not in_cooldown and status in ("pending", "error", "quality_fail_transient"):
                 remaining += 1
             elif status == "ok":
                 last_success = entry.get("last_success")
