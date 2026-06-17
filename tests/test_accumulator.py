@@ -11,7 +11,7 @@ from typing import Any
 import pytest
 
 from trader.core.events import BarEvent, Market, Symbol
-from trader.data.accumulator import DataAccumulator, _COOLDOWN_SECS, _STALE_DAYS, _key
+from trader.data.accumulator import DataAccumulator, _COOLDOWN_SECS, _STALE_DAYS, _key, provider_for
 
 
 # ---------------------------------------------------------------------------
@@ -366,3 +366,141 @@ class TestProgress:
         prog_after = acc.progress()
         assert prog_after["done"] == 1
         assert prog_after["pending"] == 1
+
+
+# ---------------------------------------------------------------------------
+# provider_for mapping
+# ---------------------------------------------------------------------------
+
+class TestProviderFor:
+    def test_nasdaq_maps_to_yahoo(self):
+        assert provider_for("NASDAQ") == "yahoo"
+
+    def test_nasdaq_case_insensitive(self):
+        assert provider_for("nasdaq") == "yahoo"
+
+    def test_kospi_maps_to_naver(self):
+        assert provider_for("KOSPI") == "naver"
+
+    def test_kospi_case_insensitive(self):
+        assert provider_for("kospi") == "naver"
+
+    def test_unknown_market_returns_yahoo(self):
+        # Fallback matches research_provider behaviour (else → Yahoo path)
+        assert provider_for("NYSE") == "yahoo"
+
+
+# ---------------------------------------------------------------------------
+# Per-provider cooldown — Yahoo 429 must NOT block Naver (KR) symbols
+# ---------------------------------------------------------------------------
+
+class FakeProviderMixed:
+    """Raises 429 for NASDAQ symbols only; KOSPI always succeeds."""
+
+    def __init__(self, yahoo_429_tickers: set[str] | None = None, bars_per_call: int = 2):
+        self._yahoo_429 = yahoo_429_tickers or set()
+        self._bars_per_call = bars_per_call
+        self.calls: list[tuple[str, str]] = []
+
+    def daily_history(self, ticker: str, market: str, *, refresh: bool = False) -> list[BarEvent]:
+        self.calls.append((ticker, market))
+        if market.upper() == "NASDAQ" and ticker in self._yahoo_429:
+            raise RuntimeError(f"[RESEARCH] Yahoo rate-limited (429) for {ticker}.")
+        return [_bar(ticker, market) for _ in range(self._bars_per_call)]
+
+
+class TestPerProviderCooldown:
+    def test_yahoo_429_does_not_block_naver(self, tmp_path):
+        """KEY REGRESSION: Yahoo 429 must not prevent KR/Naver symbols from being fetched."""
+        uni = [
+            ("AAPL", "NASDAQ"),
+            ("MSFT", "NASDAQ"),
+            ("005930", "KOSPI"),
+            ("000660", "KOSPI"),
+        ]
+        # All NASDAQ symbols will 429; KOSPI symbols should still succeed
+        prov = FakeProviderMixed(yahoo_429_tickers={"AAPL", "MSFT"})
+        acc, manifest_path = _acc(prov, uni, tmp_path, per_run=10)
+
+        summary = acc.run_once()
+
+        # KOSPI symbols must have been fetched
+        called_kospi = [(t, m) for t, m in prov.calls if m == "KOSPI"]
+        assert ("005930", "KOSPI") in called_kospi
+        assert ("000660", "KOSPI") in called_kospi
+
+        # Summary: 2 cooled (yahoo), 2 fetched (naver)
+        assert summary["cooled"] >= 1
+        assert summary["fetched"] == 2
+
+        # Manifest: KOSPI symbols ok, NASDAQ symbols in cooldown
+        with open(manifest_path) as f:
+            m = json.load(f)
+
+        assert m["KOSPI|005930"]["status"] == "ok"
+        assert m["KOSPI|000660"]["status"] == "ok"
+        assert m["NASDAQ|AAPL"]["status"] == "cooldown"
+
+    def test_yahoo_429_stops_further_yahoo_fetches(self, tmp_path):
+        """After Yahoo 429, no more Yahoo (NASDAQ) symbols are attempted that run."""
+        uni = [
+            ("AAPL", "NASDAQ"),
+            ("MSFT", "NASDAQ"),
+            ("GOOG", "NASDAQ"),
+            ("005930", "KOSPI"),
+        ]
+        prov = FakeProviderMixed(yahoo_429_tickers={"AAPL"})
+        acc, _ = _acc(prov, uni, tmp_path, per_run=10)
+
+        acc.run_once()
+
+        called_nasdaq = [t for t, m in prov.calls if m == "NASDAQ"]
+        # AAPL hit 429 → MSFT and GOOG must NOT be called
+        assert "MSFT" not in called_nasdaq
+        assert "GOOG" not in called_nasdaq
+        # But KOSPI should still have been called
+        assert ("005930", "KOSPI") in prov.calls
+
+    def test_naver_429_stops_naver_but_not_yahoo(self, tmp_path):
+        """Symmetric: a Naver 429 should cool Naver but leave Yahoo running."""
+        uni = [
+            ("AAPL", "NASDAQ"),
+            ("005930", "KOSPI"),
+            ("000660", "KOSPI"),
+        ]
+        exc_429 = RuntimeError("[RESEARCH] Naver rate-limited (429) for 005930.")
+        prov = FakeProvider(raises={"KOSPI|005930": exc_429})
+        acc, _ = _acc(prov, uni, tmp_path, per_run=10)
+
+        acc.run_once()
+
+        called = prov.calls
+        # Yahoo (AAPL) must still have been called
+        assert ("AAPL", "NASDAQ") in called
+        # 000660 (also naver) must NOT be called after the 005930 429
+        assert ("000660", "KOSPI") not in called
+
+    def test_cooled_provider_set_is_per_run(self, tmp_path):
+        """Cooled provider set resets between run_once() calls."""
+        uni = [
+            ("AAPL", "NASDAQ"),
+            ("MSFT", "NASDAQ"),
+        ]
+        exc_429 = RuntimeError("[RESEARCH] Yahoo rate-limited (429) for AAPL.")
+        prov = FakeProvider(raises={"NASDAQ|AAPL": exc_429})
+        acc, manifest_path = _acc(prov, uni, tmp_path, per_run=10)
+
+        # Run 1: AAPL 429 → MSFT skipped (same provider)
+        s1 = acc.run_once()
+        assert s1["cooled"] == 1
+        assert s1["fetched"] == 0
+
+        # Remove AAPL from raises so run 2 succeeds for AAPL
+        prov._raises = {}
+
+        # Run 2: cooldown_until from manifest means AAPL still skipped by select_next,
+        # but MSFT (never tried, still pending) should now be fetched
+        s2 = acc.run_once()
+        assert s2["fetched"] >= 1
+        called_run2 = prov.calls[1:]  # calls after run 1
+        assert any(t == "MSFT" for t, _ in called_run2)

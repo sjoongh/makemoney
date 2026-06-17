@@ -61,6 +61,22 @@ def _key(market: str, ticker: str) -> str:
     return f"{market}|{ticker}"
 
 
+def provider_for(market: str) -> str:
+    """Return the data provider name for a given market string.
+
+    Mirrors the dispatch logic in ResearchDataProvider.daily_history:
+      KOSPI  → "naver"
+      everything else (NASDAQ, NYSE, …) → "yahoo"
+
+    This is used by run_once() to build a per-run per-provider cooldown set
+    so that a Yahoo (US) 429 does not block Naver (KR) accumulation and
+    vice-versa.
+    """
+    if market.upper() == "KOSPI":
+        return "naver"
+    return "yahoo"
+
+
 # ---------------------------------------------------------------------------
 # DataAccumulator
 # ---------------------------------------------------------------------------
@@ -214,15 +230,25 @@ class DataAccumulator:
         fetched = 0
         cooled = 0
         errored = 0
-        halted = False  # True after the first 429 this run
+        # Per-run set of cooled provider names (e.g. "yahoo", "naver").
+        # A 429 from one provider halts only that provider for the rest of
+        # this run; symbols served by a different provider continue normally.
+        cooled_providers: set[str] = set()
 
-        for i, (ticker, market) in enumerate(targets):
-            if halted:
-                break
+        first_per_provider: dict[str, bool] = {}  # track first call per provider for sleep
 
-            # Sleep between fetches (skip before the first one)
-            if i > 0:
+        for ticker, market in targets:
+            prov_name = provider_for(market)
+            if prov_name in cooled_providers:
+                # This provider was rate-limited earlier this run — skip.
+                continue
+
+            # Sleep between fetches of the same provider (skip before the
+            # very first fetch for each provider).
+            if first_per_provider.get(prov_name, False):
                 self._sleep(self._sleep_secs)
+            else:
+                first_per_provider[prov_name] = True
 
             k = _key(market, ticker)
             entry = manifest.get(k, _default_entry())
@@ -254,8 +280,11 @@ class DataAccumulator:
                     manifest[k] = entry
                     self._save_manifest(manifest)
                     cooled += 1
-                    halted = True  # stop hammering for this run
-                    logger.warning("COOLDOWN  %s:%s  (429 — halting run)", market, ticker)
+                    cooled_providers.add(prov_name)  # halt this provider for the run
+                    logger.warning(
+                        "COOLDOWN  %s:%s  (429 — halting %s for this run)",
+                        market, ticker, prov_name,
+                    )
                 else:
                     entry["status"] = "error"
                     entry["error_count"] = entry.get("error_count", 0) + 1
