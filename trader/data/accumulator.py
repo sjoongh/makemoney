@@ -22,6 +22,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import shutil
 import tempfile
 import time
 from datetime import datetime, timezone
@@ -104,6 +105,10 @@ class DataAccumulator:
     now:
         Injectable clock callable returning float epoch seconds (default
         ``time.time``).
+    quarantine_dir:
+        Directory to move corrupt parquets into when quality validation fails.
+        Defaults to ``research_data/_quarantine``.  Override in tests to keep
+        the filesystem side-effects hermetic (use a tmp_path sub-directory).
     """
 
     def __init__(
@@ -115,6 +120,7 @@ class DataAccumulator:
         sleep: Callable[[float], None] = time.sleep,
         sleep_secs: float = 25.0,
         now: Callable[[], float] = time.time,
+        quarantine_dir: str | None = None,
     ) -> None:
         self._provider = provider
         self._universe = universe_list  # [(ticker, market), ...]
@@ -123,6 +129,12 @@ class DataAccumulator:
         self._sleep = sleep
         self._sleep_secs = sleep_secs
         self._now = now
+        # Default quarantine dir is a sibling of the manifest's parent dir
+        if quarantine_dir is None:
+            _data_dir = os.path.dirname(manifest_path) or "research_data"
+            self._quarantine_dir = os.path.join(_data_dir, "_quarantine")
+        else:
+            self._quarantine_dir = quarantine_dir
 
     # ------------------------------------------------------------------
     # Manifest I/O
@@ -192,6 +204,10 @@ class DataAccumulator:
 
             status = entry.get("status", "pending")
             last_success = entry.get("last_success")  # ISO string or None
+
+            # quality_fail is terminal — never re-pick automatically
+            if status == "quality_fail":
+                continue
 
             eligible = False
             if status == "pending" or last_success is None:
@@ -285,18 +301,54 @@ class DataAccumulator:
             try:
                 bars = self._provider.daily_history(ticker, market, refresh=True)
 
-                # Success — update manifest
-                entry["status"] = "ok"
-                entry["last_success"] = _now_iso()
-                entry["cooldown_until"] = None
+                # Quality-gate: validate before accepting the fetch as "ok"
+                quality_passed = True
+                issue_codes: list[str] = []
                 if bars:
-                    dates_sorted = sorted(b.ts.date().isoformat() for b in bars)
-                    entry["first_date"] = dates_sorted[0]
-                    entry["last_date"] = dates_sorted[-1]
-                manifest[k] = entry
-                self._save_manifest(manifest)
-                fetched += 1
-                logger.info("OK  %s:%s  bars=%d", market, ticker, len(bars))
+                    from trader.data.quality import validate_bars  # local import avoids circular
+                    report = validate_bars(bars)
+                    quality_passed = report.passed
+                    if not quality_passed:
+                        issue_codes = [i.code for i in report.issues if i.severity == "FAIL"]
+
+                if not quality_passed:
+                    # Move the just-cached parquet to quarantine
+                    cache_filename = f"{market.upper()}_{ticker}.parquet"
+                    cache_dir = os.path.dirname(self._manifest_path) or "research_data"
+                    cached_parquet = os.path.join(cache_dir, cache_filename)
+                    if os.path.exists(cached_parquet):
+                        os.makedirs(self._quarantine_dir, exist_ok=True)
+                        dest = os.path.join(self._quarantine_dir, cache_filename)
+                        shutil.move(cached_parquet, dest)
+                        logger.warning(
+                            "QUARANTINED %s:%s → %s  issues=%s",
+                            market, ticker, dest, issue_codes,
+                        )
+                    else:
+                        logger.warning(
+                            "QUARANTINED %s:%s (no parquet found at %s)  issues=%s",
+                            market, ticker, cached_parquet, issue_codes,
+                        )
+                    print(f"QUARANTINED {market}:{ticker}: {issue_codes}")
+                    entry["status"] = "quality_fail"
+                    entry["last_error"] = f"quality_fail: {issue_codes}"
+                    entry["cooldown_until"] = None
+                    manifest[k] = entry
+                    self._save_manifest(manifest)
+                    # Do NOT increment fetched — corrupt data is not a success
+                else:
+                    # Clean fetch — update manifest as "ok"
+                    entry["status"] = "ok"
+                    entry["last_success"] = _now_iso()
+                    entry["cooldown_until"] = None
+                    if bars:
+                        dates_sorted = sorted(b.ts.date().isoformat() for b in bars)
+                        entry["first_date"] = dates_sorted[0]
+                        entry["last_date"] = dates_sorted[-1]
+                    manifest[k] = entry
+                    self._save_manifest(manifest)
+                    fetched += 1
+                    logger.info("OK  %s:%s  bars=%d", market, ticker, len(bars))
 
             except RuntimeError as exc:
                 msg = str(exc)
@@ -357,7 +409,7 @@ class DataAccumulator:
     # ------------------------------------------------------------------
 
     def progress(self) -> dict[str, int]:
-        """Return counts of {total, done, pending, cooldown, error}."""
+        """Return counts of {total, done, pending, cooldown, error, quality_fail}."""
         manifest = self._load_manifest()
         now = self._now()
         counts: dict[str, int] = {
@@ -366,6 +418,7 @@ class DataAccumulator:
             "pending": 0,
             "cooldown": 0,
             "error": 0,
+            "quality_fail": 0,
         }
         stale_cutoff = now - _STALE_DAYS * 86400
         for ticker, market in self._universe:
@@ -389,6 +442,8 @@ class DataAccumulator:
                     counts["pending"] += 1
             elif status == "error":
                 counts["error"] += 1
+            elif status == "quality_fail":
+                counts["quality_fail"] += 1
             else:
                 counts["pending"] += 1
         return counts

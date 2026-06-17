@@ -12,15 +12,18 @@ import pytest
 
 from trader.core.events import BarEvent, Market, Symbol
 from trader.data.accumulator import DataAccumulator, _COOLDOWN_SECS, _STALE_DAYS, _key, provider_for
+from trader.data.storage import save_bars
 
 
 # ---------------------------------------------------------------------------
 # Helpers / fakes
 # ---------------------------------------------------------------------------
 
-def _bar(ticker: str = "AAPL", market: str = "NASDAQ") -> BarEvent:
+def _bar(ticker: str = "AAPL", market: str = "NASDAQ", day_offset: int = 0) -> BarEvent:
+    """Return a single well-formed bar.  day_offset shifts the date so multiple
+    bars from the same call have distinct ascending timestamps."""
     sym = Symbol(ticker, Market(market), "USD" if market == "NASDAQ" else "KRW")
-    ts = datetime(2024, 1, 2, tzinfo=timezone.utc)
+    ts = datetime(2024, 1, 2 + day_offset, tzinfo=timezone.utc)
     return BarEvent(sym, ts, 100.0, 110.0, 90.0, 105.0, 1000)
 
 
@@ -37,7 +40,9 @@ class FakeProvider:
         key = f"{market}|{ticker}"
         if key in self._raises:
             raise self._raises[key]
-        return [_bar(ticker, market) for _ in range(self._bars_per_call)]
+        # Each bar gets a distinct date so quality checks (DUPLICATE_TIMESTAMPS,
+        # NOT_SORTED, TOO_FEW_BARS) all pass.
+        return [_bar(ticker, market, day_offset=i) for i in range(self._bars_per_call)]
 
 
 class SleepCounter:
@@ -406,7 +411,7 @@ class FakeProviderMixed:
         self.calls.append((ticker, market))
         if market.upper() == "NASDAQ" and ticker in self._yahoo_429:
             raise RuntimeError(f"[RESEARCH] Yahoo rate-limited (429) for {ticker}.")
-        return [_bar(ticker, market) for _ in range(self._bars_per_call)]
+        return [_bar(ticker, market, day_offset=i) for i in range(self._bars_per_call)]
 
 
 class TestPerProviderCooldown:
@@ -597,3 +602,258 @@ class TestSelectNextInterleaved:
         # All 2 naver symbols included; remaining 4 slots filled from yahoo
         assert naver_count == 2
         assert yahoo_count == 4
+
+
+# ---------------------------------------------------------------------------
+# Quality validation + quarantine
+# ---------------------------------------------------------------------------
+
+def _corrupt_bar(ticker: str = "005930", market: str = "KOSPI") -> BarEvent:
+    """Return a bar with impossible OHLC (high < low) — will FAIL quality check."""
+    sym = Symbol(ticker, Market(market), "KRW")
+    ts = datetime(2024, 1, 2, tzinfo=timezone.utc)
+    # high=50 < low=200 — violates OHLC consistency → FAIL
+    return BarEvent(sym, ts, 100.0, 50.0, 200.0, 100.0, 1000)
+
+
+def _clean_bar(ticker: str = "AAPL", market: str = "NASDAQ") -> BarEvent:
+    """Return a well-formed bar that passes quality checks."""
+    sym = Symbol(ticker, Market(market), "USD" if market == "NASDAQ" else "KRW")
+    ts = datetime(2024, 1, 2, tzinfo=timezone.utc)
+    return BarEvent(sym, ts, 100.0, 110.0, 90.0, 105.0, 1000)
+
+
+class FakeProviderWithParquet:
+    """Fake provider that writes a parquet file to cache_dir before returning bars.
+
+    This mimics ResearchDataProvider.daily_history's side-effect of caching a
+    parquet.  The accumulator's quarantine logic needs that file to exist so it
+    can move it.
+    """
+
+    def __init__(
+        self,
+        cache_dir: str,
+        corrupt_keys: set[str] | None = None,
+        bars_count: int = 3,
+    ):
+        """
+        Parameters
+        ----------
+        cache_dir:   Directory where parquet files are written (matches manifest dir).
+        corrupt_keys: Set of "MARKET|TICKER" keys whose bars will be corrupt.
+        bars_count:  Number of bars returned per call (clean symbols).
+        """
+        self._cache_dir = cache_dir
+        self._corrupt_keys = corrupt_keys or set()
+        self._bars_count = bars_count
+        self.calls: list[tuple[str, str]] = []
+
+    def daily_history(self, ticker: str, market: str, *, refresh: bool = False) -> list[BarEvent]:
+        self.calls.append((ticker, market))
+        key = f"{market}|{ticker}"
+
+        if key in self._corrupt_keys:
+            # Build bars with impossible OHLC so quality check FAILs
+            bars = [_corrupt_bar(ticker, market) for _ in range(self._bars_count)]
+        else:
+            # Build multiple clean bars with ascending timestamps so they also
+            # pass the NOT_SORTED / TOO_FEW_BARS checks.
+            sym = Symbol(ticker, Market(market), "USD" if market == "NASDAQ" else "KRW")
+            bars = [
+                BarEvent(
+                    sym,
+                    datetime(2024, 1, 2 + i, tzinfo=timezone.utc),
+                    100.0, 110.0, 90.0, 105.0, 1000,
+                )
+                for i in range(self._bars_count)
+            ]
+
+        # Write a parquet file to cache_dir (mimics provider cache side-effect)
+        os.makedirs(self._cache_dir, exist_ok=True)
+        parquet_path = os.path.join(self._cache_dir, f"{market.upper()}_{ticker}.parquet")
+        save_bars(bars, parquet_path)
+
+        return bars
+
+
+def _acc_with_quarantine(
+    provider,
+    universe_list,
+    tmp_path,
+    per_run=25,
+    sleep_secs=0.0,
+    now=None,
+):
+    """Build a DataAccumulator whose manifest AND parquet cache both live in tmp_path."""
+    manifest_path = str(tmp_path / "_manifest.json")
+    quarantine_dir = str(tmp_path / "_quarantine")
+    sleep = SleepCounter()
+    acc = DataAccumulator(
+        provider=provider,
+        universe_list=universe_list,
+        manifest_path=manifest_path,
+        per_run=per_run,
+        sleep=sleep,
+        sleep_secs=sleep_secs,
+        now=now or time.time,
+        quarantine_dir=quarantine_dir,
+    )
+    return acc, manifest_path, quarantine_dir
+
+
+class TestQualityValidation:
+    def test_corrupt_symbol_gets_quality_fail_status(self, tmp_path):
+        """A symbol whose bars fail quality → manifest status 'quality_fail'."""
+        uni = [("005930", "KOSPI")]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        acc, manifest_path, _ = _acc_with_quarantine(prov, uni, tmp_path)
+
+        summary = acc.run_once()
+
+        with open(manifest_path) as f:
+            m = json.load(f)
+
+        entry = m["KOSPI|005930"]
+        assert entry["status"] == "quality_fail"
+        assert "quality_fail" in (entry.get("last_error") or "")
+
+    def test_corrupt_symbol_not_counted_as_fetched(self, tmp_path):
+        """Quality-fail fetch must NOT increment the 'fetched' counter."""
+        uni = [("005930", "KOSPI")]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        acc, manifest_path, _ = _acc_with_quarantine(prov, uni, tmp_path)
+
+        summary = acc.run_once()
+
+        assert summary["fetched"] == 0
+
+    def test_corrupt_parquet_moved_to_quarantine(self, tmp_path):
+        """The cached parquet for a corrupt symbol must be moved to _quarantine/."""
+        uni = [("005930", "KOSPI")]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        acc, manifest_path, quarantine_dir = _acc_with_quarantine(prov, uni, tmp_path)
+
+        acc.run_once()
+
+        # Original location must no longer exist
+        original = str(tmp_path / "KOSPI_005930.parquet")
+        assert not os.path.exists(original), "Corrupt parquet was NOT removed from cache_dir"
+
+        # Must exist in quarantine
+        quarantined = os.path.join(quarantine_dir, "KOSPI_005930.parquet")
+        assert os.path.exists(quarantined), "Corrupt parquet was NOT moved to quarantine"
+
+    def test_clean_symbol_status_ok(self, tmp_path):
+        """A symbol with clean bars → status 'ok' as before."""
+        uni = [("AAPL", "NASDAQ")]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys=set(),
+        )
+        acc, manifest_path, _ = _acc_with_quarantine(prov, uni, tmp_path)
+
+        summary = acc.run_once()
+
+        with open(manifest_path) as f:
+            m = json.load(f)
+
+        entry = m["NASDAQ|AAPL"]
+        assert entry["status"] == "ok"
+        assert summary["fetched"] == 1
+
+    def test_clean_parquet_stays_in_cache(self, tmp_path):
+        """Clean symbol's parquet must NOT be touched — stays in cache_dir."""
+        uni = [("AAPL", "NASDAQ")]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys=set(),
+        )
+        acc, manifest_path, quarantine_dir = _acc_with_quarantine(prov, uni, tmp_path)
+
+        acc.run_once()
+
+        parquet = str(tmp_path / "NASDAQ_AAPL.parquet")
+        assert os.path.exists(parquet), "Clean parquet was incorrectly removed from cache_dir"
+
+        quarantined = os.path.join(quarantine_dir, "NASDAQ_AAPL.parquet")
+        assert not os.path.exists(quarantined), "Clean parquet was incorrectly quarantined"
+
+    def test_mixed_corrupt_and_clean(self, tmp_path):
+        """One corrupt + one clean symbol in same run — each treated correctly."""
+        uni = [("005930", "KOSPI"), ("AAPL", "NASDAQ")]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        acc, manifest_path, quarantine_dir = _acc_with_quarantine(prov, uni, tmp_path, per_run=2)
+
+        summary = acc.run_once()
+
+        with open(manifest_path) as f:
+            m = json.load(f)
+
+        assert m["KOSPI|005930"]["status"] == "quality_fail"
+        assert m["NASDAQ|AAPL"]["status"] == "ok"
+        assert summary["fetched"] == 1
+
+        # Quarantine contains corrupt; clean file stays put
+        assert os.path.exists(os.path.join(quarantine_dir, "KOSPI_005930.parquet"))
+        assert os.path.exists(str(tmp_path / "NASDAQ_AAPL.parquet"))
+
+    def test_select_next_skips_quality_fail(self, tmp_path):
+        """select_next must NOT re-pick symbols with status 'quality_fail'."""
+        uni = [("005930", "KOSPI"), ("AAPL", "NASDAQ")]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        acc, manifest_path, _ = _acc_with_quarantine(prov, uni, tmp_path, per_run=2)
+
+        # Run once to mark 005930 as quality_fail
+        acc.run_once()
+
+        # Now select_next on a fresh instance reading the same manifest
+        acc2, _, _ = _acc_with_quarantine(prov, uni, tmp_path, per_run=2)
+        selected = acc2.select_next()
+
+        tickers = [t for t, _ in selected]
+        assert "005930" not in tickers, "quality_fail symbol was re-selected by select_next"
+
+    def test_quality_fail_not_in_remaining_pending(self, tmp_path):
+        """quality_fail symbols must NOT count toward remaining_pending."""
+        uni = [("005930", "KOSPI")]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        acc, _, _ = _acc_with_quarantine(prov, uni, tmp_path)
+
+        summary = acc.run_once()
+
+        assert summary["remaining_pending"] == 0
+
+    def test_quality_fail_counted_in_progress(self, tmp_path):
+        """progress() must count quality_fail symbols under 'quality_fail' not 'pending'."""
+        uni = [("005930", "KOSPI"), ("AAPL", "NASDAQ")]
+        prov = FakeProviderWithParquet(
+            cache_dir=str(tmp_path),
+            corrupt_keys={"KOSPI|005930"},
+        )
+        acc, _, _ = _acc_with_quarantine(prov, uni, tmp_path, per_run=2)
+
+        acc.run_once()
+        prog = acc.progress()
+
+        assert prog["quality_fail"] == 1
+        assert prog["done"] == 1
+        assert prog["pending"] == 0
