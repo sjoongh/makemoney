@@ -101,6 +101,8 @@ KOSPI 005930 1주 시장가 매수(VTTC0012U, ODNO 6321)→매도(VTTC0011U, ODN
 
 | 06-17 10:40 | 누적fix2 ✅ | select_next provider 교차 — cron 배치가 US만 안 고르고 KR도 포함. 이제 Yahoo throttle와 무관하게 KR 자동누적. 29/29 누적테스트 | 42ac624 |
 
+| 06-17 10:55 | 누적fix3 ✅ | 누적기 fetch시 품질검증+불량 자동격리(quality_fail 상태, select_next 재시도 안함). 이제 cron 누적이 *깨끗하게* 자동유지. 787테스트 | 37ff71b |
+
 ### 🚨 데이터 오염 발견 (F1 성과)
 - KOSPI_035420(Naver): 불가능한 OHLC 19개+비양수가격3개 → 격리(`research_data/_quarantine/`). **이전 모멘텀 결과는 이 오염 포함이라 무효.** 재페치+재검증 필요.
 - 교훈: **데이터 검증 없이 돌린 모든 결과는 의심해야 함**(네 불안이 정확했음). 이제 validate_data로 게이트.
