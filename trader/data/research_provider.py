@@ -5,28 +5,45 @@ WARNING: NEVER use this module in live trading, paper trading, or the
 backtest/live parity path.  It is strictly for offline research backtests
 and strategy evaluation.  Live trading uses KIS (trader/app/fetch_data.py).
 
-No API key required.  Two sources, chosen by market:
+No API key required.  Primary source for BOTH markets is yfinance:
 
-  NASDAQ  →  Yahoo Finance chart JSON  (period1/period2 params, ~24 years)
-  KOSPI   →  Naver Finance sise XML   (count=2500 bars, ~10 years)
+  NASDAQ  →  yfinance  ("AAPL")        full daily history, split/div adjusted
+  KOSPI   →  yfinance  ("005930.KS")   full daily history, split/div adjusted
 
-Yahoo: uses period1/period2 URL form which avoids the 429 rate-limit that
-the range= param triggers.  Still subject to transient IP throttling if
-called too rapidly — cache aggressively (refresh=False on repeat runs).
+Why yfinance for both: the raw Yahoo chart JSON API now returns HTTP 429 on
+*every* call, and Naver's sise XML intermittently serves corrupt OHLC and is
+unadjusted.  yfinance (curl_cffi browser impersonation) is clean, adjusted, and
+consistent across markets.  The network call is isolated in
+``_default_research_us_downloader`` and injectable via the ``us_downloader``
+constructor arg so unit tests never hit the network.
 
-Naver: XML endpoint, very permissive, returns up to 2500 trading days.
+Naver (``_fetch_naver``) is retained as an audit/fallback source only — it is
+no longer wired into ``daily_history``.  See docs/data-limitations.md.
 
 Results are cached as parquet (via trader/data/storage.py) to avoid
 repeated network hits.  Cache is keyed {MARKET}_{TICKER}.parquet.
 """
 from __future__ import annotations
 
+import logging
+import math
 import os
 import re
 import time
 from datetime import datetime, timezone
+from typing import Callable
 
 import httpx
+
+logger = logging.getLogger(__name__)
+
+# A bar that is still OHLC-inconsistent after sub-epsilon FP clamping is an
+# isolated bad tick — dropped (and logged), not fatal.  But if the share of
+# dropped bars exceeds BOTH an absolute floor and a fraction, the series is
+# treated as systemically corrupt and the fetch is failed (so it retries /
+# errors rather than silently returning a sparse, biased series).
+_MAX_DROP_ABS = 5
+_MAX_DROP_FRAC = 0.005
 
 from trader.core.events import BarEvent, Market, Symbol
 from trader.data.storage import load_bars, save_bars
@@ -50,14 +67,6 @@ _USER_AGENT = (
     "Chrome/124.0.0.0 Safari/537.36"
 )
 
-# Yahoo: period1/period2 form avoids 429 that range= triggers.
-# period1 computed from years arg; period2 = far future.
-_YAHOO_CHART = (
-    "https://query1.finance.yahoo.com/v8/finance/chart/"
-    "{sym}?period1={p1}&period2={p2}&interval=1d"
-)
-_EPOCH_END = 9_999_999_999  # far-future cap for period2
-
 # Naver sise XML — returns up to `count` daily bars ending today, newest last.
 _NAVER_SISE = (
     "https://fchart.stock.naver.com/sise.nhn"
@@ -67,38 +76,235 @@ _NAVER_MAX_BARS = 2500  # Naver API maximum
 
 
 # ---------------------------------------------------------------------------
+# US downloader — yfinance network boundary (RESEARCH ONLY)
+# ---------------------------------------------------------------------------
+
+# A US downloader returns normalized rows, one dict per trading day:
+#     {"ts": datetime(tz-aware UTC midnight), "open", "high", "low", "close": float, "volume": int}
+# It MUST raise RuntimeError on any failure (empty / malformed / network) so the
+# caller's existing error contract (cooldown vs error) keeps working.
+USDownloader = Callable[..., list[dict]]
+
+
+def _clamp_ohlc_fp_noise(
+    o: float, h: float, lo: float, c: float, *, rel_tol: float = 1e-6
+) -> tuple[float, float]:
+    """Repair sub-epsilon OHLC inconsistency from adjusted-price float math.
+
+    yfinance's auto-adjusted O/H/L/C are each multiplied by the same factor and
+    rounded independently, so a bar where high == close mathematically can come
+    back with high one ULP *below* close (~1e-15).  That is float noise, not
+    corruption.  When the high/low is within ``rel_tol`` of the true max/min we
+    clamp it; a *larger* discrepancy is left intact so the consistency check
+    still rejects genuinely garbage bars.
+
+    Returns the (possibly clamped) (high, low).
+    """
+    hi = max(o, h, lo, c)
+    lwst = min(o, h, lo, c)
+    tol = rel_tol * max(abs(o), abs(h), abs(lo), abs(c), 1.0)
+    if h < hi and (hi - h) <= tol:
+        h = hi
+    if lo > lwst and (lo - lwst) <= tol:
+        lo = lwst
+    return h, lo
+
+
+def _rows_ohlc_consistent(rows: list[dict]) -> bool:
+    """True if every row satisfies high >= max(O,C,L) and low <= min(O,C,H).
+
+    yfinance occasionally returns a transiently-glitched bar under rapid
+    bulk fetching (a partial/garbage row that re-fetches clean).  The caller
+    uses this to retry rather than poison a never-cached symbol with a
+    permanent quality_fail.
+    """
+    for r in rows:
+        o, h, lo, c = r["open"], r["high"], r["low"], r["close"]
+        if h < max(o, c, lo) or lo > min(o, c, h) or h < lo:
+            return False
+    return True
+
+
+def _default_research_us_downloader(
+    ticker: str,
+    *,
+    years: int,
+    auto_adjust: bool,
+    _max_attempts: int = 3,
+    _sleep: Callable[[float], None] = time.sleep,
+) -> list[dict]:
+    """RESEARCH ONLY — fetch full US daily history via yfinance, with retry.
+
+    yfinance is imported lazily *inside* this function so the live/paper
+    trading path can import trader.data.research_provider without pulling in
+    yfinance.  NEVER call this from the backtest/live parity path.
+
+    Retries on either a hard failure (empty/malformed) OR a transient OHLC
+    inconsistency (a glitched bar that re-fetches clean), with linear backoff.
+
+    Raises RuntimeError if all attempts fail (missing lib, empty/malformed,
+    or persistently inconsistent data).
+    """
+    last_err: Exception | None = None
+    for attempt in range(_max_attempts):
+        try:
+            rows = _yf_download_normalize(ticker, years=years, auto_adjust=auto_adjust)
+            if _rows_ohlc_consistent(rows):
+                return rows
+            last_err = RuntimeError(
+                f"[RESEARCH] Transient OHLC inconsistency for {ticker} "
+                f"(attempt {attempt + 1}/{_max_attempts})."
+            )
+        except RuntimeError as exc:
+            last_err = exc
+        if attempt < _max_attempts - 1:
+            _sleep(1.5 * (attempt + 1))
+    assert last_err is not None
+    raise last_err
+
+
+def _yf_download_normalize(
+    ticker: str,
+    *,
+    years: int,
+    auto_adjust: bool,
+) -> list[dict]:
+    """One yfinance download + normalization pass (no retry).  Raises on failure."""
+    try:
+        import yfinance as yf  # lazy: keep yfinance out of the live import graph
+    except ImportError as exc:  # pragma: no cover - env-specific
+        raise RuntimeError(
+            f"[RESEARCH] yfinance not installed — cannot fetch US history for {ticker}: {exc}"
+        ) from exc
+
+    try:
+        df = yf.download(
+            ticker,
+            period=f"{years}y",
+            interval="1d",
+            auto_adjust=auto_adjust,
+            progress=False,
+            threads=False,
+        )
+    except Exception as exc:  # yfinance raises a grab-bag of exceptions
+        raise RuntimeError(
+            f"[RESEARCH] US history download failed for {ticker}: {exc}"
+        ) from exc
+
+    if df is None or len(df) == 0:
+        raise RuntimeError(
+            f"[RESEARCH] US history download failed for {ticker}: empty result "
+            "(bad ticker or transient throttle)."
+        )
+
+    # yfinance 1.x returns MultiIndex columns ('Price', 'Ticker') even for a
+    # single symbol — flatten to the canonical field level.
+    cols_obj = df.columns
+    if getattr(cols_obj, "nlevels", 1) > 1:
+        df = df.copy()
+        df.columns = df.columns.get_level_values(0)
+
+    # Case-insensitive lookup of canonical OHLCV fields.
+    lower_map = {str(c).lower(): c for c in df.columns}
+    required = ("open", "high", "low", "close", "volume")
+    if not all(r in lower_map for r in required):
+        raise RuntimeError(
+            f"[RESEARCH] US history download failed for {ticker}: "
+            f"missing OHLCV columns (got {list(df.columns)})."
+        )
+
+    rows: list[dict] = []
+    dropped_inconsistent = 0
+    for idx, row in df.iterrows():
+        c = row[lower_map["close"]]
+        if c is None or (isinstance(c, float) and math.isnan(c)):
+            continue
+        o = row[lower_map["open"]]
+        h = row[lower_map["high"]]
+        lo = row[lower_map["low"]]
+        v = row[lower_map["volume"]]
+        if any(x is None or (isinstance(x, float) and math.isnan(x)) for x in (o, h, lo)):
+            continue
+
+        # idx is a pandas Timestamp (date for daily bars); canonicalize to UTC midnight.
+        ts = datetime(idx.year, idx.month, idx.day, tzinfo=timezone.utc)
+        if v is None or (isinstance(v, float) and math.isnan(v)):
+            v = 0
+        of, hf, lof, cf = float(o), float(h), float(lo), float(c)
+        # Repair sub-epsilon high/low float noise from adjusted-price math.
+        hf, lof = _clamp_ohlc_fp_noise(of, hf, lof, cf)
+        # Drop an isolated bad tick still inconsistent beyond FP tolerance.
+        if hf < max(of, cf, lof) or lof > min(of, cf, hf):
+            dropped_inconsistent += 1
+            logger.warning(
+                "DROP_BAD_BAR %s %s — OHLC inconsistent (O=%s H=%s L=%s C=%s)",
+                ticker, ts.date(), of, hf, lof, cf,
+            )
+            continue
+        rows.append(
+            {
+                "ts": ts,
+                "open": of,
+                "high": hf,
+                "low": lof,
+                "close": cf,
+                "volume": int(v),
+            }
+        )
+
+    if not rows:
+        raise RuntimeError(
+            f"[RESEARCH] US history download failed for {ticker}: all rows null/invalid."
+        )
+
+    # Reject the symbol if too many bars were inconsistent (systemic corruption).
+    considered = len(rows) + dropped_inconsistent
+    allowance = max(_MAX_DROP_ABS, _MAX_DROP_FRAC * considered)
+    if dropped_inconsistent > allowance:
+        raise RuntimeError(
+            f"[RESEARCH] {ticker}: systemic OHLC inconsistency — "
+            f"{dropped_inconsistent}/{considered} bars dropped (> {allowance:.0f} allowed)."
+        )
+    if dropped_inconsistent:
+        logger.warning(
+            "%s: dropped %d/%d inconsistent bar(s) (within tolerance).",
+            ticker, dropped_inconsistent, considered,
+        )
+    return rows
+
+
+# ---------------------------------------------------------------------------
 # ResearchDataProvider
 # ---------------------------------------------------------------------------
 
 class ResearchDataProvider:
     """RESEARCH ONLY — keyless OHLCV history.  NEVER use in live/parity path.
 
-    Sources by market:
-        NASDAQ  →  Yahoo Finance JSON  (period1/period2 URL params)
-        KOSPI   →  Naver Finance XML  (up to 2500 bars ≈ 10 years)
+    Sources by market (primary = yfinance for both):
+        NASDAQ  →  yfinance  ("AAPL")       full daily history, adjusted
+        KOSPI   →  yfinance  ("005930.KS")  full daily history, adjusted
 
-    Symbol mapping:
-        NASDAQ  → ticker as-is       ("AAPL"   → "AAPL")
-        KOSPI   → ticker as-is       ("005930" → "005930")  [Naver uses plain KRX code]
+    ``_fetch_naver`` remains as an audit/fallback source but is not used by
+    ``daily_history``.
 
-    Yahoo symbol mapping (for NASDAQ):
-        ticker → ticker              ("AAPL"   → "AAPL")
-
-    (Naver sise endpoint uses the KRX 6-digit code directly, no suffix.)
+    The yfinance network call is isolated behind ``us_downloader`` (defaults to
+    ``_default_research_us_downloader``).  Inject a fake in tests to avoid
+    real network access.
     """
 
-    # Expose URL templates for introspection / overriding in tests
-    YAHOO = _YAHOO_CHART
+    # Expose URL template for introspection / overriding in tests
     NAVER = _NAVER_SISE
 
     def __init__(
         self,
         client: httpx.Client | None = None,
         cache_dir: str = "research_data",
+        us_downloader: USDownloader | None = None,
     ) -> None:
         self._client = client
         self._cache_dir = cache_dir
         self._owns_client = client is None
+        self._us_downloader: USDownloader = us_downloader or _default_research_us_downloader
 
     # ------------------------------------------------------------------
     # Public API
@@ -156,14 +362,13 @@ class ResearchDataProvider:
                     pass  # best-effort; don't break cache hits
             return bars
 
-        if market_upper == "KOSPI":
-            bars = self._fetch_naver(ticker, years=years)
-            provider_name = "Naver"
-            adjustment = "raw"
-        else:
-            bars = self._fetch_yahoo(ticker, market_upper, years=years, use_adjusted=use_adjusted)
-            provider_name = "Yahoo"
-            adjustment = "adjusted" if use_adjusted else "raw"
+        # Both US and KR now go through yfinance (KR via the .KS suffix).  Naver
+        # is retained as an audit/fallback source (_fetch_naver) but is no longer
+        # the primary KR feed — it intermittently served corrupt OHLC and lacks
+        # corporate-action adjustment.  See docs/data-limitations.md.
+        bars = self._fetch_yfinance(ticker, market_upper, years=years, use_adjusted=use_adjusted)
+        provider_name = "yfinance"
+        adjustment = "adjusted" if use_adjusted else "raw"
 
         os.makedirs(self._cache_dir, exist_ok=True)
 
@@ -218,15 +423,21 @@ class ResearchDataProvider:
             client.close()
 
     # ------------------------------------------------------------------
-    # Yahoo Finance — NASDAQ (and other US markets)
+    # Equities — yfinance (US + KR via .KS suffix)
     # ------------------------------------------------------------------
 
     @staticmethod
-    def _yahoo_symbol(ticker: str) -> str:
-        """NASDAQ tickers pass through as-is to Yahoo."""
+    def _yf_symbol(ticker: str, market: str) -> str:
+        """Map an exchange ticker to the yfinance symbol.
+
+        KOSPI  →  "{code}.KS"  ("005930" → "005930.KS")
+        US     →  ticker as-is ("AAPL"   → "AAPL")
+        """
+        if market == "KOSPI":
+            return f"{ticker}.KS"
         return ticker
 
-    def _fetch_yahoo(
+    def _fetch_yfinance(
         self,
         ticker: str,
         market: str,
@@ -234,86 +445,35 @@ class ResearchDataProvider:
         years: int,
         use_adjusted: bool,
     ) -> list[BarEvent]:
-        sym = self._yahoo_symbol(ticker)
-        seconds_per_year = 365.25 * 86400
-        p1 = int(time.time() - years * seconds_per_year)
-        url = self.YAHOO.format(sym=sym, p1=p1, p2=_EPOCH_END)
+        """Fetch daily history via the injected ``us_downloader`` (yfinance).
 
-        try:
-            resp = self._get(url, {"User-Agent": _USER_AGENT})
-        except Exception as exc:
-            raise RuntimeError(
-                f"[RESEARCH] Network error fetching Yahoo data for {sym}: {exc}. "
-                "Retry later or set refresh=False to load from cache."
-            ) from exc
+        Handles both US and KR (KOSPI via the .KS suffix).  The downloader
+        returns normalized rows and raises RuntimeError on any failure
+        (empty / malformed / network), which propagates unchanged.
+        """
+        yf_sym = self._yf_symbol(ticker, market)
+        rows = self._us_downloader(yf_sym, years=years, auto_adjust=use_adjusted)
 
-        if resp.status_code == 429:
-            raise RuntimeError(
-                f"[RESEARCH] Yahoo rate-limited (429) for {sym}. "
-                "Wait a few minutes and retry, or set refresh=False to use cache."
-            )
-        if resp.status_code != 200:
-            raise RuntimeError(
-                f"[RESEARCH] Yahoo returned HTTP {resp.status_code} for {sym}. "
-                "Retry later or set refresh=False to use cache."
-            )
-
-        try:
-            payload = resp.json()
-            result = payload["chart"]["result"]
-            if not result:
-                raise KeyError("chart.result is empty")
-            r0 = result[0]
-            timestamps = r0["timestamp"]
-            quote = r0["indicators"]["quote"][0]
-        except (KeyError, IndexError, TypeError, ValueError) as exc:
-            raise RuntimeError(
-                f"[RESEARCH] Malformed Yahoo chart JSON for {sym}: {exc}. "
-                "Retry later or set refresh=False to use cache."
-            ) from exc
-
-        opens   = quote.get("open",   [])
-        highs   = quote.get("high",   [])
-        lows    = quote.get("low",    [])
-        closes  = quote.get("close",  [])
-        volumes = quote.get("volume", [])
-
-        adjcloses: list[float | None] = []
-        try:
-            adjcloses = r0["indicators"]["adjclose"][0]["adjclose"]
-        except (KeyError, IndexError, TypeError):
-            adjcloses = [None] * len(timestamps)
-
-        currency = "USD" if market == "NASDAQ" else "KRW"
+        currency = "KRW" if market == "KOSPI" else "USD"
+        # Keep the original exchange ticker on the Symbol (not the .KS form).
         symbol = Symbol(ticker, Market(market), currency)
 
         bars: list[BarEvent] = []
-        for i, ts_sec in enumerate(timestamps):
-            c = closes[i] if i < len(closes) else None
-            if c is None:
-                continue
-
-            o   = opens[i]   if i < len(opens)   else None
-            h   = highs[i]   if i < len(highs)   else None
-            lo  = lows[i]    if i < len(lows)     else None
-            v   = volumes[i] if i < len(volumes)  else 0
-            adj = adjcloses[i] if i < len(adjcloses) else None
-
-            if o is None or h is None or lo is None:
-                continue
-
-            if use_adjusted and adj is not None and c != 0:
-                factor = adj / c
-                o  = o  * factor
-                h  = h  * factor
-                lo = lo * factor
-                c  = adj  # close = adjclose exactly
-
-            if v is None:
-                v = 0
-
-            ts = datetime.fromtimestamp(ts_sec, tz=timezone.utc)
-            bars.append(BarEvent(symbol, ts, o, h, lo, c, int(v)))
+        for r in rows:
+            ts = r["ts"]
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+            bars.append(
+                BarEvent(
+                    symbol,
+                    ts,
+                    float(r["open"]),
+                    float(r["high"]),
+                    float(r["low"]),
+                    float(r["close"]),
+                    int(r["volume"]),
+                )
+            )
 
         bars.sort(key=lambda b: b.ts)
         return bars
@@ -323,7 +483,11 @@ class ResearchDataProvider:
     # ------------------------------------------------------------------
 
     def _fetch_naver(self, ticker: str, *, years: int) -> list[BarEvent]:
-        """Fetch KOSPI bars from Naver sise XML endpoint.
+        """AUDIT/FALLBACK ONLY — fetch KOSPI bars from Naver sise XML endpoint.
+
+        No longer wired into ``daily_history`` (KOSPI now uses yfinance .KS).
+        Kept for cross-checking / fallback: Naver is raw (unadjusted) and has
+        intermittently served corrupt OHLC, so it is not the primary KR feed.
 
         Naver returns up to _NAVER_MAX_BARS (2500) trading days, newest last.
         The *years* arg is used to compute a target bar count (252 trading

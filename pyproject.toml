@@ -6,6 +6,10 @@ dependencies = ["numpy", "pydantic>=2", "pyarrow", "httpx", "structlog", "rich"]
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov"]
+# RESEARCH ONLY — yfinance (+ curl_cffi browser impersonation) and pandas power
+# the offline US history downloader.  Deliberately NOT in core `dependencies`
+# so the live/paper trading install never pulls yfinance into its import graph.
+research = ["yfinance>=1.4", "curl_cffi", "pandas"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
