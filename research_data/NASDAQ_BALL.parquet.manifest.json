@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_BALL",
+  "created_ts": "2026-06-22T13:03:53.346977+00:00",
+  "symbols": [
+    "BALL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "3f711d570779edfd868ea16eb88867d5e70aff9eb8dadbbc92ecb4e15d005466",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

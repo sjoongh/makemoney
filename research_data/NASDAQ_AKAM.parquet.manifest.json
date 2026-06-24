@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_AKAM",
+  "created_ts": "2026-06-22T12:58:18.038670+00:00",
+  "symbols": [
+    "AKAM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "422837b6eefd45d40057e662abc526c05f3c8ccb6c1f3e9c3947d44d7327d3b8",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

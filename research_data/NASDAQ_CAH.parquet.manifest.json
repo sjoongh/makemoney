@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CAH",
+  "created_ts": "2026-06-22T13:04:49.536721+00:00",
+  "symbols": [
+    "CAH"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "0b7fc1913929c64aa2187a2df0f0346b0d9aae2c44a45d9551804902b87adaf2",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

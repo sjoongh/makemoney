@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_BLDR",
+  "created_ts": "2026-06-22T13:04:31.682008+00:00",
+  "symbols": [
+    "BLDR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "4b6b4750b65a0e041aa70bf91134f08d40745d96d29bbea3e2adc03ed905bad3",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

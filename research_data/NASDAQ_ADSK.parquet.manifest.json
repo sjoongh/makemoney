@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ADSK",
+  "created_ts": "2026-06-22T13:03:22.271347+00:00",
+  "symbols": [
+    "ADSK"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "ddaea569ad7e0cf94863bc833ad76bcb457f839da975ac0e5c5b6a7d7a259f8f",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

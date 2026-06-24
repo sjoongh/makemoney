@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_AME",
+  "created_ts": "2026-06-22T12:58:54.547301+00:00",
+  "symbols": [
+    "AME"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "9f0ef92fbab637325473aec5dc864f1d5067983b9c8e0930d1a360a7e13b9bec",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

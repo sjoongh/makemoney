@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ARE",
+  "created_ts": "2026-06-22T13:02:09.232157+00:00",
+  "symbols": [
+    "ARE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "5e7fe3b1037a7dc256be62ad322b677d505cf92d1ff47ff0d5771245e1e35566",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

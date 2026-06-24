@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_BKNG",
+  "created_ts": "2026-06-22T13:04:18.172074+00:00",
+  "symbols": [
+    "BKNG"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "3ac59ff992d5ecdce6762ac61066d4e0d2752a21deb8c7839d4863d8205965b1",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

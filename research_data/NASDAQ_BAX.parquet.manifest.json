@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_BAX",
+  "created_ts": "2026-06-22T13:03:57.250986+00:00",
+  "symbols": [
+    "BAX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "2f286bb7e07ae2f2b9f19705da63e4b0269eecf0eed0f4a9d1d024c6d432847e",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}
