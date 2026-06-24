@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_APTV",
+  "created_ts": "2026-06-22T13:02:39.137768+00:00",
+  "symbols": [
+    "APTV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "19a954f47744371cfe7592902379867ef243eda027e230578681346202fa2321",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

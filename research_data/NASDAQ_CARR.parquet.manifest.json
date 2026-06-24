@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CARR",
+  "created_ts": "2026-06-22T13:04:53.509330+00:00",
+  "symbols": [
+    "CARR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2020-03-19",
+  "end_date": "2026-06-18",
+  "n_bars": 1571,
+  "adjustment": "adjusted",
+  "content_hash": "638eca1d00d9d06d5dd846dfcddd54bfe611f9b3f4accd340b508f7a6f1a0873",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

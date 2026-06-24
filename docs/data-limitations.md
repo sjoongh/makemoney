@@ -43,49 +43,49 @@ Both effects bias results upward.
 
 ---
 
-## 3. Single Source Per Market
+## 3. Single Source — yfinance (both markets)
 
-| Market | Source | Limitation |
-|--------|--------|-----------|
-| NASDAQ / US equities | Yahoo Finance (via `yfinance`) | Rate-limited; throttles aggressive fetchers; 429 errors cause symbol skips |
-| KOSPI / KR equities | Naver Finance (via `trader/data/naver_provider.py`) | Unadjusted prices (see §4) |
+| Market | Source | Symbol form | Adjustment |
+|--------|--------|-------------|-----------|
+| NASDAQ / US equities | yfinance | `AAPL` | split/dividend adjusted |
+| KOSPI / KR equities  | yfinance | `005930.KS` | split/dividend adjusted |
 
-No cross-source validation is performed.  A single bad fetch silently
-produces a gap or stale prices.
+As of 2026-06-22 **both markets use yfinance** (`_default_research_us_downloader`
+in `trader/data/research_provider.py`).  Rationale: the raw Yahoo chart JSON API
+began returning HTTP 429 on every call, and Naver's sise XML intermittently
+served corrupt OHLC and is unadjusted.  yfinance (curl_cffi browser
+impersonation) is clean, adjusted, and consistent across markets.
 
----
+Still a **single source** — no cross-source validation.  Mitigations now in
+place at fetch time:
+- **Retry with backoff** on empty / malformed / systemically-inconsistent
+  downloads (transient yfinance glitches re-fetch clean).
+- **Sub-epsilon FP clamping** of adjusted-price high/low rounding noise.
+- **Isolated bad-bar drop** (logged): a bar still OHLC-inconsistent after
+  clamping is dropped; if dropped bars exceed `max(5, 0.5%)` the whole symbol
+  fails (so systemic corruption is rejected, not silently thinned).
 
-## 4. Naver Unadjusted vs Yahoo Adjusted Prices
-
-Yahoo Finance returns **split- and dividend-adjusted** closing prices.
-Naver Finance returns **unadjusted** (raw) closing prices.
-
-This means:
-
-- For KOSPI symbols, a stock split or large dividend will appear as a
-  price drop in the Naver data, which the momentum signal will interpret as
-  negative momentum even if the economic return was flat or positive.
-- Cross-market comparisons (US vs KR momentum scores) are not
-  apples-to-apples.
-
-**Mitigation required:** Use an adjusted-price source for KOSPI, or apply
-a split/dividend adjustment layer before computing signals.
+Naver (`_fetch_naver`) is retained as an **audit/fallback** source only and is
+no longer wired into `daily_history`.
 
 ---
 
-## 5. NAVER 035420 Data Corruption — Quarantined
+## 4. Source Migration — Reproducibility Caveat
 
-NAVER Corp (ticker `035420`) has known price data corruption in the Naver
-Finance feed: anomalous price spikes or gaps appear that do not correspond
-to actual trades.  This symbol is considered **quarantined** for research
-purposes until a clean adjusted-price source is confirmed.
+KOSPI data was previously sourced from Naver as **raw (unadjusted)** prices.
+It is now yfinance **adjusted** prices.  Adjusted is the correct default for
+return/momentum/drawdown research (it preserves return continuity across splits
+and dividends), and it makes US and KR semantically comparable.
 
-When `035420` is included in momentum research, its momentum scores should
-be treated as unreliable and its rebalance log entries inspected manually.
+**However:** KOSPI backtests run before this migration used raw Naver data and
+are **NOT directly comparable** to runs on the new adjusted `.KS` data.  Dataset
+manifests record `provider` and `adjustment` per file (`provider="yfinance"`,
+`adjustment="adjusted"`) so old vs new runs can be told apart by hash/manifest.
+Treat any pre-migration KOSPI result as a different dataset.
 
 ---
 
-## 6. Calendar / Holiday Heuristic Limits
+## 5. Calendar / Holiday Heuristic Limits
 
 The momentum backtest identifies trading days by building a union of all
 dates present in the provided price data.  No exchange calendar is enforced.
@@ -101,7 +101,7 @@ Implications:
 
 ---
 
-## 7. What Claims Are and Are Not Supportable
+## 6. What Claims Are and Are Not Supportable
 
 | Claim | Supportable? | Why |
 |-------|-------------|-----|
@@ -114,16 +114,15 @@ Implications:
 
 ---
 
-## 8. How to Reduce These Limitations
+## 7. How to Reduce These Limitations
 
 1. **Survivorship bias:** Obtain historical constituent membership lists
    (e.g. from Bloomberg, Compustat, or open-source CRSP equivalents).
    Replace `universe()` with a point-in-time membership lookup keyed on
    the backtest date.
 
-2. **Adjusted prices for KOSPI:** Integrate a data source that provides
-   split- and dividend-adjusted KOSPI prices (e.g. FnGuide, QuantiWise,
-   or KRX official adjusted series).
+2. **Adjusted prices for KOSPI:** ✅ Done (2026-06-22) — KOSPI now uses
+   yfinance `.KS` (split/dividend adjusted), replacing raw Naver.  See §3–4.
 
 3. **Walk-forward validation:** Split the data into an in-sample
    optimisation window and a strictly held-out out-of-sample test window.
@@ -134,9 +133,9 @@ Implications:
    The equal-weight universe benchmark built into `evaluate()` is
    survivorship-biased for the same reason the strategy universe is.
 
-5. **035420 quarantine:** Either exclude `035420` from the universe until
-   an adjusted source is confirmed, or add a data-integrity check that
-   flags implausible price moves (e.g. > 30 % single-day moves on no news).
+5. **035420 (NAVER Corp):** The old Naver-feed corruption was source-specific;
+   `035420` now fetches clean via yfinance `.KS` and passes the quality gate.
+   The fetch-time integrity checks (§3) flag implausible bars going forward.
 
 ---
 

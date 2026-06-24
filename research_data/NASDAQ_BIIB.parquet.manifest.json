@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_BIIB",
+  "created_ts": "2026-06-22T13:04:06.850148+00:00",
+  "symbols": [
+    "BIIB"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "026407c50961a2d6bd1bc77cffb651e2ae4468617496a0c32562a6f31f801675",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

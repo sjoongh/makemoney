@@ -409,34 +409,24 @@ class TestResearchProviderManifestIntegration:
     def setup_method(self):
         self.tmp = tempfile.mkdtemp()
 
-    def test_yahoo_fetch_writes_sidecar(self):
-        """Fetching NASDAQ bars must produce both parquet + .manifest.json."""
-        import json as _json
-        import httpx
+    def test_us_fetch_writes_sidecar(self):
+        """Fetching NASDAQ bars (via yfinance downloader) must produce both
+        parquet + .manifest.json with provider 'yfinance'."""
+        from datetime import datetime, timezone
 
-        payload = {
-            "chart": {
-                "result": [{
-                    "timestamp": [1672704000, 1672790400, 1672876800],
-                    "indicators": {
-                        "quote": [{"open": [130.0, 127.0, 128.0],
-                                   "high": [133.0, 131.0, 132.0],
-                                   "low":  [129.0, 126.0, 127.0],
-                                   "close":[131.0, 129.0, 130.0],
-                                   "volume":[100_000, 110_000, 105_000]}],
-                        "adjclose": [{"adjclose": [130.0, 128.0, 129.0]}],
-                    },
-                }],
-                "error": None,
-            }
-        }
-
-        def _handler(req: httpx.Request) -> httpx.Response:
-            return httpx.Response(200, content=_json.dumps(payload).encode())
+        def _fake_dl(ticker, *, years, auto_adjust):
+            def _r(d, o, h, lo, c, v):
+                ts = datetime.strptime(d, "%Y%m%d").replace(tzinfo=timezone.utc)
+                return {"ts": ts, "open": float(o), "high": float(h),
+                        "low": float(lo), "close": float(c), "volume": int(v)}
+            return [
+                _r("20230103", 130, 133, 129, 131, 100_000),
+                _r("20230104", 127, 131, 126, 129, 110_000),
+                _r("20230105", 128, 132, 127, 130, 105_000),
+            ]
 
         from trader.data.research_provider import ResearchDataProvider
-        client = httpx.Client(transport=httpx.MockTransport(_handler))
-        p = ResearchDataProvider(client=client, cache_dir=self.tmp)
+        p = ResearchDataProvider(us_downloader=_fake_dl, cache_dir=self.tmp)
         p.daily_history("AAPL", "NASDAQ", refresh=True)
 
         cache_path = os.path.join(self.tmp, "NASDAQ_AAPL.parquet")
@@ -445,30 +435,31 @@ class TestResearchProviderManifestIntegration:
 
         m = load_manifest(sidecar)
         assert m.dataset_id == "NASDAQ_AAPL"
-        assert m.provider == "Yahoo"
+        assert m.provider == "yfinance"
         assert m.adjustment == "adjusted"
         assert m.n_bars == 3
         assert m.quality_passed is not None
 
-    def test_naver_fetch_writes_sidecar(self):
-        """Fetching KOSPI bars must produce both parquet + .manifest.json."""
-        import httpx
+    def test_kospi_fetch_writes_sidecar(self):
+        """KOSPI now flows through yfinance (.KS) — sidecar manifest must be
+        written with provider 'yfinance' and adjustment 'adjusted'."""
+        from datetime import datetime, timezone
 
-        xml = """<?xml version="1.0" encoding="EUC-KR" ?>
-<protocol>
-<chartdata symbol="005930" count="3" timeframe="day">
-<item data="20230103|130|133|129|131|100000" />
-<item data="20230104|127|131|126|129|110000" />
-<item data="20230105|128|132|127|130|105000" />
-</chartdata>
-</protocol>"""
+        def _fake_dl(ticker, *, years, auto_adjust):
+            assert ticker == "005930.KS"  # mapped to .KS
 
-        def _handler(req: httpx.Request) -> httpx.Response:
-            return httpx.Response(200, content=xml.encode("utf-8"))
+            def _r(d, o, h, lo, c, v):
+                ts = datetime.strptime(d, "%Y%m%d").replace(tzinfo=timezone.utc)
+                return {"ts": ts, "open": float(o), "high": float(h),
+                        "low": float(lo), "close": float(c), "volume": int(v)}
+            return [
+                _r("20230103", 130, 133, 129, 131, 100_000),
+                _r("20230104", 127, 131, 126, 129, 110_000),
+                _r("20230105", 128, 132, 127, 130, 105_000),
+            ]
 
         from trader.data.research_provider import ResearchDataProvider
-        client = httpx.Client(transport=httpx.MockTransport(_handler))
-        p = ResearchDataProvider(client=client, cache_dir=self.tmp)
+        p = ResearchDataProvider(us_downloader=_fake_dl, cache_dir=self.tmp)
         p.daily_history("005930", "KOSPI", refresh=True)
 
         cache_path = os.path.join(self.tmp, "KOSPI_005930.parquet")
@@ -477,6 +468,6 @@ class TestResearchProviderManifestIntegration:
 
         m = load_manifest(sidecar)
         assert m.dataset_id == "KOSPI_005930"
-        assert m.provider == "Naver"
-        assert m.adjustment == "raw"
+        assert m.provider == "yfinance"
+        assert m.adjustment == "adjusted"
         assert m.n_bars == 3

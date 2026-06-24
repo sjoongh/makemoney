@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ALLE",
+  "created_ts": "2026-06-22T12:58:25.580031+00:00",
+  "symbols": [
+    "ALLE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "7005beff28e7e7930c7c7dbec08c8ca47857d7f556b81693f9816cf7dbaac771",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

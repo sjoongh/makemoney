@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_AFL",
+  "created_ts": "2026-06-22T13:09:08.533803+00:00",
+  "symbols": [
+    "AFL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "64a1ce5a5457bf5692214da08b6963d023b543049dfd8d1f668a0e15f501a62a",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

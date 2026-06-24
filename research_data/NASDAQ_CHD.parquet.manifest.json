@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CHD",
+  "created_ts": "2026-06-22T13:05:34.201646+00:00",
+  "symbols": [
+    "CHD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "8c0d000e992a843eed5d531a2d943ef70d625e42c1e040698e0d31a0ca33d825",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

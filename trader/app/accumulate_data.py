@@ -6,10 +6,11 @@ Builds a local Parquet dataset of daily OHLCV bars for a broad universe
 Yahoo Finance 429 rate limits.
 
 DESIGN PHILOSOPHY:
-  Run this script once per day via cron.  Each invocation fetches only the
-  next N un-done symbols (~25 by default) and sleeps 25 s between fetches
-  (well under Yahoo's undocumented rate limit).  After ~1-2 weeks of daily
-  runs the full 150-symbol universe will be populated.
+  US history now comes from yfinance (curl_cffi browser impersonation), which
+  no longer 429s, and KOSPI from Naver (permissive).  So the whole universe can
+  be backfilled in a single run — pass a large --per-run (e.g. 300).  The
+  resumable manifest still lets you stop/restart safely, and a daily cron keeps
+  the dataset fresh as new bars print.
 
 SURVIVORSHIP BIAS CAVEAT:
   The S&P 500 constituent list and KOSPI large-cap list reflect *current*
@@ -53,9 +54,11 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "--per-run",
         type=int,
-        default=25,
+        default=60,
         metavar="N",
-        help="Symbols to fetch per cron run (default 25, ~10 min at 25 s/symbol).",
+        help="Symbols to fetch per cron run (default 60). yfinance (US) no "
+             "longer 429s, so larger batches are fine; pass a big value (e.g. "
+             "300) to backfill the whole universe in one go.",
     )
     parser.add_argument(
         "--us-limit",
@@ -77,8 +80,9 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "--sleep-secs",
         type=float,
-        default=25.0,
-        help="Seconds to sleep between symbol fetches (default 25.0).",
+        default=1.0,
+        help="Seconds to sleep between symbol fetches (default 1.0 — a "
+             "research-only courtesy; yfinance/Naver no longer need 25 s).",
     )
     args = parser.parse_args(argv)
 
@@ -131,9 +135,9 @@ def main(argv: list[str] | None = None) -> None:
 
     if summary["cooled"] > 0:
         print(
-            "\nWARNING: Yahoo rate-limited (429). "
-            "Affected symbols placed in 24-hour cooldown. "
-            "Run again tomorrow — the accumulator will resume automatically."
+            "\nWARNING: a source rate-limited (429) — rare now that US uses "
+            "yfinance. Affected symbols placed in 24-hour cooldown; re-run "
+            "later and the accumulator will resume automatically."
         )
 
 

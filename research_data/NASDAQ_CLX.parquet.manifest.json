@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CLX",
+  "created_ts": "2026-06-22T13:05:57.509780+00:00",
+  "symbols": [
+    "CLX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "ee02565844f4a5cba7521d501962d2b8a62d098cb96dea8bec86730ce6ae0a64",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

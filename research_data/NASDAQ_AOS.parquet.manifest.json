@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_AOS",
+  "created_ts": "2026-06-22T12:57:38.698008+00:00",
+  "symbols": [
+    "AOS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "5d63572a20faa42c6f0b418866f301d8ced2487d2bd7f571283ac9b1fca80f95",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

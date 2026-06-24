@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ADP",
+  "created_ts": "2026-06-22T13:03:24.224621+00:00",
+  "symbols": [
+    "ADP"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "0a9988c16429d7aa3d1381eff05aa8163da270fedcb6a1f118a5b9f108e01722",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}

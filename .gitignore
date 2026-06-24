@@ -18,5 +18,9 @@ logs/
 .omc/state/
 paper_forward/
 .kill_switch.json
-research_data/
+# research_data/ is committed as a versioned dataset snapshot (daily OHLCV).
+# Only transient/garbage artifacts are ignored:
+research_data/_quarantine/
+research_data/*.backup
+research_data/*.tmp
 experiments/

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_BNY",
+  "created_ts": "2026-06-22T13:04:14.375003+00:00",
+  "symbols": [
+    "BNY"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-20",
+  "end_date": "2026-06-18",
+  "n_bars": 2514,
+  "adjustment": "adjusted",
+  "content_hash": "ded35aaf542c4da87277d5e8ae8a447db055d70f40104aa9206a6ee50db88dcc",
+  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "quality_passed": true
+}
