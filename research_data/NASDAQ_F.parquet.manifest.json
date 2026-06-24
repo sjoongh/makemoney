@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_F",
+  "created_ts": "2026-06-24T00:57:56.817106+00:00",
+  "symbols": [
+    "F"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "d98ba14719eaff3643867f6514b2a347003bca2af9bb87fa37698a7707dfefeb",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

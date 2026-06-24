@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_BEN",
+  "created_ts": "2026-06-24T00:58:15.785726+00:00",
+  "symbols": [
+    "BEN"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "343179b64569d3c05bde9be1b8b248a7f3036ac3252fae2de0b16825a64ee339",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

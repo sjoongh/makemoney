@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HSIC",
+  "created_ts": "2026-06-24T00:59:26.983034+00:00",
+  "symbols": [
+    "HSIC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "ea00aeba86ebf524e8b53fbb77f7f8be43cdc92d0c99f8133e3048ea561fadc0",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

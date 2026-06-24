@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ROL",
+  "created_ts": "2026-06-24T01:07:43.706555+00:00",
+  "symbols": [
+    "ROL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "2541501d6dbbba5407ad222b3a0bdc1385f4d60e0a6b0e134fedd5ec86ad8f77",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

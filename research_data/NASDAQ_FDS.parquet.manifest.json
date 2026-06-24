@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FDS",
+  "created_ts": "2026-06-24T00:57:23.900758+00:00",
+  "symbols": [
+    "FDS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "6962572ffb19863018dce5b2c6112e94f6bb2f2a55d5c0e3010c198d96137d65",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

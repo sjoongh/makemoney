@@ -1,0 +1,15 @@
+{
+  "dataset_id": "KOSPI_011210",
+  "created_ts": "2026-06-24T02:06:58.928491+00:00",
+  "symbols": [
+    "011210"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-24",
+  "n_bars": 2447,
+  "adjustment": "adjusted",
+  "content_hash": "3189bf3897647d830455a25037ce4b6e6d6bc382123d96cc030155b087731e47",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

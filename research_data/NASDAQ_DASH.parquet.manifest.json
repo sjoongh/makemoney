@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DASH",
+  "created_ts": "2026-06-24T00:55:41.265488+00:00",
+  "symbols": [
+    "DASH"
+  ],
+  "provider": "yfinance",
+  "start_date": "2020-12-09",
+  "end_date": "2026-06-23",
+  "n_bars": 1389,
+  "adjustment": "adjusted",
+  "content_hash": "599a3b5def684e77aa9d1c699665e66be22cb05860bcb8b4dad31095c6bee3e4",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

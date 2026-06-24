@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_XOM",
+  "created_ts": "2026-06-24T00:57:19.840273+00:00",
+  "symbols": [
+    "XOM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "ad9a52c4daafc3cafc876580720b7f78f12aae0bd5d01d51a64ec39f43c771fd",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -63,14 +63,21 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "--us-limit",
         type=int,
-        default=120,
+        default=503,
         metavar="M",
-        help="Max S&P 500 symbols in universe (default 120).",
+        help="Max S&P 500 symbols in universe (default 503 = all).",
+    )
+    parser.add_argument(
+        "--kr-limit",
+        type=int,
+        default=200,
+        metavar="M",
+        help="Max KOSPI symbols in universe (default 200, top by market cap).",
     )
     parser.add_argument(
         "--no-kr",
         action="store_true",
-        help="Exclude KOSPI large-caps from the universe.",
+        help="Exclude KOSPI names from the universe.",
     )
     parser.add_argument(
         "--manifest",
@@ -95,7 +102,7 @@ def main(argv: list[str] | None = None) -> None:
     print("=" * 60)
 
     print(f"\nBuilding universe (us_limit={args.us_limit}, kr={not args.no_kr})…")
-    uni = universe(us_limit=args.us_limit, kr=not args.no_kr)
+    uni = universe(us_limit=args.us_limit, kr=not args.no_kr, kr_limit=args.kr_limit)
     print(f"  Universe size: {len(uni)} symbols")
 
     provider = ResearchDataProvider()

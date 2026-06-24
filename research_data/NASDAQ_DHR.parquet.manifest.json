@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DHR",
+  "created_ts": "2026-06-24T00:54:58.223279+00:00",
+  "symbols": [
+    "DHR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "ad921f3374815a46bf1962c2fd6d6ced7d448377c2e61cc334f24dc8e20f8eee",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

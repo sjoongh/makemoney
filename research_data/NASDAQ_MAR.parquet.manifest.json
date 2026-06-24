@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MAR",
+  "created_ts": "2026-06-24T01:02:46.820379+00:00",
+  "symbols": [
+    "MAR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "b3e7c46f0694089055a9e74edf4175288647ace56ca883f47db09c1caa484b6a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

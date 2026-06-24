@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FTV",
+  "created_ts": "2026-06-24T00:58:03.930388+00:00",
+  "symbols": [
+    "FTV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-07-05",
+  "end_date": "2026-06-23",
+  "n_bars": 2506,
+  "adjustment": "adjusted",
+  "content_hash": "199aee9f6b2ef9be2ea793efc46f90473913b1fd7695bacdf0154bc451b9206d",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

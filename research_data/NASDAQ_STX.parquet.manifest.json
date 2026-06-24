@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_STX",
+  "created_ts": "2026-06-24T01:08:06.937655+00:00",
+  "symbols": [
+    "STX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "37fbbf93a672c6507dbf20b0c007cb064d72427c4141a7c2ad8a2e4199481489",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_VICI",
+  "created_ts": "2026-06-24T01:11:27.033101+00:00",
+  "symbols": [
+    "VICI"
+  ],
+  "provider": "yfinance",
+  "start_date": "2018-01-02",
+  "end_date": "2026-06-23",
+  "n_bars": 2129,
+  "adjustment": "adjusted",
+  "content_hash": "3915a3804d7718ceff89f5c7707ad79f0d333bf566b7c5657b71ca1babf77729",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

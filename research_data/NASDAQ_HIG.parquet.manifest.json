@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HIG",
+  "created_ts": "2026-06-24T00:59:13.719669+00:00",
+  "symbols": [
+    "HIG"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "cb346780f1c7809ef03fb352924fca895d3abfacc8eab851d7e99c21455ce379",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HON",
+  "created_ts": "2026-06-24T00:59:41.477855+00:00",
+  "symbols": [
+    "HON"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "9688a523eae464cd7ca7da275a21ce442d959a0c420d51a06aa3606c7f45f91f",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

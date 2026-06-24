@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_SNDK",
+  "created_ts": "2026-06-24T01:07:58.904890+00:00",
+  "symbols": [
+    "SNDK"
+  ],
+  "provider": "yfinance",
+  "start_date": "2025-02-13",
+  "end_date": "2026-06-23",
+  "n_bars": 340,
+  "adjustment": "adjusted",
+  "content_hash": "4a02fbd4f5fd6efc92d77f03e15dd2ee23ac1b739b0b37d604b02da83aecad72",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

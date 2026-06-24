@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_WSM",
+  "created_ts": "2026-06-24T01:12:32.959267+00:00",
+  "symbols": [
+    "WSM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-22",
+  "n_bars": 2511,
+  "adjustment": "adjusted",
+  "content_hash": "47dca9e505472f92e74da33480e7312fddbef87025ed60cc5daf3ce559fe182b",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

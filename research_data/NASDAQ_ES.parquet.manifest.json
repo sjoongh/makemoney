@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ES",
+  "created_ts": "2026-06-24T00:57:02.861897+00:00",
+  "symbols": [
+    "ES"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "968c0d904e5d6ce66836d3fb36b527b82ac7bb5e2f9a3ee483f214ec4e15b5d3",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_WST",
+  "created_ts": "2026-06-24T01:12:22.175958+00:00",
+  "symbols": [
+    "WST"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "e34cbb8d1718c4429a639443e110d93f63843f27582ee7b89385fb44b4fbbd76",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

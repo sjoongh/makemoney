@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DOW",
+  "created_ts": "2026-06-24T00:55:46.190742+00:00",
+  "symbols": [
+    "DOW"
+  ],
+  "provider": "yfinance",
+  "start_date": "2019-03-20",
+  "end_date": "2026-06-23",
+  "n_bars": 1825,
+  "adjustment": "adjusted",
+  "content_hash": "0b32ef80b466530a8cc885d390cb85f989e47b9fc3315025137506360e99e1ee",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_EQR",
+  "created_ts": "2026-06-24T00:56:45.302840+00:00",
+  "symbols": [
+    "EQR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "f75b5d162b87061058ab30ba520106324f6b1c31cc30b7706b92b18c0738623a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

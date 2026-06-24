@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_RTX",
+  "created_ts": "2026-06-24T01:07:19.481067+00:00",
+  "symbols": [
+    "RTX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "ec8137c65eb655b702eeb27c2d54a806ca2f917fbada4b3ecef7e7105a865391",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

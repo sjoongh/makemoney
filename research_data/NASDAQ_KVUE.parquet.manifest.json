@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_KVUE",
+  "created_ts": "2026-06-24T01:01:10.381710+00:00",
+  "symbols": [
+    "KVUE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2023-05-04",
+  "end_date": "2026-06-23",
+  "n_bars": 786,
+  "adjustment": "adjusted",
+  "content_hash": "c637412a15cc9056ab1c015d6fc2e827ac75f4072277f82e306bde1d0c39be14",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

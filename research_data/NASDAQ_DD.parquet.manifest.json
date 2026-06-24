@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DD",
+  "created_ts": "2026-06-24T00:55:58.914044+00:00",
+  "symbols": [
+    "DD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2511,
+  "adjustment": "adjusted",
+  "content_hash": "37ba5e4e573f6b726d3ca5c70eaf00423b1abaf66a86f5ec8d3233046e0e948e",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

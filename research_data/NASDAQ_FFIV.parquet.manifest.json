@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FFIV",
+  "created_ts": "2026-06-24T00:57:21.831412+00:00",
+  "symbols": [
+    "FFIV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "9ddaece7cedddc48807b2236a62e4e326d26b9abacc05d694d2b4a0994ded2ba",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

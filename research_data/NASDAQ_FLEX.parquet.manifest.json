@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FLEX",
+  "created_ts": "2026-06-24T00:57:54.285950+00:00",
+  "symbols": [
+    "FLEX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "e0e331fe54533859efdec197402487b10e3ccc3d3a8b3fc297d92300f65ee73a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

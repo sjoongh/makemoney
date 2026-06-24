@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GEV",
+  "created_ts": "2026-06-24T00:58:31.361591+00:00",
+  "symbols": [
+    "GEV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2024-03-27",
+  "end_date": "2026-06-23",
+  "n_bars": 561,
+  "adjustment": "adjusted",
+  "content_hash": "45fe5e62e86672283f5b3d198258074138058d82a41f368bd2ed85b00bd9c44d",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

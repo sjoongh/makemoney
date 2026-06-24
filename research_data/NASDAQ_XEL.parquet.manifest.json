@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_XEL",
+  "created_ts": "2026-06-24T01:12:49.844249+00:00",
+  "symbols": [
+    "XEL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "e0a8587ada5e78714ff4e7fd43ee5498499eff2b8f98b133b08689481584cb73",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

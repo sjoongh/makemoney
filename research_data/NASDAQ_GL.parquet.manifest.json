@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GL",
+  "created_ts": "2026-06-24T00:58:58.808761+00:00",
+  "symbols": [
+    "GL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "89b70bab1dfa2827dcd28e9158f8da5a672025d08ddd76aa92a233267959accb",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

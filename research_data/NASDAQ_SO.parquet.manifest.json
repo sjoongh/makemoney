@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_SO",
+  "created_ts": "2026-06-24T01:08:32.474249+00:00",
+  "symbols": [
+    "SO"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "07f5f2eaa31a3c2a01d78dbed59446f65a921af98a551627e32cb5af7081a62b",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

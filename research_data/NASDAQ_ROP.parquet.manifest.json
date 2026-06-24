@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ROP",
+  "created_ts": "2026-06-24T01:07:46.085731+00:00",
+  "symbols": [
+    "ROP"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "25746b94f2d23b377c84eca69d7f0a31f9c79babf5cde16586d5697b0dd2d26c",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

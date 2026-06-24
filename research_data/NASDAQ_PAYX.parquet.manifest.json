@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PAYX",
+  "created_ts": "2026-06-24T01:05:57.488783+00:00",
+  "symbols": [
+    "PAYX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "968668599e0e2ed88cc1e95e88808ab2dcb227b85f5542f634adaa036babd00b",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

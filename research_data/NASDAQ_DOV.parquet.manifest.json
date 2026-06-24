@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DOV",
+  "created_ts": "2026-06-24T00:55:43.798639+00:00",
+  "symbols": [
+    "DOV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "de357d948c4cec7a4b816e7e1920cb3071850d748d07d07c60ccb60d7e9de529",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

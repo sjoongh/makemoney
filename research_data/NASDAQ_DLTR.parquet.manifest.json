@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DLTR",
+  "created_ts": "2026-06-24T00:55:31.929000+00:00",
+  "symbols": [
+    "DLTR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "27b95352839ac94941baa1fa199cebe48af626036d3e5e289c4c4ec8a3189492",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

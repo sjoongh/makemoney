@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MAS",
+  "created_ts": "2026-06-24T01:02:58.282511+00:00",
+  "symbols": [
+    "MAS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "57efcac61c121527eed0e1ba406fc4d41829b59c2e2843423f72ffe2148deafb",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

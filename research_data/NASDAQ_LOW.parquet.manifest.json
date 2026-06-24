@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LOW",
+  "created_ts": "2026-06-24T01:02:29.770456+00:00",
+  "symbols": [
+    "LOW"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "4d0053b8ac8481d7018bdd96486ec285e19533428fb5786abf6f24bb72e48c7c",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

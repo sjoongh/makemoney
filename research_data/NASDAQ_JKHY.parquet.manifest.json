@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_JKHY",
+  "created_ts": "2026-06-24T01:00:58.513613+00:00",
+  "symbols": [
+    "JKHY"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "e7a023213e47581948af9f73cf6625b974e293aa0560f2cdd7d1a5e26163afcd",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

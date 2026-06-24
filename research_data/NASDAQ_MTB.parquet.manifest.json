@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MTB",
+  "created_ts": "2026-06-24T01:02:42.143354+00:00",
+  "symbols": [
+    "MTB"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "c8e8dcc8353db8b03b737ad7c6b8afe3aa401552aef3a269e08e14afc420979e",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

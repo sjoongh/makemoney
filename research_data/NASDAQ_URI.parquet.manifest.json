@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_URI",
+  "created_ts": "2026-06-24T01:10:42.847731+00:00",
+  "symbols": [
+    "URI"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "bd7e8cc3ff4d33362a5f447519f12fd4d86cf55bd0ae53b13b844fb4f0f9f406",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PNC",
+  "created_ts": "2026-06-24T01:06:33.901921+00:00",
+  "symbols": [
+    "PNC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "dff1c6ef021b91dd21df6531ec07d4b2adea9f3eeebc78bf0840bc0a5ce8d14f",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_WRB",
+  "created_ts": "2026-06-24T01:11:42.030472+00:00",
+  "symbols": [
+    "WRB"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "a900f73e392a83818d70e726165bf3470731388a1b67975589864c0e5c5c1ef4",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

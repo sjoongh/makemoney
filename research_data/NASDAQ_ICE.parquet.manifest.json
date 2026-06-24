@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ICE",
+  "created_ts": "2026-06-24T01:00:27.143126+00:00",
+  "symbols": [
+    "ICE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "446fe6ffa503673af101585ae063de75a544a738a08ae15287b476f0197af87f",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

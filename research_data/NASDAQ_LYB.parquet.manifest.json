@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LYB",
+  "created_ts": "2026-06-24T01:02:38.233185+00:00",
+  "symbols": [
+    "LYB"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "c4d139c8180bcd8d1e572a5f74ae41aa624960668e97d748b37ef5157229e248",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

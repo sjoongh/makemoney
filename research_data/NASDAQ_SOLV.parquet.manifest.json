@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_SOLV",
+  "created_ts": "2026-06-24T01:08:29.356378+00:00",
+  "symbols": [
+    "SOLV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2024-03-26",
+  "end_date": "2026-06-23",
+  "n_bars": 562,
+  "adjustment": "adjusted",
+  "content_hash": "46ed61ea7e00c818e55244992dbf06b4c03504130356fd5f50bf85e970ef3fcf",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

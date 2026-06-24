@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_KKR",
+  "created_ts": "2026-06-24T01:01:32.589897+00:00",
+  "symbols": [
+    "KKR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "cae77d73e1a8c57689d68ccb237635106f52fa4d433ebee0d9b80816511919fd",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

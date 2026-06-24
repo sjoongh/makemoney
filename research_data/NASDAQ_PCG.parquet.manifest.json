@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PCG",
+  "created_ts": "2026-06-24T01:06:15.808579+00:00",
+  "symbols": [
+    "PCG"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0b2fac966918f4e726dc64f9b179276c4470d35bc9d760dd35653a8db8c9e1bf",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

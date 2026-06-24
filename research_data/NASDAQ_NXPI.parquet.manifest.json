@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NXPI",
+  "created_ts": "2026-06-24T01:05:13.549809+00:00",
+  "symbols": [
+    "NXPI"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "7d01d90cf410a18490c740a5043b8da24a9606bb9e16bd62156f359ebc0f9c64",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_IRM",
+  "created_ts": "2026-06-24T01:00:49.623053+00:00",
+  "symbols": [
+    "IRM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "d71b4fac8c4e1f10da51481bacaf3a6761665a1c585da509a921526f51391f1e",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

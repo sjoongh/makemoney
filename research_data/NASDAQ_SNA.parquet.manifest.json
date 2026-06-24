@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_SNA",
+  "created_ts": "2026-06-24T01:08:27.251182+00:00",
+  "symbols": [
+    "SNA"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "5559e00d94ff3b1391c7dfe34493958437ebec3a019f8e6a0508ab9d92ce4188",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

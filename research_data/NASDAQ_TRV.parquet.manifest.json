@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_TRV",
+  "created_ts": "2026-06-24T01:09:57.217543+00:00",
+  "symbols": [
+    "TRV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "750634ddc8297072ec17b389e1c469f91915f1364f8650250548015e72addefa",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

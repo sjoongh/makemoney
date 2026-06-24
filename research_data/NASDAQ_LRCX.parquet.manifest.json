@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LRCX",
+  "created_ts": "2026-06-24T01:02:00.281285+00:00",
+  "symbols": [
+    "LRCX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "f500fda0f27d5cdaee26b86d28d1fc3b0b85cbfe1d93c20f809b53be6dd32042",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

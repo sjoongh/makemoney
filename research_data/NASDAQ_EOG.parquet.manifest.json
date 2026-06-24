@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_EOG",
+  "created_ts": "2026-06-24T00:56:34.615095+00:00",
+  "symbols": [
+    "EOG"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "4d8954fa14423ef133b4ebb39aba8e392b48f6dce388bc0572325db38a47e169",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

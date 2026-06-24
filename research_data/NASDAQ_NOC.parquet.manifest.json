@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NOC",
+  "created_ts": "2026-06-24T01:04:51.755814+00:00",
+  "symbols": [
+    "NOC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-22",
+  "n_bars": 2511,
+  "adjustment": "adjusted",
+  "content_hash": "4d022b9cc1070b2bf3cbb87847e4876524439b364f453127b935a2bd3fedc1a9",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_IBM",
+  "created_ts": "2026-06-24T01:00:05.265490+00:00",
+  "symbols": [
+    "IBM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "88f1e4643cdfc708b1694c27d2f666551f76a936b36d1c3e16adedb617762b0d",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GIS",
+  "created_ts": "2026-06-24T00:58:44.874006+00:00",
+  "symbols": [
+    "GIS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-22",
+  "n_bars": 2511,
+  "adjustment": "adjusted",
+  "content_hash": "92c83c6326bdf1b322e23ca28875b0d81c2902582080ca29cdc2d756d075c062",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HOOD",
+  "created_ts": "2026-06-24T01:07:38.319075+00:00",
+  "symbols": [
+    "HOOD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2021-07-29",
+  "end_date": "2026-06-23",
+  "n_bars": 1230,
+  "adjustment": "adjusted",
+  "content_hash": "e6ab2a5686512b64249a1df1dfac7dcc07b6381fdc9ca3e1e926cf68223fc594",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

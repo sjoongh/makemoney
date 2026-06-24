@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_EXPD",
+  "created_ts": "2026-06-24T00:57:13.471237+00:00",
+  "symbols": [
+    "EXPD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "dd984ae5ffbacd9f8968f507672907029ead4f2719502beb385d53a26638dd22",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

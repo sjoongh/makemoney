@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PFG",
+  "created_ts": "2026-06-24T01:06:41.458290+00:00",
+  "symbols": [
+    "PFG"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "44b5306ed792f85d79170106a5a6a31b6b0a50f9b25d9c87ee19f4e48b297b06",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

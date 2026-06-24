@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NDAQ",
+  "created_ts": "2026-06-24T01:04:21.295140+00:00",
+  "symbols": [
+    "NDAQ"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "8d2481f01bcf0a50f07955250afa29899676ef241c4fab8c6470f1ed8f4699d0",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LULU",
+  "created_ts": "2026-06-24T01:02:32.823152+00:00",
+  "symbols": [
+    "LULU"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "ad69c51f444e26ca38aec51f2a1d012498f1e588f6b3b8f6309f08a2b8e3bef8",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

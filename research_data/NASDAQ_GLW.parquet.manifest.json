@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GLW",
+  "created_ts": "2026-06-24T00:54:25.695951+00:00",
+  "symbols": [
+    "GLW"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "45d971373b6b1f8441b2eb039aedfc646d5afce52cec0b134e2be898d79f194c",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

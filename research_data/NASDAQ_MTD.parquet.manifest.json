@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MTD",
+  "created_ts": "2026-06-24T01:03:28.466161+00:00",
+  "symbols": [
+    "MTD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0b5b3b59df252b6861ceacd64d4fc26c341b7fb4fb85470a0a5f08b5a6128b47",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

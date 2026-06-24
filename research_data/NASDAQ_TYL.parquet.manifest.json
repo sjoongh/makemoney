@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_TYL",
+  "created_ts": "2026-06-24T01:10:08.968295+00:00",
+  "symbols": [
+    "TYL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "2bd523f6f030776fb01ac27d470d73d835c64c3686d5fbb8350a6d9d6a235451",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

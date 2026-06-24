@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_TRMB",
+  "created_ts": "2026-06-24T01:10:01.421003+00:00",
+  "symbols": [
+    "TRMB"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "ba999f9cea33d78d7951fe3c0212f8d41fe2cab5ec122a74e608d94d0f344b80",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

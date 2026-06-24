@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LEN",
+  "created_ts": "2026-06-24T01:02:09.904675+00:00",
+  "symbols": [
+    "LEN"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "25f632731570fa8605c1bffb60502197e32ff1773dc0ba77833743959fe6adea",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

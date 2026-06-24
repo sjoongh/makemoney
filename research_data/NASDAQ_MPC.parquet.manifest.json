@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MPC",
+  "created_ts": "2026-06-24T01:02:44.375143+00:00",
+  "symbols": [
+    "MPC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "51cc79e8c2c0589b409f42bf06d2e3042e481c1a5d6d532cbfdec8821977afe6",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

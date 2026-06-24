@@ -137,21 +137,26 @@ def load_sp500(client: httpx.Client | None = None) -> list[str]:
 # Combined universe
 # ---------------------------------------------------------------------------
 
-def universe(us_limit: int = 120, kr: bool = True) -> list[tuple[str, str]]:
+def universe(
+    us_limit: int = 503, kr: bool = True, kr_limit: int = 200
+) -> list[tuple[str, str]]:
     """Build the combined research universe.
 
     Returns a list of (ticker, market) tuples:
       - Up to *us_limit* S&P 500 symbols tagged as "NASDAQ" (for the
         cost/currency model — acceptable for research).
-      - All KOSPI_LARGECAP symbols tagged as "KOSPI" (if kr=True).
+      - Up to *kr_limit* top-marketcap KOSPI common stocks tagged "KOSPI"
+        (if kr=True).  Sourced from the baked KOSPI_TOP200 snapshot; falls
+        back to the small KOSPI_LARGECAP list if that import is unavailable.
 
     SURVIVORSHIP BIAS WARNING: both lists reflect current membership only.
     Delisted and historically-removed names are excluded — results derived
     from this universe will be inflated.  See docs/data-limitations.md.
 
     Args:
-        us_limit: Maximum number of S&P 500 symbols to include (default 120).
-        kr:       Include KOSPI large-caps (default True).
+        us_limit: Maximum number of S&P 500 symbols to include (default 503 = all).
+        kr:       Include KOSPI names (default True).
+        kr_limit: Maximum number of KOSPI names to include (default 200).
     """
     logger.warning(
         "universe() called — SURVIVORSHIP-BIASED: current constituents only; "
@@ -162,5 +167,9 @@ def universe(us_limit: int = 120, kr: bool = True) -> list[tuple[str, str]]:
         (ticker, "NASDAQ") for ticker in sp500[:us_limit]
     ]
     if kr:
-        result.extend((ticker, "KOSPI") for ticker in KOSPI_LARGECAP)
+        try:
+            from trader.data.kospi_universe import KOSPI_TOP200 as _kr_list
+        except Exception:  # pragma: no cover - fallback if snapshot missing
+            _kr_list = KOSPI_LARGECAP
+        result.extend((ticker, "KOSPI") for ticker in _kr_list[:kr_limit])
     return result

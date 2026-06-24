@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PKG",
+  "created_ts": "2026-06-24T01:05:41.427193+00:00",
+  "symbols": [
+    "PKG"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "836de547df09458228471c559b47d46307443187fefbe71e9644df5cb690bb73",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

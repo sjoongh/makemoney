@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HII",
+  "created_ts": "2026-06-24T01:00:02.809348+00:00",
+  "symbols": [
+    "HII"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "a5b44566450e5115c272a668e2076e974e0518c25d746061c4430881e59d1866",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

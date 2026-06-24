@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_INTC",
+  "created_ts": "2026-06-24T01:00:21.552826+00:00",
+  "symbols": [
+    "INTC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "08651149aa96646d06128bb1b5601102fb09955518bfb47fa39102a7a2fb260a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

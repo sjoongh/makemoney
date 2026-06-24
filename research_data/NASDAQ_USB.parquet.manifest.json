@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_USB",
+  "created_ts": "2026-06-24T01:10:17.648750+00:00",
+  "symbols": [
+    "USB"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "a4b39d1bec7cdf7d0f72dac06d3512a5db059041c47138a2a10b942f0a980582",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

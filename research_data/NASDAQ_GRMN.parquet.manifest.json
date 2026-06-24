@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GRMN",
+  "created_ts": "2026-06-24T00:58:21.598982+00:00",
+  "symbols": [
+    "GRMN"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "008ae80112b22d5565b99facd1c6cb135195d4cb78faac0db441b7e8aa2bb10a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_INTU",
+  "created_ts": "2026-06-24T01:00:35.820646+00:00",
+  "symbols": [
+    "INTU"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "d2c93a5d483e09fc06e12aaa199b85436e429b91289b07a9c50e7d542ac545a7",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

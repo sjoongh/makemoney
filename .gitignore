@@ -27,3 +27,8 @@ experiments/
 
 # OMC advisor scratch artifacts (Codex/Gemini consult outputs)
 .omc/artifacts/
+
+# Forward recorder output — point-in-time raw bars + membership log, grows
+# daily via cron (machine-local; snapshot to git periodically like research_data).
+forward_data/
+research_data/_universe_log.jsonl

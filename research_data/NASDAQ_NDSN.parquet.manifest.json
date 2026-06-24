@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NDSN",
+  "created_ts": "2026-06-24T01:04:44.146793+00:00",
+  "symbols": [
+    "NDSN"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "6136f41fa6cb571dee01121a299cf4afbf966a6fba6be70552528c70eb5a2cea",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_VST",
+  "created_ts": "2026-06-24T01:11:36.489542+00:00",
+  "symbols": [
+    "VST"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-10-05",
+  "end_date": "2026-06-23",
+  "n_bars": 2441,
+  "adjustment": "adjusted",
+  "content_hash": "2ffa36e4edeaf86fb1cf2db8f43bd9c3a6df3284c4982a811ecc94bd138e6844",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

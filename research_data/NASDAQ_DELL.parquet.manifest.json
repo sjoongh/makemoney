@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DELL",
+  "created_ts": "2026-06-24T00:55:14.814987+00:00",
+  "symbols": [
+    "DELL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-08-17",
+  "end_date": "2026-06-23",
+  "n_bars": 2475,
+  "adjustment": "adjusted",
+  "content_hash": "3836555bbfbc4a23bf9d0537d44a90300ae3c6fa2c89f333118723c9acb51faf",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

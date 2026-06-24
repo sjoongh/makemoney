@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HUBB",
+  "created_ts": "2026-06-24T00:59:55.935868+00:00",
+  "symbols": [
+    "HUBB"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2511,
+  "adjustment": "adjusted",
+  "content_hash": "0e04d6cff7f9abe57fc8ac7befd0d3b901ca3ae6f416d4178c57038eec4fade4",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

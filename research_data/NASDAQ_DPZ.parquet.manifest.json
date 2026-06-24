@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DPZ",
+  "created_ts": "2026-06-24T00:55:39.136472+00:00",
+  "symbols": [
+    "DPZ"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "89483b99c59b00ca8ad571d58de8d859e013874474fa3f3ad62f57cdebd32987",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

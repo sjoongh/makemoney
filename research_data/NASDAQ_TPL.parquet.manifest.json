@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_TPL",
+  "created_ts": "2026-06-24T01:09:28.737536+00:00",
+  "symbols": [
+    "TPL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "143a27a5a7c3c9e193d02466d06ad08bb1f29c9eb1740bb35ff1d4ff55c526a7",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

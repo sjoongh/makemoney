@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_QCOM",
+  "created_ts": "2026-06-24T01:07:08.432212+00:00",
+  "symbols": [
+    "QCOM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "d1dc8157eed07060fcd844a615099adc6cc8b26619957cadadd81bab4b81960a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

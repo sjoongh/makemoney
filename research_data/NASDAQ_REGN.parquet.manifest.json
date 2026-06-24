@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_REGN",
+  "created_ts": "2026-06-24T01:07:26.762769+00:00",
+  "symbols": [
+    "REGN"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "9e96472ed901a60b46a7841de819f489225819f3db0bfc7b68386f6a0570e443",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

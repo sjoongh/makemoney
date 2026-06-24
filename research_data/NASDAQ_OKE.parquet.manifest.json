@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_OKE",
+  "created_ts": "2026-06-24T01:05:29.001665+00:00",
+  "symbols": [
+    "OKE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "ba857f49bf578e7d1cb848ebbbe7a38d21ffec4af4f49dd92108c0c6dafcd6dd",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FOX",
+  "created_ts": "2026-06-24T00:58:10.094996+00:00",
+  "symbols": [
+    "FOX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2019-03-13",
+  "end_date": "2026-06-23",
+  "n_bars": 1830,
+  "adjustment": "adjusted",
+  "content_hash": "eb4f5393f2772d48d7c24f7b1726e496e291062d7126c307e66613edc9469fb9",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}
