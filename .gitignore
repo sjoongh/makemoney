@@ -24,3 +24,6 @@ research_data/_quarantine/
 research_data/*.backup
 research_data/*.tmp
 experiments/
+
+# OMC advisor scratch artifacts (Codex/Gemini consult outputs)
+.omc/artifacts/
