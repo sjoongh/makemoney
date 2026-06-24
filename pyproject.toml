@@ -10,6 +10,9 @@ dev = ["pytest", "pytest-cov"]
 # the offline US history downloader.  Deliberately NOT in core `dependencies`
 # so the live/paper trading install never pulls yfinance into its import graph.
 research = ["yfinance>=1.4", "curl_cffi", "pandas"]
+# One-time tooling: regenerate the baked KOSPI universe snapshot
+# (trader/data/kospi_universe.py). NOT needed at runtime.
+research-tools = ["finance-datareader"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

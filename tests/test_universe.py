@@ -147,9 +147,12 @@ class TestUniverse:
         assert not any(m == "KOSPI" for _, m in result)
 
     def test_kr_true_includes_kospi(self):
+        from trader.data.kospi_universe import KOSPI_TOP200
         result = self._patched_universe(us_limit=0, kr=True)
-        kospi = [(t, m) for t, m in result if m == "KOSPI"]
-        assert len(kospi) == len(KOSPI_LARGECAP)
+        kospi = [t for t, m in result if m == "KOSPI"]
+        # default kr_limit=200 → top-200 KOSPI snapshot
+        assert len(kospi) == min(200, len(KOSPI_TOP200))
+        assert "005930" in kospi  # Samsung, the largest cap
 
     def test_brk_b_normalised(self):
         result = self._patched_universe(kr=False)
