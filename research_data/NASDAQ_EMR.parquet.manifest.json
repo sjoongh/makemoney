@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_EMR",
+  "created_ts": "2026-06-24T00:56:29.071206+00:00",
+  "symbols": [
+    "EMR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "5d550db1e89efdd5a35b8ff861f1edb957620f7d670e7f443b42c3befa8553ab",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

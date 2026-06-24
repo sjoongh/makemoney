@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_JPM",
+  "created_ts": "2026-06-24T01:01:08.556659+00:00",
+  "symbols": [
+    "JPM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "91bb78763e7b47803b9a415011d8830f673d3dc3b81d83b3f28d4be9c4fe6c3a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

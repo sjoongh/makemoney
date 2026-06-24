@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LUV",
+  "created_ts": "2026-06-24T01:08:35.020748+00:00",
+  "symbols": [
+    "LUV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "6458e9aaada18174f37b3cb0dea5dabe2a4d9e55018c7669b68f32cb4863b078",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

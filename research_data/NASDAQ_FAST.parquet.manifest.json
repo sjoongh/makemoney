@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FAST",
+  "created_ts": "2026-06-24T00:57:30.038902+00:00",
+  "symbols": [
+    "FAST"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "6783d8b1ec2b35e3802b4314f3a0e45b1596521ae9e81164092ecba8cfda8176",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GILD",
+  "created_ts": "2026-06-24T00:58:52.292076+00:00",
+  "symbols": [
+    "GILD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "2a36664ac12d11bb6f86dfe53dbbd6947453539c9aaf95eac38a33e6653411d0",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

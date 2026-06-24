@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_SHW",
+  "created_ts": "2026-06-24T01:08:14.593968+00:00",
+  "symbols": [
+    "SHW"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "2ec976466dd1fc6aa254c0ba3e8683497f1b16a2c7985727001b1d4e1ccb6040",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

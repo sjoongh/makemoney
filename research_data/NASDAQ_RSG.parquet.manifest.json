@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_RSG",
+  "created_ts": "2026-06-24T01:07:30.954761+00:00",
+  "symbols": [
+    "RSG"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "2a4b582b3deb0a4b1cf88e8b09a59320c3c03bc668a06b7b382332df4065049b",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

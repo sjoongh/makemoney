@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HCA",
+  "created_ts": "2026-06-24T00:59:19.204995+00:00",
+  "symbols": [
+    "HCA"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "449574dcd65c11849819edb558ee3dee3dbaad2f047e887c1f8e100a6d876f55",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

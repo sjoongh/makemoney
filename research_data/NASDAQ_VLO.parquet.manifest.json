@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_VLO",
+  "created_ts": "2026-06-24T01:10:50.960227+00:00",
+  "symbols": [
+    "VLO"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "85aba477494c7a25453ec0716292988297abffd5236cf8e21c50298007a6b18a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

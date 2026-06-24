@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FDXF",
+  "created_ts": "2026-06-24T00:57:38.101372+00:00",
+  "symbols": [
+    "FDXF"
+  ],
+  "provider": "yfinance",
+  "start_date": "2026-05-27",
+  "end_date": "2026-06-23",
+  "n_bars": 19,
+  "adjustment": "adjusted",
+  "content_hash": "fcfdee883175baefa1de743acf6f2499fca92cbf65762d1e048d7efff51c4a9e",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

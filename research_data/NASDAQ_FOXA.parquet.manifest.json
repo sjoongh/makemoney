@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FOXA",
+  "created_ts": "2026-06-24T00:58:07.487167+00:00",
+  "symbols": [
+    "FOXA"
+  ],
+  "provider": "yfinance",
+  "start_date": "2019-03-12",
+  "end_date": "2026-06-23",
+  "n_bars": 1831,
+  "adjustment": "adjusted",
+  "content_hash": "f625ac0b732ffdd7aea13dd70ee836a0bc822fdbf46a5016231e2753ad7b09d3",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

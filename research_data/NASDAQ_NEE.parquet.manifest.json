@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NEE",
+  "created_ts": "2026-06-24T01:04:36.589710+00:00",
+  "symbols": [
+    "NEE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "605e9d0d928c5e7c066034a847ae21a70c949836a5c490e7e417d0b899dc74ad",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_STZ",
+  "created_ts": "2026-06-24T00:54:14.820703+00:00",
+  "symbols": [
+    "STZ"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "e19117aaf60d47fdb411d0f784ef92593f25cb239b5a1c5f45d4744b22f19df1",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

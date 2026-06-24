@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_VRTX",
+  "created_ts": "2026-06-24T01:11:13.186391+00:00",
+  "symbols": [
+    "VRTX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "04d626a6d31007707ed4f1076142434c50643b5ae369b35c907d2ef0604bd1a1",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

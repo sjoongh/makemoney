@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_IR",
+  "created_ts": "2026-06-24T01:00:16.368503+00:00",
+  "symbols": [
+    "IR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2017-05-12",
+  "end_date": "2026-06-23",
+  "n_bars": 2290,
+  "adjustment": "adjusted",
+  "content_hash": "2799ca8401bb958edb2ec43fa44718dcf8e761bc5ece2e49734f65b6d9dc653f",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

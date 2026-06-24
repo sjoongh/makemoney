@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LMT",
+  "created_ts": "2026-06-24T01:02:25.300050+00:00",
+  "symbols": [
+    "LMT"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "115720df090515e29d5140200402a532c9c64c46825d2374bbde4eb5e2927398",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

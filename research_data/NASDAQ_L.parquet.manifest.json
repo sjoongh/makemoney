@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_L",
+  "created_ts": "2026-06-24T01:02:27.374606+00:00",
+  "symbols": [
+    "L"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "31c02099df52557142e09bb421fbba5a03dcc1af4f0ca2380c9561bee67dee5c",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HSY",
+  "created_ts": "2026-06-24T00:59:29.984067+00:00",
+  "symbols": [
+    "HSY"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "c0119c6ae9e99f47fb7e74581117748243df36335306f63c84d608950a114081",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

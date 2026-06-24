@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DLR",
+  "created_ts": "2026-06-24T00:55:27.408810+00:00",
+  "symbols": [
+    "DLR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "3b497cd4f270f355d06c4926f40c0da2eb492c7b45ace43b4b18df9fd68cacaf",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

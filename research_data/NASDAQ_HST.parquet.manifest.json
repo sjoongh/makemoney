@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HST",
+  "created_ts": "2026-06-24T00:59:47.769177+00:00",
+  "symbols": [
+    "HST"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "2b86d2d3113aed4848f9e6900cf29b341fbec8e9518e49469485a5c419143352",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

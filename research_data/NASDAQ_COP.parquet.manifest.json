@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_COP",
+  "created_ts": "2026-06-24T00:54:10.177656+00:00",
+  "symbols": [
+    "COP"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "e1fce3dd647719a67ef83fb92d3272dea6bc23a1089ba2357d2a343b80c91029",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

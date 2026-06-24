@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_UAL",
+  "created_ts": "2026-06-24T01:10:35.007609+00:00",
+  "symbols": [
+    "UAL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "7b031f5445e66054c9a4833e2f81dc56aa717021293db7855bf2901fcfb7fe95",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

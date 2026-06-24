@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DGX",
+  "created_ts": "2026-06-24T01:07:10.531272+00:00",
+  "symbols": [
+    "DGX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "99ea3a5022a2f75c2ecfdb6a1eef13e9f6c91ae081185faf6b6c7eab576e7eed",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

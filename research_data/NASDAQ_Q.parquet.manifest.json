@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_Q",
+  "created_ts": "2026-06-24T01:07:12.438799+00:00",
+  "symbols": [
+    "Q"
+  ],
+  "provider": "yfinance",
+  "start_date": "2025-10-27",
+  "end_date": "2026-06-23",
+  "n_bars": 164,
+  "adjustment": "adjusted",
+  "content_hash": "05e38f9be134b1330c97c96cbf6a6ec4ef01a1ba15cd6b79dd8bd335027b3ab1",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

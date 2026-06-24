@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_INVH",
+  "created_ts": "2026-06-24T01:00:43.880055+00:00",
+  "symbols": [
+    "INVH"
+  ],
+  "provider": "yfinance",
+  "start_date": "2017-02-01",
+  "end_date": "2026-06-23",
+  "n_bars": 2360,
+  "adjustment": "adjusted",
+  "content_hash": "fb99e3eca8d7223882d63292e27647db3866a427dda89de2c2c1b0b55e6142ab",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

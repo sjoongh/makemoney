@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PLTR",
+  "created_ts": "2026-06-24T01:05:44.637146+00:00",
+  "symbols": [
+    "PLTR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2020-09-30",
+  "end_date": "2026-06-23",
+  "n_bars": 1438,
+  "adjustment": "adjusted",
+  "content_hash": "6b68f1c8d12d377e9d26d78eb08b5281f514586c9d785227ef3d4ed7bc3efbea",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

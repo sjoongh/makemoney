@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PRU",
+  "created_ts": "2026-06-24T01:06:51.659124+00:00",
+  "symbols": [
+    "PRU"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "129af24789757361ba2614301e2e4865a74f2cad5b5d01c5cec5e7b3d8dfc7f4",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

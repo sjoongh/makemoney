@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GD",
+  "created_ts": "2026-06-24T00:58:41.921966+00:00",
+  "symbols": [
+    "GD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "b15984197edf796f988fb41ba5cf5c739d23b9680fac94359bf5be6ada4fe0c5",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

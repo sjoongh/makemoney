@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_KIM",
+  "created_ts": "2026-06-24T01:01:26.475955+00:00",
+  "symbols": [
+    "KIM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "64cd3e0aa26a7ab0d54edc78c2f651f76e09762d8636076937bc68b10b7188e0",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

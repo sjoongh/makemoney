@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DTE",
+  "created_ts": "2026-06-24T00:55:50.348670+00:00",
+  "symbols": [
+    "DTE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "8b80069bfad6f3e59a767873e0563364475ad81ca192ef50cd3346ddb7b4237b",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GEHC",
+  "created_ts": "2026-06-24T00:58:28.503230+00:00",
+  "symbols": [
+    "GEHC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2022-12-15",
+  "end_date": "2026-06-23",
+  "n_bars": 881,
+  "adjustment": "adjusted",
+  "content_hash": "28fc9ef4423b3c7f804cbdb315379883605e42a9c2a190b3a76ee077d5edf724",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

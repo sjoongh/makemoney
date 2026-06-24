@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_KDP",
+  "created_ts": "2026-06-24T01:01:12.683299+00:00",
+  "symbols": [
+    "KDP"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "41451e9c209a79fc6c217bd3f1f9ba58d957ff2953d77cd3d2e3316e2fa3070e",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

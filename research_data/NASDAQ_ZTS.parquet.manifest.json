@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ZTS",
+  "created_ts": "2026-06-24T01:13:05.606171+00:00",
+  "symbols": [
+    "ZTS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "9f5e98328e0dd1dfbc42821ec271eb70dc9bdcc4616830cca4d5c109324b7a7a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

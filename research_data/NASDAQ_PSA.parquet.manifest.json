@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PSA",
+  "created_ts": "2026-06-24T01:07:00.787089+00:00",
+  "symbols": [
+    "PSA"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "7af336d8a4c7c155dde2a3931ca5f8e8843752cdeb33e85e8b8258e4c5059cd6",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

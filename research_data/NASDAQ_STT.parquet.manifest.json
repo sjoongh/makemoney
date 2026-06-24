@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_STT",
+  "created_ts": "2026-06-24T01:08:42.845008+00:00",
+  "symbols": [
+    "STT"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "d6cdc401441107029600b7fa1f017e4adaf1987924b9c0cfbf79bc864b10bdb4",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

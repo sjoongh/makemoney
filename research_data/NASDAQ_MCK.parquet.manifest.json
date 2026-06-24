@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MCK",
+  "created_ts": "2026-06-24T01:03:09.201462+00:00",
+  "symbols": [
+    "MCK"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "b5822a09402a15363426b360a65a39a0b5647a582a5cd9f707e443d80e47c940",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NI",
+  "created_ts": "2026-06-24T01:04:40.927043+00:00",
+  "symbols": [
+    "NI"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0985568e03f552c5e67bb6251f4a8ccf222adfcbe66f3691be1b83a717718a57",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

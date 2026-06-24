@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_EBAY",
+  "created_ts": "2026-06-24T00:56:06.126654+00:00",
+  "symbols": [
+    "EBAY"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "02130245bbdf5c4a65b2bd5430e445f037f8d3f121edd2862cd3317a8dd87bda",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

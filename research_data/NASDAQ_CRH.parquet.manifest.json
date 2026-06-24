@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CRH",
+  "created_ts": "2026-06-24T00:54:40.992160+00:00",
+  "symbols": [
+    "CRH"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "d060acc6a31812b37c41e80d3c783d223223f33d5dcc51a1636609bb028c933e",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

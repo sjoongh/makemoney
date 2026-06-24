@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_STLD",
+  "created_ts": "2026-06-24T01:08:45.359573+00:00",
+  "symbols": [
+    "STLD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "17d644dad60d5d7788ba7f7919eba30263c9a3ca30eec3b0c119e20bee336472",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

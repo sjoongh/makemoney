@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_RCL",
+  "created_ts": "2026-06-24T01:07:51.921362+00:00",
+  "symbols": [
+    "RCL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "e70185be3eb73a53a82f21662bcc4e7f84bc885f37cd24dfe97ac8da085106f3",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

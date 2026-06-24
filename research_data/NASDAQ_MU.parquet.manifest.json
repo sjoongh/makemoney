@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MU",
+  "created_ts": "2026-06-24T01:03:40.711111+00:00",
+  "symbols": [
+    "MU"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0beed22c40b4bd326fb8c7b042e41b39553d0161b8334363a79306b3e6aaa10e",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DUK",
+  "created_ts": "2026-06-24T00:55:54.984517+00:00",
+  "symbols": [
+    "DUK"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0b6ad549ecab453eb6be08792b1caace309a74b900389986e5d9bccfe4ff3bbe",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

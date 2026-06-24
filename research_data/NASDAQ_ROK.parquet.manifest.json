@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ROK",
+  "created_ts": "2026-06-24T01:07:41.607949+00:00",
+  "symbols": [
+    "ROK"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "335c0ab68a4523f9224a535d7b352b94d1bcda4110961b9c45016b1f5b5bd189",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

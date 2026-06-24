@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PANW",
+  "created_ts": "2026-06-24T01:05:47.767517+00:00",
+  "symbols": [
+    "PANW"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "444027c261e00d2c476a96fe860a68d23472372b4cd89c5ebeb8f531318319bd",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

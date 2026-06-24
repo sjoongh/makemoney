@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MLM",
+  "created_ts": "2026-06-24T01:02:52.860438+00:00",
+  "symbols": [
+    "MLM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0fc5a2045e651938c7c7f7e66bea40f058df52ee1c07c057bb316298eb727716",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

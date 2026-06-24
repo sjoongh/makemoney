@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ZBRA",
+  "created_ts": "2026-06-24T01:12:57.962525+00:00",
+  "symbols": [
+    "ZBRA"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "c2330970f86d673fa61b3fd98b981f72920e575931407b397362e804c5b42ae9",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

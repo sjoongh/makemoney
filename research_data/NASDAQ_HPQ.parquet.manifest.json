@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HPQ",
+  "created_ts": "2026-06-24T00:59:52.808029+00:00",
+  "symbols": [
+    "HPQ"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "f8b7ab229a34a55277d355bb29d47e46d056073f76258232d771196766350ef2",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

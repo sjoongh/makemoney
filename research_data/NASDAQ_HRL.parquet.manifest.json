@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HRL",
+  "created_ts": "2026-06-24T00:59:44.944624+00:00",
+  "symbols": [
+    "HRL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-22",
+  "n_bars": 2511,
+  "adjustment": "adjusted",
+  "content_hash": "624389ffd55b7982ec10df1e6f9dcf32ca77965adaea01c3d5d29c4f1da4618e",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

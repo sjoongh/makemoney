@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HD",
+  "created_ts": "2026-06-24T00:59:37.940425+00:00",
+  "symbols": [
+    "HD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "cf1cb6e382642d02588f913417853861ac895619ececd7c902e00ccad55b1ef0",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

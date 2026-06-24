@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_VTR",
+  "created_ts": "2026-06-24T01:10:55.769806+00:00",
+  "symbols": [
+    "VTR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "f5f9dab2104d8c49758b491137883eef45af175a05276c76069cebd71a676e6d",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

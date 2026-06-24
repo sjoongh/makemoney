@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CTVA",
+  "created_ts": "2026-06-24T00:54:31.990444+00:00",
+  "symbols": [
+    "CTVA"
+  ],
+  "provider": "yfinance",
+  "start_date": "2019-05-24",
+  "end_date": "2026-06-23",
+  "n_bars": 1779,
+  "adjustment": "adjusted",
+  "content_hash": "fb7ad52f3d119ffdfc7a8434c2d216f67fe8ad9e85b3dc63415221d32c099ba8",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

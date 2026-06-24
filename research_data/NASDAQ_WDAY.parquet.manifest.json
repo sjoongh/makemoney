@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_WDAY",
+  "created_ts": "2026-06-24T01:12:41.860969+00:00",
+  "symbols": [
+    "WDAY"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "2139ff3b7096c2cc76f0b779a28da100045d80dd486fda1078b7cfde83898411",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

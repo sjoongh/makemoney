@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_COST",
+  "created_ts": "2026-06-24T00:54:37.805497+00:00",
+  "symbols": [
+    "COST"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "1782e8d8e5f7cef1d5cb8e4354021c8d1a70996abb841a2f761d9daf59e86364",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

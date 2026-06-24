@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NKE",
+  "created_ts": "2026-06-24T01:04:38.989304+00:00",
+  "symbols": [
+    "NKE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "cdf799f8e635ddbd9752ec53b8ab1fe728e7c847263be06e2fe515b28999eb7f",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

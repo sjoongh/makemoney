@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DAL",
+  "created_ts": "2026-06-24T00:55:16.660545+00:00",
+  "symbols": [
+    "DAL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "417e19a3ab614485adc0ce64c9fbeb2b4297547d4cca6ce15ae805864b72204b",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

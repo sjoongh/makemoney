@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_IEX",
+  "created_ts": "2026-06-24T01:00:07.459361+00:00",
+  "symbols": [
+    "IEX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-22",
+  "n_bars": 2511,
+  "adjustment": "adjusted",
+  "content_hash": "ec7a4661fb43b8ca464eaa5471e67cd6c775dc8f6e16656716432465523b7959",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_RVTY",
+  "created_ts": "2026-06-24T01:07:35.297693+00:00",
+  "symbols": [
+    "RVTY"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "64e75be4ad06b8b203f4b6ee3db06d9825b65b014dbb574eda774a6e983a47f6",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

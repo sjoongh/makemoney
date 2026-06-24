@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MSI",
+  "created_ts": "2026-06-24T01:04:16.340447+00:00",
+  "symbols": [
+    "MSI"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "a12eab5b8cdefad0760003f7daf2f8e3f5bd14bd8016582bc7864e76447ba114",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

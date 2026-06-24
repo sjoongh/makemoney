@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_VLTO",
+  "created_ts": "2026-06-24T01:11:00.499543+00:00",
+  "symbols": [
+    "VLTO"
+  ],
+  "provider": "yfinance",
+  "start_date": "2023-10-04",
+  "end_date": "2026-06-23",
+  "n_bars": 681,
+  "adjustment": "adjusted",
+  "content_hash": "3efec424a9bb4d0649f37dacc7d0d2a3cddc3513095da24d67056e7da0cdc478",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

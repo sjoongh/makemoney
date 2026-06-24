@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LII",
+  "created_ts": "2026-06-24T01:02:11.782980+00:00",
+  "symbols": [
+    "LII"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "308e15105f7f8d5c7cc0439048b83db3867aa2b95d00aabb3a0335d98a8ef000",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

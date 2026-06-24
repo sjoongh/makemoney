@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_JCI",
+  "created_ts": "2026-06-24T01:01:05.501325+00:00",
+  "symbols": [
+    "JCI"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "496f8be7b68c33c2684079a3f3caa87bdda125741120d75553fe7233cd7c6d64",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GE",
+  "created_ts": "2026-06-24T00:58:26.826905+00:00",
+  "symbols": [
+    "GE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "02dc8aae92e9ebc9c4f0ea33903aedf02ac30c05f257a8b27385de0eb90e90cd",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

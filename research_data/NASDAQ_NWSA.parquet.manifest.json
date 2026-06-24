@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NWSA",
+  "created_ts": "2026-06-24T01:04:31.783285+00:00",
+  "symbols": [
+    "NWSA"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "60b171983e1737f4f5c5e634679074ecc1962840a33fcf2e26427d65aa100087",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

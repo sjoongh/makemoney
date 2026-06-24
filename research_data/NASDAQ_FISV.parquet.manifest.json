@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FISV",
+  "created_ts": "2026-06-24T00:57:52.035629+00:00",
+  "symbols": [
+    "FISV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2511,
+  "adjustment": "adjusted",
+  "content_hash": "4dd6818582a3b072f19e104665be298f05076956485d361a0051b732e4ceafa9",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

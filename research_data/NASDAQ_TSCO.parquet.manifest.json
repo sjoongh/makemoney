@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_TSCO",
+  "created_ts": "2026-06-24T01:09:46.993209+00:00",
+  "symbols": [
+    "TSCO"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "7a5ea0e9f4248f8e46d85161a70295d3e929724d6d6e54c59bae1d449790fb2f",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

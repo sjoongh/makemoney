@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_YUM",
+  "created_ts": "2026-06-24T01:12:54.556652+00:00",
+  "symbols": [
+    "YUM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "f11dd162a81af2394f19eb49d248fa736887c7f7f52be0a5438f3405844499b2",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

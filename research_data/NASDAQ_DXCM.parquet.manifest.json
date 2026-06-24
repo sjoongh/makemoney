@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DXCM",
+  "created_ts": "2026-06-24T00:55:22.067478+00:00",
+  "symbols": [
+    "DXCM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "6125a007f95cfcccb2a25ce4c5dab86185458b11f154472fa91c9ba46880064b",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

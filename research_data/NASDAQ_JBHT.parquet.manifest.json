@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_JBHT",
+  "created_ts": "2026-06-24T01:00:52.368044+00:00",
+  "symbols": [
+    "JBHT"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "02a76a91685df25e2f8499e4b285386e90e55f44ecdb356849a6d6ff27b456e8",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

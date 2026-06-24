@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CVS",
+  "created_ts": "2026-06-24T00:54:54.483960+00:00",
+  "symbols": [
+    "CVS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "b79a6e6253ab54d6a93f5fb8f75748f04629c2b5c6209db1dc84dc1d5c3e4c9d",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

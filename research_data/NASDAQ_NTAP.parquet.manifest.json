@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NTAP",
+  "created_ts": "2026-06-24T01:04:24.288195+00:00",
+  "symbols": [
+    "NTAP"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "64b8f92eed9f581a6b4b52dfd3871960dd40a4b075442eb5d5ca173c35851904",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

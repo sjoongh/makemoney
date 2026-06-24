@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GEN",
+  "created_ts": "2026-06-24T00:58:36.137592+00:00",
+  "symbols": [
+    "GEN"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "c4f1f6ec09180c8edf3513cca1d20e3d223778bb95c38cbebb780458dc4f602a",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

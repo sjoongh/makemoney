@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PM",
+  "created_ts": "2026-06-24T01:06:19.814285+00:00",
+  "symbols": [
+    "PM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "626684af42a84c4f5faff4d409fa63355ae8e32506bde4a3f14b66ed6f7f3f53",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

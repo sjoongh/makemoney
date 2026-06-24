@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CMI",
+  "created_ts": "2026-06-24T00:54:50.774059+00:00",
+  "symbols": [
+    "CMI"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "264f66b3dd301b961e7a1461d38ad3e01fac1d48f6ddcf142239e3e4b00d0732",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

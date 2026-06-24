@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_GM",
+  "created_ts": "2026-06-24T00:58:48.050845+00:00",
+  "symbols": [
+    "GM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0adfa29e1987264eab0fee996c69ef9de844a4bc20bd5329b8cb4467930d1b5b",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CRWD",
+  "created_ts": "2026-06-24T00:54:44.411060+00:00",
+  "symbols": [
+    "CRWD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2019-06-12",
+  "end_date": "2026-06-23",
+  "n_bars": 1767,
+  "adjustment": "adjusted",
+  "content_hash": "21b6409e770a64a79576bd34709e76cc4d2922802cd5ca456967f3f429a21235",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

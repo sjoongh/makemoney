@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_J",
+  "created_ts": "2026-06-24T01:01:00.621465+00:00",
+  "symbols": [
+    "J"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "5005476ca7d25678aa88a8e6a8b4a4acf323eacb47c16d62f5f7871c4c7f2e1b",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MS",
+  "created_ts": "2026-06-24T01:04:07.949369+00:00",
+  "symbols": [
+    "MS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "3e49f1813895c3d18e8f508ced6e5cbdb10ebee618e357018a565df3f8c2efac",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

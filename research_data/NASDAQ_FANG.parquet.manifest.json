@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_FANG",
+  "created_ts": "2026-06-24T00:55:25.244530+00:00",
+  "symbols": [
+    "FANG"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "6a0f210c78f64b62d457430c10265e3482288d5e094461418f8b52bc0ca6dc6d",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

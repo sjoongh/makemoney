@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_RMD",
+  "created_ts": "2026-06-24T01:07:33.030391+00:00",
+  "symbols": [
+    "RMD"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "4bae026d8a71e4fa96591f364046da8267b84c8e1ab9473e633b8c7e2baeafd8",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

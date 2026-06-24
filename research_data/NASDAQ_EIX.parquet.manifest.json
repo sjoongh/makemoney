@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_EIX",
+  "created_ts": "2026-06-24T00:56:16.286124+00:00",
+  "symbols": [
+    "EIX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "60f2eb5a528258488b6bd4763999f82da2648919124905b5554ae873d8f5302e",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

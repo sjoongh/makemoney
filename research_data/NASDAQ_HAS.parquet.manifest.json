@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HAS",
+  "created_ts": "2026-06-24T00:59:16.433923+00:00",
+  "symbols": [
+    "HAS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "93b2d25f2606a0bcac71ba27ceb44497bfbd2839d5c4bdf8bc27be0ff3545395",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

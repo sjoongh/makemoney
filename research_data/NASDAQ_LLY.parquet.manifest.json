@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LLY",
+  "created_ts": "2026-06-24T01:02:17.119127+00:00",
+  "symbols": [
+    "LLY"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "8b5ee6149e2491f81fdf9fe4ba7894172d2f70eae1f3bab9dfa94936b0eaba4c",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

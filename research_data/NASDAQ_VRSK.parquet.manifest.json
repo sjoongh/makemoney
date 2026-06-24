@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_VRSK",
+  "created_ts": "2026-06-24T01:11:06.855218+00:00",
+  "symbols": [
+    "VRSK"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "67985dfe8b6356a2e70f22080bd0159bf5baa4ecb3700e5ec11c7d35b6c60ed1",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

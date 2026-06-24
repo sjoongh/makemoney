@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HAL",
+  "created_ts": "2026-06-24T00:59:09.954244+00:00",
+  "symbols": [
+    "HAL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "08961542b08f0a5dedeca1cad3a258748bec29dce67dfdfbe0b50197e2fa1a91",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

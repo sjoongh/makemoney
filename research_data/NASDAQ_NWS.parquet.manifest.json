@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_NWS",
+  "created_ts": "2026-06-24T01:04:34.283302+00:00",
+  "symbols": [
+    "NWS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "af602db32db5e254d69b92bd7bb5ed3510181b2613631676b03d25eefd0fcd6c",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

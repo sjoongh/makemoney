@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_TFC",
+  "created_ts": "2026-06-24T01:10:05.998199+00:00",
+  "symbols": [
+    "TFC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "fda6da0c4aebc1470044451c42b78052ef00ac3631c867465c03f9380e6d4c18",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_VEEV",
+  "created_ts": "2026-06-24T01:10:52.970059+00:00",
+  "symbols": [
+    "VEEV"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "e58f56189f564ff09912fad4bcbd166d8845363b58b7ff0c118f518604ff67b2",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

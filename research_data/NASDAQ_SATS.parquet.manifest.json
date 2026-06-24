@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_SATS",
+  "created_ts": "2026-06-24T00:56:08.865801+00:00",
+  "symbols": [
+    "SATS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "f9295ca9b8002838a5d3b0a922f484f36a1dbe32d6d983f9ca0a9be2d20a2f41",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

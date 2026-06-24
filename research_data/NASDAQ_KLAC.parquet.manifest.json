@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_KLAC",
+  "created_ts": "2026-06-24T01:01:35.801973+00:00",
+  "symbols": [
+    "KLAC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "1b5497ff1511b052629746a09c6dae4bc463fe480d87012cdc10f386be60f780",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

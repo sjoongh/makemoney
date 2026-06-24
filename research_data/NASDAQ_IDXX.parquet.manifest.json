@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_IDXX",
+  "created_ts": "2026-06-24T01:00:09.728646+00:00",
+  "symbols": [
+    "IDXX"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "4e77c8128677a0d9346cbb7c35541be9726d29e934e3c123b4dbdfc8c7a67a65",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

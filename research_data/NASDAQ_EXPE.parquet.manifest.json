@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_EXPE",
+  "created_ts": "2026-06-24T00:57:10.723722+00:00",
+  "symbols": [
+    "EXPE"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0c8a94e9df30fafbc5fb88ed70bb3a344ea11d3f209d258a16e558cabe5707ad",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

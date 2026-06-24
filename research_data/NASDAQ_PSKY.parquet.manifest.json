@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PSKY",
+  "created_ts": "2026-06-24T01:05:51.322549+00:00",
+  "symbols": [
+    "PSKY"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "331938faebcbd07fbb6a7bff9160cd770580bb8998990cc9bbf02e22b8840b2f",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

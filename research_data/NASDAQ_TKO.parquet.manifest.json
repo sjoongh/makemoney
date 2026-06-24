@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_TKO",
+  "created_ts": "2026-06-24T01:09:40.434725+00:00",
+  "symbols": [
+    "TKO"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "ab53b374483c14e1bde49cb54d3b0688294ee19840963272dc25b36b20644716",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

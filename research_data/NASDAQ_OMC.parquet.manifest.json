@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_OMC",
+  "created_ts": "2026-06-24T01:05:23.676763+00:00",
+  "symbols": [
+    "OMC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "3728189d484cf68bf84a048a4d801d568b0136168ad0644d2b1b9c0f20a9446c",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

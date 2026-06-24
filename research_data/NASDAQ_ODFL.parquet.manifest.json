@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ODFL",
+  "created_ts": "2026-06-24T01:05:20.949730+00:00",
+  "symbols": [
+    "ODFL"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "d719cbced92a835b6bf04c6cd4434ba08554329668962c8d80ec13aa28a25309",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

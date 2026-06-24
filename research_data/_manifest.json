@@ -1348,5 +1348,4982 @@
     "error_count": 0,
     "last_error": null,
     "cooldown_until": null
+  },
+  "NASDAQ|FIX": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:05.249951+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CAG": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:07.426491+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|COP": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:10.206387+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ED": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:12.644738+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|STZ": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:14.845026+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CEG": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:16.799805+00:00",
+    "first_date": "2022-01-19",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|COO": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:19.859863+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CPRT": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:23.164160+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GLW": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:25.723264+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CPAY": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:28.795895+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CTVA": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:32.018456+00:00",
+    "first_date": "2019-05-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CSGP": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:35.031263+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|COST": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:37.832012+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CRH": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:41.015636+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CRWD": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:44.438242+00:00",
+    "first_date": "2019-06-12",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CCI": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:46.590752+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CSX": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:48.791329+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CMI": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:50.797728+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CVS": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:54.507980+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DHR": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:54:58.247477+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DRI": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:01.127050+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DDOG": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:03.387235+00:00",
+    "first_date": "2019-09-19",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DVA": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:05.665558+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DECK": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:09.715498+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DE": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:11.846368+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DELL": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:14.842985+00:00",
+    "first_date": "2016-08-17",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DAL": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:16.683170+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DVN": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:19.360695+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DXCM": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:22.098298+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FANG": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:25.267492+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DLR": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:27.435102+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DG": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:29.461515+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DLTR": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:31.958772+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|D": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:35.449562+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DPZ": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:39.165926+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DASH": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:41.282842+00:00",
+    "first_date": "2020-12-09",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DOV": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:43.826137+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DOW": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:46.214131+00:00",
+    "first_date": "2019-03-20",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DHI": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:48.202962+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DTE": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:50.373166+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DUK": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:55.012535+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DD": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:55:58.938789+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ETN": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:01.460665+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EBAY": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:06.150853+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SATS": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:08.899161+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ECL": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:11.813725+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EIX": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:16.308824+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EW": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:18.893527+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EA": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:21.365823+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ELV": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:23.657713+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EME": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:26.009236+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EMR": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:29.094654+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ETR": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:31.552581+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EOG": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:34.640714+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EQT": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:36.972216+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EFX": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:39.885934+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EQIX": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:42.765394+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EQR": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:45.324507+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ERIE": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:47.556837+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ESS": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:50.114689+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EL": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:53.611593+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EG": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:56:58.484555+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EVRG": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:00.902808+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ES": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:02.890190+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EXC": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:05.467691+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EXE": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:07.312765+00:00",
+    "first_date": "2021-02-10",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EXPE": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:10.754766+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EXPD": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:13.496768+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|EXR": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:16.984683+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|XOM": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:19.867530+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FFIV": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:21.852146+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FDS": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:23.925442+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FICO": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:26.319953+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FAST": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:30.064105+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FRT": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:32.180168+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FDX": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:36.582387+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FDXF": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:38.116749+00:00",
+    "first_date": "2026-05-27",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FIS": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:40.596843+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FITB": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:43.566138+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FSLR": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:47.184153+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FE": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:50.203530+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FISV": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:52.062287+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FLEX": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:54.307193+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|F": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:57:56.839757+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FTNT": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:00.137271+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FTV": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:03.954317+00:00",
+    "first_date": "2016-07-05",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FOXA": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:07.515829+00:00",
+    "first_date": "2019-03-12",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FOX": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:10.119241+00:00",
+    "first_date": "2019-03-13",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|BEN": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:15.813575+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|FCX": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:18.688311+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GRMN": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:21.627214+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IT": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:23.918869+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GE": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:26.861278+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GEHC": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:28.524290+00:00",
+    "first_date": "2022-12-15",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GEV": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:31.389395+00:00",
+    "first_date": "2024-03-27",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GEN": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:36.162666+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GNRC": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:38.439634+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GD": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:41.953007+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GIS": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:44.900123+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-22",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GM": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:48.076048+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GPC": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:50.214824+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GILD": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:52.314791+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GPN": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:56.748597+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GL": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:58:58.842730+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GDDY": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:02.307208+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GS": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:06.747956+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HAL": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:09.984653+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HIG": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:13.744990+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HAS": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:16.460988+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HCA": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:19.225894+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DOC": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:24.369096+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HSIC": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:27.006313+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HSY": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:30.009943+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HPE": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:32.422431+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HLT": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:34.589999+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HD": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:37.967825+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HON": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:41.506420+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HRL": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:44.968613+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-22",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HST": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:47.799574+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HWM": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:50.273160+00:00",
+    "first_date": "2016-11-01",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HPQ": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:52.837017+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HUBB": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:55.962588+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HUM": {
+    "status": "ok",
+    "last_success": "2026-06-24T00:59:58.499037+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HBAN": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:00.572198+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HII": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:02.837878+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IBM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:05.291562+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IEX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:07.490741+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-22",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IDXX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:09.758546+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ITW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:11.979003+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|INCY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:14.111471+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:16.395328+00:00",
+    "first_date": "2017-05-12",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PODD": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:18.984770+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|INTC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:21.578679+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IBKR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:23.914894+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ICE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:27.175823+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IFF": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:29.535918+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IP": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:33.654248+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|INTU": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:35.845918+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ISRG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:38.086864+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IVZ": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:40.764814+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|INVH": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:43.924612+00:00",
+    "first_date": "2017-02-01",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IQV": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:46.587838+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|IRM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:49.648361+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|JBHT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:52.393263+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|JBL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:56.148603+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|JKHY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:00:58.538298+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|J": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:00.652901+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|JNJ": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:03.479034+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|JCI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:05.529975+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|JPM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:08.580439+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KVUE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:10.397258+00:00",
+    "first_date": "2023-05-04",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KDP": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:12.707991+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KEY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:17.083807+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KEYS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:19.399832+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KMB": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:24.102694+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KIM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:26.501128+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KMI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:29.048567+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KKR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:32.613215+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KLAC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:35.829328+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KHC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:38.107033+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|KR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:41.249904+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LHX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:55.615791+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LH": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:01:57.901653+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LRCX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:00.312324+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LVS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:03.339049+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LDOS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:06.351468+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LEN": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:09.933079+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LII": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:11.811256+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LLY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:17.148153+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LIN": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:20.676837+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LYV": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:23.155714+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LMT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:25.325353+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|L": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:27.398591+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LOW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:29.797283+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LULU": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:32.850922+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LITE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:35.144974+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LYB": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:38.257368+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MTB": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:42.172082+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MPC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:44.399323+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MAR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:46.847932+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MRSH": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:49.459841+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MLM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:52.885390+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MRVL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:56.029383+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MAS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:02:58.310176+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:01.452484+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MKC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:03.654765+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MCD": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:06.103723+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MCK": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:09.229335+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MDT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:11.865135+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MRK": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:15.043928+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-22",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|META": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:19.205525+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MET": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:25.683996+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MTD": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:28.505191+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MGM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:31.453327+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MCHP": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:36.009857+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MU": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:40.739111+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MSFT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:43.341205+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MAA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:45.854961+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MRNA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:48.081237+00:00",
+    "first_date": "2018-12-07",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TAP": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:51.184537+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MDLZ": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:54.998663+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MPWR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:56.976048+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MNST": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:03:59.992671+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MCO": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:03.186152+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:07.973472+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MOS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:13.853897+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MSI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:16.379744+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|MSCI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:18.655182+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NDAQ": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:21.316698+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NTAP": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:24.309095+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NFLX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:26.270587+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NEM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:29.703522+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NWSA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:31.813053+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NWS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:34.310258+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NEE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:36.615818+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NKE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:39.013331+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:40.951336+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NDSN": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:44.171774+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NSC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:46.109668+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NTRS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:49.307449+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NOC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:51.777382+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-22",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NCLH": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:04:53.971733+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NRG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:01.079918+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NUE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:04.506086+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NVDA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:06.988510+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NVR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:08.967760+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NXPI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:13.578663+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ORLY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:15.701881+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|OXY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:17.899985+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ODFL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:20.977369+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|OMC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:23.699109+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ON": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:25.655882+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|OKE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:29.028297+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ORCL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:31.249942+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|OTIS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:34.884038+00:00",
+    "first_date": "2020-03-19",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PCAR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:38.352906+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PKG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:41.452928+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PLTR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:44.657247+00:00",
+    "first_date": "2020-09-30",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PANW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:47.795474+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PSKY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:51.344406+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PH": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:54.488178+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PAYX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:05:57.510503+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PYPL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:00.685840+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PNR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:04.790657+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PEP": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:07.985973+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PFE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:11.451278+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PCG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:15.832993+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:19.847998+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PSX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:21.851099+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PNW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:27.697720+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PNC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:33.925116+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PPG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:36.150461+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PPL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:38.943932+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PFG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:41.486199+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:43.903083+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PGR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:46.872686+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PLD": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:49.824321+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PRU": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:51.684952+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PEG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:54.795489+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PTC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:06:57.418091+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PSA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:00.813587+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PHM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:04.071921+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|PWR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:05.889578+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|QCOM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:08.462489+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DGX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:10.558099+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|Q": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:12.466846+00:00",
+    "first_date": "2025-10-27",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|RL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:14.878373+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|RJF": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:17.083080+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|RTX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:19.503524+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|O": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:21.590877+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|REG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:23.866708+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|REGN": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:26.790251+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|RF": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:29.028746+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|RSG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:30.984230+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|RMD": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:33.055705+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|RVTY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:35.325494+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|HOOD": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:38.341655+00:00",
+    "first_date": "2021-07-29",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ROK": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:41.633091+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ROL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:43.729981+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ROP": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:46.115862+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ROST": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:49.420882+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|RCL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:51.946974+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SPGI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:54.715494+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|CRM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:57.114213+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SNDK": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:07:58.928710+00:00",
+    "first_date": "2025-02-13",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SBAC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:01.482710+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SLB": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:04.079881+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|STX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:06.962416+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SRE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:09.889163+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|NOW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:11.933777+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SHW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:14.617647+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SPG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:16.826921+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SWKS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:19.128025+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SJM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:21.747598+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:25.086934+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SNA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:27.279105+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SOLV": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:29.379194+00:00",
+    "first_date": "2024-03-26",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SO": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:32.498690+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|LUV": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:35.049127+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SWK": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:37.292423+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SBUX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:39.738082+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|STT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:42.878428+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|STLD": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:45.383112+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|STE": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:47.859509+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SYK": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:50.692423+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SMCI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:52.545245+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SYF": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:54.876905+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SNPS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:08:57.344362+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|SYY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:00.028856+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TMUS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:02.137813+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TROW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:04.726726+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TTWO": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:07.359651+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TPR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:09.807677+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TRGP": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:11.999899+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TGT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:14.027256+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TEL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:16.974352+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TDY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:19.015805+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TER": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:21.149753+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TSLA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:23.351952+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TXN": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:25.977519+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TPL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:28.766550+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TXT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:31.133390+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TMO": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:33.243370+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TJX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:35.868830+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TKO": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:40.460133+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TTD": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:43.592118+00:00",
+    "first_date": "2016-09-21",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TSCO": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:47.016899+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:50.309319+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TDG": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:54.021684+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TRV": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:09:57.245344+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TRMB": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:01.448694+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TFC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:06.023242+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TYL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:08.996122+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|TSN": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:14.673384+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-22",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|USB": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:17.671057+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|UBER": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:21.623505+00:00",
+    "first_date": "2019-05-10",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|UDR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:25.551974+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ULTA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:28.652345+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|UNP": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:32.671458+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|UAL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:35.030677+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|UPS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:38.913108+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|URI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:42.873232+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|UNH": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:44.783839+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|UHS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:46.868258+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-22",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VLO": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:50.984295+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VEEV": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:52.995353+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VTR": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:10:55.798208+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VLTO": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:00.531026+00:00",
+    "first_date": "2023-10-04",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VRSN": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:03.386453+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VRSK": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:06.882224+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VZ": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:11.396135+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VRTX": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:13.208781+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VRT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:20.519932+00:00",
+    "first_date": "2018-08-02",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VTRS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:24.124835+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VICI": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:27.054941+00:00",
+    "first_date": "2018-01-02",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|V": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:29.817058+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VST": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:36.515478+00:00",
+    "first_date": "2016-10-05",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|VMC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:40.083373+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WRB": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:42.054428+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|GWW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:47.513252+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WAB": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:51.133167+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WMT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:53.357475+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|DIS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:55.597741+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WBD": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:11:57.918200+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:00.301580+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WAT": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:02.946625+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WEC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:06.566275+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WFC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:10.408790+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WELL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:18.152049+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WST": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:22.200854+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WDC": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:26.269351+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:29.341129+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WSM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:32.982255+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-22",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WMB": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:35.844331+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WTW": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:39.353234+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WDAY": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:41.887875+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|WYNN": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:45.319980+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|XEL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:49.872883+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|XYL": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:52.237671+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|YUM": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:54.580463+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ZBRA": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:12:57.986864+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ZBH": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:13:01.882765+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "NASDAQ|ZTS": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:13:05.635369+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-23",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|402340": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:59:51.453775+00:00",
+    "first_date": "2021-11-29",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|373220": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:59:53.271345+00:00",
+    "first_date": "2022-01-27",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|329180": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:59:55.182709+00:00",
+    "first_date": "2021-09-17",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|207940": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:59:57.465223+00:00",
+    "first_date": "2016-11-11",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|034020": {
+    "status": "ok",
+    "last_success": "2026-06-24T01:59:59.713858+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|012450": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:01.793303+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000270": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:04.384766+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|006400": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:06.445039+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|068270": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:08.621344+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|010120": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:10.643560+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|267260": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:12.772542+00:00",
+    "first_date": "2017-05-10",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|298040": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:14.842175+00:00",
+    "first_date": "2018-07-13",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|042660": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:16.924920+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000810": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:18.896028+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|009540": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:21.209327+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|042700": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:23.656846+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000150": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:26.006051+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|011070": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:28.432605+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|006800": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:31.039045+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|316140": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:33.368561+00:00",
+    "first_date": "2019-02-21",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|010140": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:35.625535+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|064350": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:38.119398+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|079550": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:40.778710+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|033780": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:43.793910+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|138040": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:45.731630+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|267250": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:47.792417+00:00",
+    "first_date": "2017-05-10",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|272210": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:50.874926+00:00",
+    "first_date": "2019-11-13",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|307950": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:53.632317+00:00",
+    "first_date": "2019-03-28",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|086280": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:55.573751+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|047810": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:00:58.520594+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|278470": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:00.674253+00:00",
+    "first_date": "2024-02-27",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000720": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:03.241487+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|071050": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:06.608356+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|006260": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:09.912104+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|005940": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:12.278022+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|259960": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:14.136869+00:00",
+    "first_date": "2021-08-10",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|003490": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:17.692742+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|016360": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:20.422577+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|323410": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:23.062961+00:00",
+    "first_date": "2021-08-06",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|443060": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:25.986034+00:00",
+    "first_date": "2024-05-08",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|005830": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:29.015370+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|047050": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:32.051212+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|028050": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:34.077814+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|039490": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:38.021754+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|352820": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:41.063131+00:00",
+    "first_date": "2020-10-15",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|047040": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:43.022041+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|007660": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:45.166570+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|003230": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:47.600825+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|064400": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:49.682949+00:00",
+    "first_date": "2025-02-05",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|180640": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:51.484790+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000880": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:53.403469+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|353200": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:55.757613+00:00",
+    "first_date": "2020-05-21",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000990": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:01:58.933852+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|062040": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:02.163453+00:00",
+    "first_date": "2024-07-29",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|001440": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:07.944861+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|326030": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:11.487139+00:00",
+    "first_date": "2020-07-02",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|004170": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:14.830476+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|034220": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:18.347045+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|454910": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:21.206999+00:00",
+    "first_date": "2023-10-05",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|032640": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:25.002812+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|078930": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:27.763969+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|021240": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:30.886966+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|241560": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:34.817225+00:00",
+    "first_date": "2016-11-22",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|267270": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:36.721078+00:00",
+    "first_date": "2017-05-10",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|009830": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:39.745660+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|090430": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:42.962432+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000100": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:46.282756+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000500": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:49.809580+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|029780": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:52.134272+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|011790": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:54.454958+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|377300": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:56.326648+00:00",
+    "first_date": "2021-11-03",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|138930": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:02:58.772719+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|088980": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:01.327219+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|271560": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:05.203508+00:00",
+    "first_date": "2017-07-07",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|128940": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:07.658990+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|023530": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:10.944676+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|175330": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:13.422708+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|001040": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:18.257454+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|066970": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:20.458121+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|082740": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:24.421060+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|002380": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:29.083038+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|088350": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:31.498760+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|018880": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:33.948232+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|069960": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:36.309474+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|052690": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:39.244200+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|010060": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:43.016213+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|004020": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:47.406114+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|336260": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:50.162240+00:00",
+    "first_date": "2019-10-18",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|012510": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:03:55.844029+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|103590": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:00.985763+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|022100": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:03.929342+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|051900": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:08.008622+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|450080": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:11.672075+00:00",
+    "first_date": "2023-11-17",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|035250": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:15.379711+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|111770": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:18.957938+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|001450": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:22.574715+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|036460": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:27.000870+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|004800": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:29.096550+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|031210": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:30.704160+00:00",
+    "first_date": "2025-03-14",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|011780": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:32.764461+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|489790": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:34.323288+00:00",
+    "first_date": "2024-09-27",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|014680": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:36.562350+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|011170": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:40.094813+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|097950": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:43.192160+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|383220": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:46.366494+00:00",
+    "first_date": "2021-05-21",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|005850": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:49.464416+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|302440": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:51.227509+00:00",
+    "first_date": "2021-03-18",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|017800": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:53.265553+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|009420": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:55.021974+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|085620": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:04:59.687552+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|483650": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:01.283033+00:00",
+    "first_date": "2025-05-23",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|001720": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:04.831179+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|012750": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:10.122294+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|139130": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:14.144187+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|028670": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:17.015117+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|007810": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:20.955470+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|279570": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:22.508933+00:00",
+    "first_date": "2026-03-05",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|204320": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:24.694726+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|375500": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:26.667700+00:00",
+    "first_date": "2021-01-25",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|020150": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:31.267446+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|004990": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:34.242714+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|026960": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:38.885392+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|007340": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:42.464245+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|139480": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:45.323498+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|003690": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:47.468016+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000240": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:52.061029+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|457190": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:57.453842+00:00",
+    "first_date": "2023-05-31",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|006360": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:05:59.527596+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|009970": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:02.469042+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|030000": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:06.783167+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|005440": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:10.598213+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|081660": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:12.910527+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|051600": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:15.498939+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|439260": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:17.071691+00:00",
+    "first_date": "2025-08-01",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|071970": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:19.351319+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|004370": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:22.166922+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|161890": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:24.375353+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|120110": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:27.772353+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|001740": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:30.523592+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|282330": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:32.481536+00:00",
+    "first_date": "2017-12-11",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|462870": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:35.396234+00:00",
+    "first_date": "2024-07-11",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|018670": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:38.227784+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|008770": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:42.822228+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|007070": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:46.262230+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|093370": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:48.397153+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|103140": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:51.541828+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|008930": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:54.289587+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|097230": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:56.149454+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|011210": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:06:58.959376+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|112610": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:01.683998+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|192820": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:03.757970+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|000120": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:06.766291+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|229640": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:09.173082+00:00",
+    "first_date": "2016-09-23",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|281820": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:11.908331+00:00",
+    "first_date": "2017-12-05",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|395400": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:15.489042+00:00",
+    "first_date": "2021-09-14",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|002790": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:17.700938+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|023590": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:21.466842+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|001820": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:23.613868+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|001800": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:26.973351+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|017960": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:30.791046+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|020560": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:35.221020+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|006280": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:37.833207+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|322000": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:42.910649+00:00",
+    "first_date": "2019-11-19",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|006040": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:46.512551+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|361610": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:48.596706+00:00",
+    "first_date": "2021-05-11",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|001120": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:53.029911+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|192080": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:07:57.275970+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|003540": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:08:00.026804+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|069620": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:08:02.993211+00:00",
+    "first_date": "2016-06-24",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
+  },
+  "KOSPI|475150": {
+    "status": "ok",
+    "last_success": "2026-06-24T02:08:06.515171+00:00",
+    "first_date": "2024-03-29",
+    "last_date": "2026-06-24",
+    "error_count": 0,
+    "last_error": null,
+    "cooldown_until": null
   }
 }

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CSGP",
+  "created_ts": "2026-06-24T00:54:35.007898+00:00",
+  "symbols": [
+    "CSGP"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "b67459c021a3b89e3fbd3f5a751bb62d1226b95e097be47a3fc8321c2692dd43",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

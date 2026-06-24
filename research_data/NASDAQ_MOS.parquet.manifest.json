@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_MOS",
+  "created_ts": "2026-06-24T01:04:13.823863+00:00",
+  "symbols": [
+    "MOS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "eddc992a03afa62863349b2525fff8953a981e212999b1d5007d71688f1c22c2",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

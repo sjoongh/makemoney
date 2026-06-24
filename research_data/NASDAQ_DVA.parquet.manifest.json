@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DVA",
+  "created_ts": "2026-06-24T00:55:05.640105+00:00",
+  "symbols": [
+    "DVA"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "90bd081e377b8aac5b62844b69b0304b81c1d017dc74290c92b70d9d60a07612",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

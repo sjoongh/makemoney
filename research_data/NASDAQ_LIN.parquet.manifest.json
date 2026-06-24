@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_LIN",
+  "created_ts": "2026-06-24T01:02:20.646116+00:00",
+  "symbols": [
+    "LIN"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "bb9e27e5304dd6cdd3a160f1423c1faad61a4d32a66feb9176d52adf2e079ae0",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

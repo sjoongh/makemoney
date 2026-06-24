@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_JNJ",
+  "created_ts": "2026-06-24T01:01:03.446136+00:00",
+  "symbols": [
+    "JNJ"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0827a1509f122284505089c60f5a35cc5f0d08d45fbbd5e766354028c75d9ae2",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

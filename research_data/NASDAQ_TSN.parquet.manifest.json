@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_TSN",
+  "created_ts": "2026-06-24T01:10:14.648027+00:00",
+  "symbols": [
+    "TSN"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-22",
+  "n_bars": 2511,
+  "adjustment": "adjusted",
+  "content_hash": "d63b62b4dc00210a11bb6b56122ee633bac3338646e14801efd99e841d2f8112",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

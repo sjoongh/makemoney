@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_PH",
+  "created_ts": "2026-06-24T01:05:54.465372+00:00",
+  "symbols": [
+    "PH"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "710d4055d3302c1b5c8a0b4db1be766467a12c0f61e21a7edae000ae5d84121c",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

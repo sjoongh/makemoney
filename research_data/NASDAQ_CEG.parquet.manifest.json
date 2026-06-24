@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CEG",
+  "created_ts": "2026-06-24T00:54:16.778417+00:00",
+  "symbols": [
+    "CEG"
+  ],
+  "provider": "yfinance",
+  "start_date": "2022-01-19",
+  "end_date": "2026-06-23",
+  "n_bars": 1110,
+  "adjustment": "adjusted",
+  "content_hash": "bffcf990b17382b3d11642721b8f0387b90c03271a198d0243c052d5355ce9d0",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

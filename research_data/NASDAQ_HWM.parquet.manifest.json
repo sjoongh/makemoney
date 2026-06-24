@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HWM",
+  "created_ts": "2026-06-24T00:59:50.248671+00:00",
+  "symbols": [
+    "HWM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-11-01",
+  "end_date": "2026-06-23",
+  "n_bars": 2422,
+  "adjustment": "adjusted",
+  "content_hash": "808f287ad9528f6602ad73ccc7d546ec9c1256647434f28bd2b24a33b4aa16bb",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_CPRT",
+  "created_ts": "2026-06-24T00:54:23.141347+00:00",
+  "symbols": [
+    "CPRT"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "3c7fc9bd914d6f869d64815ab6c868f12d8c2b6474fa0cdb454bae0e5f041723",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_WMB",
+  "created_ts": "2026-06-24T01:12:35.817613+00:00",
+  "symbols": [
+    "WMB"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "0e0d7b3bc67b337ddfd98c7522457dd0c4a127f2d487fc21af151af28ef532f6",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

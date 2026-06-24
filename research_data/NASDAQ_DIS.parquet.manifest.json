@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_DIS",
+  "created_ts": "2026-06-24T01:11:55.572886+00:00",
+  "symbols": [
+    "DIS"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "99f61e7d0be36fd600a685de624804dc26c43ba675f1a0d0ea1b97db5728d75d",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

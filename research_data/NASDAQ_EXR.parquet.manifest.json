@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_EXR",
+  "created_ts": "2026-06-24T00:57:16.954608+00:00",
+  "symbols": [
+    "EXR"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "4a444d88ad11a8b718d28ebb98b52a2a4f67ecac667d5b9238e763e279c13caa",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

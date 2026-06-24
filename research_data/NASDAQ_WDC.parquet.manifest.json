@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_WDC",
+  "created_ts": "2026-06-24T01:12:26.243783+00:00",
+  "symbols": [
+    "WDC"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "f74e40c174a4ea38d65291f606ce6d7cca4b2f5faba1b6fd4dc635074c53871d",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}

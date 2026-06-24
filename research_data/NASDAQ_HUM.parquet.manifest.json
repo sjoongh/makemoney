@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HUM",
+  "created_ts": "2026-06-24T00:59:58.472762+00:00",
+  "symbols": [
+    "HUM"
+  ],
+  "provider": "yfinance",
+  "start_date": "2016-06-24",
+  "end_date": "2026-06-23",
+  "n_bars": 2512,
+  "adjustment": "adjusted",
+  "content_hash": "d1cb64ec0c5bda70f9c7fd15894855556745dfb6242826af758fe43163580a90",
+  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "quality_passed": true
+}
