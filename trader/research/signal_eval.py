@@ -313,6 +313,88 @@ def momentum_3_1(hist: list[BarEvent]) -> Optional[float]:
     return hist[-22].close / hist[-64].close - 1.0
 
 
+def _returns(hist: list[BarEvent], n: int) -> Optional[np.ndarray]:
+    """Last n daily simple returns, or None if insufficient history."""
+    if len(hist) < n + 1:
+        return None
+    seg = hist[-(n + 1):]
+    return np.array([seg[i].close / seg[i - 1].close - 1.0 for i in range(1, len(seg))], dtype=float)
+
+
+def max_daily_return(hist: list[BarEvent], lookback: int = 21) -> Optional[float]:
+    """MAX / lottery anomaly (Bali): higher score = LOWER recent max daily
+    return (high-MAX 'lottery' stocks tend to underperform). Needs lookback+1."""
+    r = _returns(hist, lookback)
+    if r is None:
+        return None
+    return -float(r.max())
+
+
+def pct_of_52w_high(hist: list[BarEvent]) -> Optional[float]:
+    """52-week-high proximity (George & Hwang): close / 252d high. Needs 252."""
+    if len(hist) < 252:
+        return None
+    hi = max(b.high for b in hist[-252:])
+    if hi <= 0:
+        return None
+    return hist[-1].close / hi
+
+
+def amihud_illiquidity(hist: list[BarEvent], lookback: int = 21) -> Optional[float]:
+    """Amihud illiquidity: mean(|ret| / dollar-volume) over lookback days
+    (illiquidity premium → expect positive IC). Needs lookback+1."""
+    if len(hist) < lookback + 1:
+        return None
+    seg = hist[-(lookback + 1):]
+    vals = []
+    for i in range(1, len(seg)):
+        dv = seg[i].close * seg[i].volume
+        if dv > 0:
+            vals.append(abs(seg[i].close / seg[i - 1].close - 1.0) / dv)
+    if not vals:
+        return None
+    return float(np.mean(vals))
+
+
+def volume_trend(hist: list[BarEvent], recent: int = 21, base: int = 63) -> Optional[float]:
+    """Recent vs base average volume ratio − 1. Needs base+1 bars."""
+    if len(hist) < base + 1:
+        return None
+    rv = np.mean([b.volume for b in hist[-recent:]])
+    bv = np.mean([b.volume for b in hist[-base:]])
+    if bv <= 0:
+        return None
+    return float(rv / bv - 1.0)
+
+
+def return_skewness(hist: list[BarEvent], lookback: int = 60) -> Optional[float]:
+    """NEGATIVE return skewness (high positive skew → lower future return).
+    Needs lookback+1 bars."""
+    r = _returns(hist, lookback)
+    if r is None:
+        return None
+    sd = r.std()
+    if sd == 0:
+        return None
+    return -float(((r - r.mean()) ** 3).mean() / sd ** 3)
+
+
+def momentum_12_2(hist: list[BarEvent]) -> Optional[float]:
+    """12-2 momentum: close[t-42]/close[t-252]-1 (skip the most recent 2 months).
+    Needs >= 253 bars."""
+    if len(hist) < 253:
+        return None
+    return hist[-43].close / hist[-253].close - 1.0
+
+
+def long_term_reversal(hist: list[BarEvent]) -> Optional[float]:
+    """Long-term reversal (DeBondt-Thaler): NEGATIVE of the t-756..t-252 return
+    (3y→1y ago). Needs >= 757 bars."""
+    if len(hist) < 757:
+        return None
+    return -(hist[-253].close / hist[-757].close - 1.0)
+
+
 def low_volatility(hist: list[BarEvent], lookback: int = 60) -> Optional[float]:
     """Low-volatility anomaly: NEGATIVE realized vol of the last ``lookback``
     daily returns (higher score = lower vol = expected higher risk-adj return).

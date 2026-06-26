@@ -157,6 +157,31 @@ def test_standard_signals_sign():
     assert short_term_reversal(up, 5) < 0           # rose recently -> reversal score negative
 
 
+def test_zoo_signals_none_then_float():
+    """Every zoo signal returns None on short history and a float once warmed."""
+    import trader.research.signal_eval as se
+    sym = Symbol("Z", Market.NASDAQ, "USD")
+    short = [BarEvent(sym, _START + timedelta(days=d), 100, 101, 99, 100.0, 10) for d in range(5)]
+    # rising + volume so values are well-defined
+    long = [BarEvent(sym, _START + timedelta(days=d), 100, 102 + d, 98, 100.0 + d, 1000 + d)
+            for d in range(800)]
+    fns = [
+        lambda h: se.max_daily_return(h, 21),
+        se.pct_of_52w_high,
+        lambda h: se.amihud_illiquidity(h, 21),
+        lambda h: se.volume_trend(h, 21, 63),
+        lambda h: se.return_skewness(h, 60),
+        se.momentum_12_2,
+        se.long_term_reversal,
+    ]
+    for fn in fns:
+        assert fn(short) is None
+        v = fn(long)
+        assert v is None or isinstance(v, float)
+    assert se.long_term_reversal(long) is not None   # 800 bars > 757
+    assert se.momentum_12_2(long) is not None
+
+
 # ---------------------------------------------------------------------------
 # Date-window (split) filtering — rebalance dates only, warmup preserved
 # ---------------------------------------------------------------------------
