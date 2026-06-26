@@ -13,9 +13,11 @@ from datetime import date, datetime, timezone
 
 from trader.core.events import BarEvent, Market, Symbol
 from trader.data.forward_recorder import (
+    append_fundamental_snapshot,
     append_raw_bars,
     append_universe_log,
     record_forward,
+    record_fundamentals,
     source_symbol,
 )
 from trader.data.storage import load_bars
@@ -155,3 +157,38 @@ class TestRecordForward:
                                  fetch_fn=bad_fetch, forward_dir=self.fwd, log_path=self.log)
         assert summary["errors"] == 1
         assert summary["symbols_updated"] == 1   # AAPL still recorded
+
+
+class TestFundamentals:
+    def setup_method(self):
+        self.log = os.path.join(tempfile.mkdtemp(), "_fundamentals.jsonl")
+
+    def test_append_snapshot_idempotent(self):
+        recs = [{"ticker": "AAPL", "market": "NASDAQ", "equity": 1e9,
+                 "ttm_net_income": 1e8, "shares": 1e7}]
+        assert append_fundamental_snapshot(recs, "2026-06-24", log_path=self.log) is True
+        assert append_fundamental_snapshot(recs, "2026-06-24", log_path=self.log) is False
+        assert len(open(self.log).read().strip().splitlines()) == 1
+
+    def test_record_fundamentals_with_fake_fetcher(self):
+        def fake(ticker, market):
+            if ticker == "NODATA":
+                return None
+            return {"ticker": ticker, "market": market, "equity": 5e9,
+                    "ttm_net_income": 4e8, "shares": 2e8}
+        uni = [("AAPL", "NASDAQ"), ("NODATA", "NASDAQ")]
+        s = record_fundamentals("2026-06-24", uni, fetch_fn=fake, log_path=self.log)
+        assert s["logged"] is True
+        assert s["n"] == 1            # AAPL recorded
+        assert s["errors"] == 1       # NODATA unavailable
+        rec = json.loads(open(self.log).read().strip())
+        assert rec["records"][0]["ticker"] == "AAPL"
+
+    def test_record_fundamentals_idempotent_per_day(self):
+        def fake(ticker, market):
+            return {"ticker": ticker, "market": market, "equity": 1.0,
+                    "ttm_net_income": 1.0, "shares": 1.0}
+        uni = [("AAPL", "NASDAQ")]
+        record_fundamentals("2026-06-24", uni, fetch_fn=fake, log_path=self.log)
+        s2 = record_fundamentals("2026-06-24", uni, fetch_fn=fake, log_path=self.log)
+        assert s2["logged"] is False  # already snapped today

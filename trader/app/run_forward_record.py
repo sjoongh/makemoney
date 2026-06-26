@@ -17,7 +17,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 
-from trader.data.forward_recorder import record_forward
+from trader.data.forward_recorder import record_forward, record_fundamentals
 from trader.data.universe import universe
 
 
@@ -28,6 +28,9 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--us-limit", type=int, default=503)
     p.add_argument("--kr-limit", type=int, default=200)
     p.add_argument("--no-kr", action="store_true")
+    p.add_argument("--fundamentals", action="store_true",
+                   help="also snapshot point-in-time fundamentals (book-to-market / "
+                        "earnings-yield inputs) — accumulates a clean panel forward")
     args = p.parse_args(argv)
 
     now = datetime.now(tz=timezone.utc)
@@ -52,6 +55,13 @@ def main(argv: list[str] | None = None) -> None:
     print(f"  Symbols updated:   {summary['symbols_updated']}")
     print(f"  Bars appended:     {summary['bars_appended']}")
     print(f"  Errors:            {summary['errors']}")
+
+    if args.fundamentals:
+        fsum = record_fundamentals(as_of, uni)
+        print("\nFundamental snapshot:")
+        print(f"  Logged:            {fsum['logged']}")
+        print(f"  Records:           {fsum['n']}")
+        print(f"  Unavailable/err:   {fsum['errors']}")
 
 
 if __name__ == "__main__":
