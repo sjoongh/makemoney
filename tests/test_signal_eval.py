@@ -155,3 +155,56 @@ def test_standard_signals_sign():
     up = [BarEvent(sym, _START + timedelta(days=d), 100, 101, 99, 100.0 + d, 1) for d in range(300)]
     assert momentum_12_1(up) > 0                    # rose over 12-1 window
     assert short_term_reversal(up, 5) < 0           # rose recently -> reversal score negative
+
+
+# ---------------------------------------------------------------------------
+# Date-window (split) filtering — rebalance dates only, warmup preserved
+# ---------------------------------------------------------------------------
+
+class TestDateWindow:
+    def _iso(self, day: int) -> str:
+        return (_START + timedelta(days=day)).date().isoformat()
+
+    def test_rebalance_dates_restricted_to_window(self):
+        panel = _panel(_DRIFTS, n_dates=120)
+        seen: list = []
+
+        def spy(hist):
+            seen.append(hist[-1].ts.date())
+            return hist[-1].close
+
+        # window = days [40, 80)
+        evaluate_ic(panel, spy, horizon=5, min_cross_section=30,
+                    date_start=self._iso(40), date_end=self._iso(80))
+        lo = (_START + timedelta(days=40)).date()
+        hi = (_START + timedelta(days=80)).date()
+        assert seen, "should have evaluated some dates"
+        assert min(seen) >= lo
+        assert max(seen) < hi
+
+    def test_signal_sees_prewindow_warmup(self):
+        """A signal needing long warmup still works at the window START because
+        the window filters decision dates, not the history the signal sees."""
+        panel = _panel(_DRIFTS, n_dates=120)
+
+        def needs_warmup(hist):
+            # requires 50 bars of history; would be None if history were truncated
+            if len(hist) < 50:
+                return None
+            return hist[-1].close / hist[-50].close - 1.0
+
+        # window starts at day 55 (only ~5 bars INSIDE window, but 55 of history)
+        res = evaluate_ic(panel, needs_warmup, horizon=5, min_cross_section=30,
+                          date_start=self._iso(55), date_end=self._iso(110))
+        assert res.n_periods >= 5          # signal computed despite short in-window span
+        assert res.mean_rank_ic > 0.9      # warmup intact -> still predictive
+
+    def test_strict_split_drops_boundary_crossing(self):
+        """With strict_split, a rebalance whose forward window crosses date_end
+        is dropped (vs included when strict_split=False)."""
+        panel = _panel(_DRIFTS, n_dates=120)
+        common = dict(horizon=5, rebalance_spacing=1, min_cross_section=30,
+                      date_start=self._iso(40), date_end=self._iso(80))
+        strict = evaluate_ic(panel, _trailing_return(10), strict_split=True, **common)
+        loose = evaluate_ic(panel, _trailing_return(10), strict_split=False, **common)
+        assert loose.n_periods > strict.n_periods   # loose keeps the crossing dates

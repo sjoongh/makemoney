@@ -31,7 +31,7 @@ from __future__ import annotations
 import bisect
 import math
 from dataclasses import dataclass
-from datetime import date as _date
+from datetime import date as _date, datetime
 from typing import Callable, Optional
 
 import numpy as np
@@ -124,6 +124,9 @@ def evaluate_ic(
     rebalance_spacing: Optional[int] = None,
     min_cross_section: int = 30,
     winsorize_pct: float = 0.0,
+    date_start: Optional[str] = None,
+    date_end: Optional[str] = None,
+    strict_split: bool = True,
 ) -> ICResult:
     """Compute the cross-sectional Information Coefficient of ``signal_fn``.
 
@@ -138,6 +141,14 @@ def evaluate_ic(
         min_cross_section: minimum tradable names at a date to compute IC.
         winsorize_pct:  symmetric tail clip applied to forward returns (e.g.
                         0.01 clips the top/bottom 1%); 0 disables.
+        date_start/date_end: restrict REBALANCE DATES to [date_start, date_end)
+                        (ISO YYYY-MM-DD).  Only the decision dates ``t`` are
+                        filtered — the signal still sees full pre-window warmup
+                        history, so split evaluation never zeroes early periods.
+        strict_split:   when date_end is set, drop a rebalance whose forward
+                        window (exit at t+horizon) crosses date_end, so a train
+                        score never uses validation-period realized returns
+                        (split-disciplined selection).  Default True.
 
     Returns:
         ICResult.
@@ -147,6 +158,8 @@ def evaluate_ic(
     spacing = rebalance_spacing if rebalance_spacing is not None else horizon
     if spacing < 1:
         raise ValueError("rebalance_spacing must be >= 1")
+    d_start = datetime.strptime(date_start, "%Y-%m-%d").date() if date_start else None
+    d_end = datetime.strptime(date_end, "%Y-%m-%d").date() if date_end else None
 
     # Per-symbol: ascending bars, the date list (for bisect), and a date->bar map.
     sym_bars: dict[str, list[BarEvent]] = {}
@@ -170,12 +183,21 @@ def evaluate_ic(
     n_degen = 0
 
     # Rebalance at union[i]; need entry at i+1 and exit at i+horizon.
-    i = 0
+    # Restrict decision dates to [d_start, d_end) — but keep stepping aligned to
+    # the first in-window index so spacing stays non-overlapping within the window.
+    i = bisect.bisect_left(union, d_start) if d_start is not None else 0
     last_valid = len(union) - horizon - 1  # need i+horizon <= len-1
     while i <= last_valid:
         t = union[i]
+        if d_end is not None and t >= d_end:
+            break  # union is sorted — all later dates are out of window too
         entry_date = union[i + 1]
         exit_date = union[i + horizon]
+
+        # split-discipline: don't let a train forward-window peek into validation
+        if strict_split and d_end is not None and exit_date >= d_end:
+            i += spacing
+            continue
 
         scores: list[float] = []
         fwds: list[float] = []
@@ -275,3 +297,31 @@ def short_term_reversal(hist: list[BarEvent], lookback: int = 5) -> Optional[flo
     if len(hist) < lookback + 1:
         return None
     return -(hist[-1].close / hist[-1 - lookback].close - 1.0)
+
+
+def momentum_6_1(hist: list[BarEvent]) -> Optional[float]:
+    """6-1 momentum: close[t-21]/close[t-126]-1.  Needs >= 127 bars."""
+    if len(hist) < 127:
+        return None
+    return hist[-22].close / hist[-127].close - 1.0
+
+
+def momentum_3_1(hist: list[BarEvent]) -> Optional[float]:
+    """3-1 momentum: close[t-21]/close[t-63]-1.  Needs >= 64 bars."""
+    if len(hist) < 64:
+        return None
+    return hist[-22].close / hist[-64].close - 1.0
+
+
+def low_volatility(hist: list[BarEvent], lookback: int = 60) -> Optional[float]:
+    """Low-volatility anomaly: NEGATIVE realized vol of the last ``lookback``
+    daily returns (higher score = lower vol = expected higher risk-adj return).
+    Needs lookback+1 bars."""
+    if len(hist) < lookback + 1:
+        return None
+    closes = [b.close for b in hist[-(lookback + 1):]]
+    rets = [closes[i] / closes[i - 1] - 1.0 for i in range(1, len(closes))]
+    arr = np.asarray(rets, dtype=float)
+    if arr.std() == 0.0:
+        return 0.0
+    return -float(arr.std(ddof=1))
