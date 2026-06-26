@@ -73,6 +73,16 @@ def cross_sectional_momentum(
     if not bars_by_symbol:
         raise ValueError("bars_by_symbol must not be empty")
 
+    import warnings
+    warnings.warn(
+        "cross_sectional_momentum's benchmark accounting is KNOWN-BUGGY: on the "
+        "703-symbol dataset it reports an impossible ~-73% equal-weight basket "
+        "return (reality ~+400%), and it mixes USD/KRW without FX normalisation. "
+        "Use trader.research.ew_backtest.run_ew_backtest (single currency, "
+        "regression-tested) instead. Kept only for historical reference.",
+        stacklevel=2,
+    )
+
     cost_model = MarketCostModel()
 
     # ------------------------------------------------------------------
