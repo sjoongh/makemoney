@@ -500,6 +500,36 @@ class DailyActEngine:
         submitted_odnos = [m["odno"] for m in submitted_odno_meta]
         unfilled_odnos = _reconcile_unfilled(submitted_odnos, confirmed_fill_odnos)
 
+        # Quantity-level reconcile: PARTIAL → warn; OVER-fill / duplicate fill →
+        # CRITICAL (more exposure than intended) → trip kill switch.
+        from trader.live.reconcile import reconcile_orders
+        _submitted_qty = [
+            {"order_id": m["odno"], "qty": m["order"].quantity}
+            for m in submitted_odno_meta
+        ]
+        for rec in reconcile_orders(_submitted_qty, fills):
+            if rec.severity == "CRITICAL":  # OVERFILLED / duplicate
+                logger.error(
+                    "EOD reconcile OVERFILL — ODNO=%s ordered=%d filled=%d",
+                    rec.order_id, rec.ordered_qty, rec.filled_qty,
+                )
+                if self.monitor is not None:
+                    self.monitor.alert("CRITICAL", "EOD_OVERFILL", {
+                        "odno": rec.order_id, "ordered": rec.ordered_qty,
+                        "filled": rec.filled_qty,
+                    })
+                if not self.dry_run and self.killswitch is not None:
+                    self.killswitch.trip(
+                        reason=(f"EOD_OVERFILL odno={rec.order_id} "
+                                f"ordered={rec.ordered_qty} filled={rec.filled_qty}"),
+                        source="eod_reconcile",
+                    )
+            elif rec.status == "PARTIAL" and self.monitor is not None:
+                self.monitor.alert("WARN", "EOD_PARTIAL_FILL", {
+                    "odno": rec.order_id, "ordered": rec.ordered_qty,
+                    "filled": rec.filled_qty,
+                })
+
         if not unfilled_odnos:
             return  # all orders filled — nothing to do
 
