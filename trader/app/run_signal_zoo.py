@@ -32,22 +32,36 @@ from trader.research.experiment_log import (
 )
 from trader.research.holdout_gate import assert_holdout_allowed, preregister
 from trader.research.signal_eval import (
+    amihud_illiquidity,
     evaluate_ic,
+    long_term_reversal,
     low_volatility,
+    max_daily_return,
     momentum_3_1,
     momentum_6_1,
     momentum_12_1,
+    momentum_12_2,
+    pct_of_52w_high,
+    return_skewness,
     short_term_reversal,
+    volume_trend,
 )
 from trader.research.splits import chronological_split
 
 SIGNALS = {
     "momentum_12_1": momentum_12_1,
+    "momentum_12_2": momentum_12_2,
     "momentum_6_1": momentum_6_1,
     "momentum_3_1": momentum_3_1,
     "reversal_5": lambda h: short_term_reversal(h, 5),
     "reversal_21": lambda h: short_term_reversal(h, 21),
+    "long_term_reversal": long_term_reversal,
     "low_volatility_60": lambda h: low_volatility(h, 60),
+    "max_lottery_21": lambda h: max_daily_return(h, 21),
+    "pct_52w_high": pct_of_52w_high,
+    "amihud_illiquidity": lambda h: amihud_illiquidity(h, 21),
+    "volume_trend": lambda h: volume_trend(h, 21, 63),
+    "return_skewness_60": lambda h: return_skewness(h, 60),
 }
 MARKETS = {"US": ("NASDAQ", 30), "KR": ("KOSPI", 20)}
 
