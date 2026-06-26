@@ -64,6 +64,17 @@ a false positive, not discover alpha.
 2. **Different information, not different math** — fundamentals, estimates,
    alt-data, supply-chain, text/news, or microstructure. OHLCV alone has been
    exhausted here.
+   - **Fundamentals were investigated (2026-06-24) and are blocked on free
+     data**: yfinance exposes only ~5 quarters / 5 annual periods — far too
+     shallow for a cross-sectional IC verdict (1–2 usable rebalances after the
+     ~90-day reporting lag + trailing-4Q requirement). Building a backtest on
+     that would manufacture a false positive. The honest free path is the
+     **fundamental forward recorder** (`record_fundamentals`): snapshot today's
+     known equity / TTM net income / shares each day → a restatement-immune,
+     survivorship-free fundamental panel (book-to-market, earnings-yield inputs)
+     that becomes testable in a few years. A *now* verdict requires **paid deep
+     point-in-time fundamentals** (e.g. SimFin / Sharadar / FMP) — a user
+     decision, since the platform and gate are ready and only data is missing.
 3. **A different horizon/regime** — intraday or event-driven, where structure
    differs from the daily cross-section tested.
 4. **Capacity-aware, costed, out-of-sample** validation of any candidate before
