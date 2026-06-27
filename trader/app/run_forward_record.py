@@ -19,6 +19,7 @@ from datetime import datetime, timezone
 
 from trader.data.forward_recorder import record_forward, record_fundamentals
 from trader.data.universe import universe
+from trader.live import heartbeat as hb
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -62,6 +63,9 @@ def main(argv: list[str] | None = None) -> None:
         print(f"  Logged:            {fsum['logged']}")
         print(f"  Records:           {fsum['n']}")
         print(f"  Unavailable/err:   {fsum['errors']}")
+
+    # dead-man's switch: record a successful run
+    hb.record("forward_record", ts=now.isoformat())
 
 
 if __name__ == "__main__":

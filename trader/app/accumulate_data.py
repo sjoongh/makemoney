@@ -140,6 +140,11 @@ def main(argv: list[str] | None = None) -> None:
 
     _print_progress(acc)
 
+    # dead-man's switch: record a successful run
+    from datetime import datetime, timezone
+    from trader.live import heartbeat as hb
+    hb.record("accumulator", ts=datetime.now(tz=timezone.utc).isoformat())
+
     if summary["cooled"] > 0:
         print(
             "\nWARNING: a source rate-limited (429) — rare now that US uses "
