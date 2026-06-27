@@ -61,3 +61,14 @@ switch + healthcheck cron; config fail-fast validation; verified the LIVE
 PRODUCTION_READINESS.md → ~90%. Remaining items are HUMAN-ONLY (B1 reconcile,
 ALERT_WEBHOOK_URL, pmset, a validated strategy). **Autonomous loop STOPPED**:
 both stop conditions hit (≥90% reached; only human-needed items left). 886 tests.
+
+### R4 — 2026-06-27 — forward PAPER trading enabled (track-record accumulation)
+User asked to actually paper-trade. Verified the live path works against the
+KIS 모의 account (FX, account snapshot=100M KRW, decision=BUY 36 005930). Two
+fixes/ops: (a) per-order notional cap made env-tunable (5M default too tight for
+a 100M account; paper runner uses 20M); (b) daily cron (KR 16:00, US 06:00)
+flipped to submit PAPER orders (--live on PAPER_BASE only — cannot reach real
+money). The SignalJournal idempotency correctly prevents double-submits/day.
+Honest note: this is a NO-EDGE technical strategy; the forward paper record is
+unbiased VALIDATION, not expected profit. Requires the Mac awake (pmset) for cron
+to fire — else the heartbeat healthcheck will alert.
