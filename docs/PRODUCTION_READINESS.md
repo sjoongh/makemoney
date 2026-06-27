@@ -42,9 +42,12 @@ Legend: [x] done & in code, [~] partial/needs wiring, [ ] missing.
 - [x] Reconcile with OK/WARN/CRITICAL severity + broker-vs-internal drift;
       caller kill-switches if not ok — `live/reconcile.py`
 - [x] Ledger + FX (KRW-settled) — `live/ledger.py`
-- [ ] **B1 unresolved**: overseas account 383M present-balance vs 0 positions/cash
-      discrepancy — needs broker clarification before trusting overseas equity.
-      Currently conservative (domestic KRW cash only). **(human/broker)**
+- [x] **B1 RESOLVED (2026-06-27, live inspection)**: the overseas 388M
+      `tot_asst_amt`/`frcr_evlu_tota` is a KIS **paper-account phantom** — usable
+      (`frcr_use_psbl_amt`), withdrawable (`wdrw_psbl_tot_amt`), per-currency cash
+      and positions are ALL zero, and it drifts with the USD FX rate. Not real
+      money, not an accounting bug. `account_snapshot` correctly uses only
+      domestic `dnca_tot_amt` (~100M KRW). Documented in `kis_client.py`.
 
 ### 5. Operational / runbook — ~65%
 - [x] Cron daily runners (US/KR), accumulator, forward recorder, reconcile
@@ -66,7 +69,7 @@ fail-fast validation; LIVE hard-guard verified (4-gate + paper-endpoint default)
 go-live runbook. Daily heartbeat wired (daily_run/accumulator/forward_record).
 
 ### Remaining — require the HUMAN (not autonomously doable)
-- **B1**: overseas-account 383M reconcile discrepancy → needs broker clarification.
+- ~~B1 reconcile~~ — **RESOLVED** by live inspection (paper-account phantom; see §4).
 - **ALERT_WEBHOOK_URL**: set a Slack/Telegram/Discord webhook to receive pushes.
 - **pmset / always-on host**: so cron fires (else heartbeat will correctly alert).
 - **A validated strategy**: the platform is ready; the edge is not (see

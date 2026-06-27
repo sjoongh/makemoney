@@ -978,6 +978,17 @@ class KisClient:
         cash before settlement netting; it is the most reliably present field across
         KIS paper accounts.  Overseas USD cash is a TODO (folded later via FX).
 
+        B1 (RESOLVED 2026-06-27 by live inspection): the overseas present-balance
+        endpoint (VTRP6504R) reports ``tot_asst_amt``/``frcr_evlu_tota`` ≈ 388M KRW
+        even though positions, per-currency cash (``frcr_dncl_amt_2``),
+        ``frcr_use_psbl_amt`` and ``wdrw_psbl_tot_amt`` are ALL zero, and the figure
+        drifts with the USD FX rate (382.98M@1520.40 → 388.27M@1545.30). It is a
+        KIS *paper-account phantom valuation* — not deployable money. Ignoring it
+        (using only domestic ``dnca_tot_amt``, here ≈100M KRW) is CORRECT and
+        intentional; do NOT fold overseas total assets into sizing on a paper
+        account. On a real account, fold actual ``frcr_dncl_amt_2`` (usable foreign
+        cash) only, never ``tot_asst_amt``.
+
         Defensively casts all string fields to float/int; skips zero-qty rows.
         """
         dom = self.domestic_balance()
