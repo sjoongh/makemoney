@@ -28,8 +28,9 @@ cannot reach the live endpoint.
 
 ## 2. Pre-flight checklist (run each go-live day)
 - [ ] `python -m trader.app.run_healthcheck` → OK (no stale jobs)
-- [ ] `python -m trader.app.run_reconcile` → no CRITICAL drift (resolve **B1**
-      overseas-account discrepancy first — see PRODUCTION_READINESS.md §4)
+- [ ] `python -m trader.app.run_reconcile` → no CRITICAL drift. (B1 resolved: the
+      overseas 388M is a paper phantom; on a REAL account fold only usable foreign
+      cash `frcr_dncl_amt_2`, never `tot_asst_amt` — see kis_client.account_snapshot)
 - [ ] Kill switch clear; pre-trade limits sane (`PreTradeLimits`:
       max_order_notional_krw, max_position_weight, max_orders_per_run, fat_finger_qty)
 - [ ] Account balance matches expectation; FX rate fresh
