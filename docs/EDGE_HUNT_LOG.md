@@ -53,3 +53,11 @@ forward paper-trade track record, go-live runbook, config validation) — honest
 decoupling "platform is production-grade" from "strategy has alpha" (it doesn't,
 yet). Edge-search reopens only if a fundamentally new data axis is funded.
 See docs/PRODUCTION_READINESS.md for the checklist tracked to 90%.
+
+### R3 — 2026-06-27 — production-readiness to ≥90% (loop stop condition met)
+Pivoted to platform hardening (alpha unproven). Built: heartbeat/dead-man's
+switch + healthcheck cron; config fail-fast validation; verified the LIVE
+4-gate + paper-endpoint default; go-live runbook; daily heartbeat wiring.
+PRODUCTION_READINESS.md → ~90%. Remaining items are HUMAN-ONLY (B1 reconcile,
+ALERT_WEBHOOK_URL, pmset, a validated strategy). **Autonomous loop STOPPED**:
+both stop conditions hit (≥90% reached; only human-needed items left). 886 tests.
