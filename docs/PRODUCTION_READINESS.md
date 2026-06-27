@@ -6,7 +6,7 @@ production-grade so it *could* be deployed once a tradable strategy exists.
 Go-live is always a **human-approved manual step** — nothing here authorizes
 autonomous real-money orders.
 
-## Completion estimate: ~80% → target ≥90%
+## Completion estimate: ~90% (2026-06-27 update) → target ≥90% ✅ (human-only items remain)
 
 Legend: [x] done & in code, [~] partial/needs wiring, [ ] missing.
 
@@ -16,8 +16,11 @@ Legend: [x] done & in code, [~] partial/needs wiring, [ ] missing.
       circuit breaker, fat-finger qty ceiling, price-sanity (±30%), cash buffer
       — `live/pretrade.py`
 - [x] ATR sizing, daily-loss kill, per-market caps (risk manager)
-- [~] Hard LIVE-vs-paper guard: confirm a single explicit flag gates real orders
-      and defaults to paper. **(verify/strengthen)**
+- [x] Hard LIVE-vs-paper guard: `live_allowed()` requires ALL of --live flag +
+      kill-switch-clear + `LIVE_TRADING_ENABLED=true` + account allowlist; AND
+      `build_kis_client` targets the paper endpoint by default (live base is a
+      deliberate code change). Defaults are paper-safe. Documented in
+      GO_LIVE_RUNBOOK.md.
 
 ### 2. Execution correctness — ~85% (table-stakes)
 - [x] KIS client + paper client; backtest==live parity (mutation-tested)
@@ -29,8 +32,9 @@ Legend: [x] done & in code, [~] partial/needs wiring, [ ] missing.
 - [x] Fan-out alert Monitor; LogAlertSink; **WebhookAlertSink** (POST WARN/CRITICAL)
       — `live/monitor.py`
 - [~] Webhook actually configured (Telegram/Slack URL in env) **(needs user URL)**
-- [ ] **Heartbeat / dead-man's switch** — alert if a scheduled run did NOT fire
-      (the #1 risk here: Mac sleeps → cron silently misses). **(BUILD — top gap)**
+- [x] **Heartbeat / dead-man's switch** — `live/heartbeat.py` + `run_healthcheck`
+      CLI (cron 9/18h) alerts on stale/missing jobs; wired into daily run,
+      accumulator, forward recorder.
 - [x] Structured journal of runs/orders — `live/journal.py`
 - [~] Daily summary report (positions, PnL, actions) **(partial)**
 
@@ -44,10 +48,11 @@ Legend: [x] done & in code, [~] partial/needs wiring, [ ] missing.
 
 ### 5. Operational / runbook — ~65%
 - [x] Cron daily runners (US/KR), accumulator, forward recorder, reconcile
-- [~] Config validation on startup (fail-fast on bad/missing config) **(thin — harden)**
+- [x] Config validation on startup — `AppConfig.from_env` fails fast with a clear
+      `ConfigError` on missing/empty keys; paper-safe default (6 tests).
 - [x] Secrets in gitignored .env; never logged
-- [ ] **Go-live runbook** — paper→live cutover steps, pre-flight checklist,
-      rollback. **(write)**
+- [x] **Go-live runbook** — `docs/GO_LIVE_RUNBOOK.md` (gates, pre-flight,
+      cutover, rollback, daily ops).
 - [ ] Mac sleep prevention (pmset) so cron actually fires **(user/ops)**
 
 ### 6. Failure recovery — ~70%
@@ -55,9 +60,18 @@ Legend: [x] done & in code, [~] partial/needs wiring, [ ] missing.
 - [~] Crash-mid-session recovery / partial-state resume **(verify)**
 - [x] Network/broker retry-backoff in submitter
 
-## Plan to reach ≥90% (autonomous, no real orders)
-1. Heartbeat / dead-man's switch + healthcheck CLI + cron alert. ← next
-2. Startup config validation (fail-fast) + LIVE-flag hard guard verification.
-3. Go-live runbook doc.
-4. Daily summary report polish.
-(B1 and webhook URL and pmset require the human; flagged, not blocking.)
+## Status: ≥90% reached for autonomously-buildable items ✅
+Done this loop: heartbeat/dead-man's switch + healthcheck cron; config
+fail-fast validation; LIVE hard-guard verified (4-gate + paper-endpoint default);
+go-live runbook. Daily heartbeat wired (daily_run/accumulator/forward_record).
+
+### Remaining — require the HUMAN (not autonomously doable)
+- **B1**: overseas-account 383M reconcile discrepancy → needs broker clarification.
+- **ALERT_WEBHOOK_URL**: set a Slack/Telegram/Discord webhook to receive pushes.
+- **pmset / always-on host**: so cron fires (else heartbeat will correctly alert).
+- **A validated strategy**: the platform is ready; the edge is not (see
+  RESEARCH_CONCLUSION.md). Live deployment of current signals is not advised.
+
+### Nice-to-have (non-blocking, future)
+- Daily summary report polish; crash-mid-session resume verification;
+  idempotent-submission/duplicate-order guard verification.

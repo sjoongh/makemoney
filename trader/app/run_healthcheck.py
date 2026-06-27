@@ -25,10 +25,9 @@ from trader.live.monitor import LogAlertSink, Monitor, WebhookAlertSink
 # Daily data jobs run every day (weekends too); the trade dry-runs run on
 # weekdays, so they get a weekend-tolerant window.
 DEFAULT_EXPECTATIONS = {
-    "accumulator": 30.0,      # cron daily 13:00
-    "forward_record": 30.0,   # cron daily 14:00
-    "daily_us": 80.0,         # weekdays — tolerate a weekend gap
-    "daily_kr": 80.0,         # weekdays — tolerate a weekend gap
+    "accumulator": 30.0,      # cron daily 13:00 (runs every day)
+    "forward_record": 30.0,   # cron daily 14:00 (runs every day)
+    "daily_run": 80.0,        # run_daily.sh ALL — weekday runs; weekend-tolerant
 }
 
 
