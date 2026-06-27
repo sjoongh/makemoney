@@ -337,6 +337,14 @@ def main(dry_run: bool = True, market: str = "ALL") -> None:
     else:
         print(f"\n[LIVE] {len(orders)} order(s) submitted.")
 
+    # dead-man's switch: record a successful daily run (observability only)
+    try:
+        from datetime import datetime, timezone
+        from trader.live import heartbeat as hb
+        hb.record("daily_run", ts=datetime.now(tz=timezone.utc).isoformat())
+    except Exception:
+        pass  # heartbeat must never break the trading run
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Daily KIS paper-trading runner")
