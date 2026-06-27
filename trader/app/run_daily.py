@@ -273,7 +273,12 @@ def main(dry_run: bool = True, market: str = "ALL") -> None:
     run_id = f"run-{date.today().isoformat()}"
 
     # Wire PreTradeRiskGate explicitly so the entrypoint shows active limits.
-    limits = PreTradeLimits()
+    # Per-order notional cap is env-tunable (MAX_ORDER_NOTIONAL_KRW); the
+    # conservative 5M default is preserved when unset. The 5M default is too
+    # tight for a ~100M paper account (a single ~30% target exceeds it), so the
+    # paper runner sets a higher cap. fat_finger_qty stays as the hard backstop.
+    _cap = os.environ.get("MAX_ORDER_NOTIONAL_KRW")
+    limits = PreTradeLimits(max_order_notional_krw=float(_cap)) if _cap else PreTradeLimits()
     gate = PreTradeRiskGate(limits, fx)
     breaker = RunCircuitBreaker(limits.max_orders_per_run)
 
