@@ -72,3 +72,16 @@ money). The SignalJournal idempotency correctly prevents double-submits/day.
 Honest note: this is a NO-EDGE technical strategy; the forward paper record is
 unbiased VALIDATION, not expected profit. Requires the Mac awake (pmset) for cron
 to fire — else the heartbeat healthcheck will alert.
+
+### R5 — 2026-06-27 — EDGAR point-in-time FUNDAMENTALS (no edge)
+Built a proper free point-in-time fundamental pipeline (SEC EDGAR XBRL, 18yr,
+actual filed dates → no look-ahead/restatement), the thing yfinance (5 quarters)
+couldn't do. Tested the two cleanest value signals on 503 US with split
+discipline (h=21):
+  book_to_market: train IC -0.0054 (t-0.60) → val +0.0105 (t+0.78)  [sign flip]
+  earnings_yield: train -0.0037 (t-0.46) → val -0.0056 (t-0.38)
+NEITHER significant; book/market even wrong-signed in train. Caveat: market-cap
+leg used adjusted price (threatens only a POSITIVE; result is NULL so unaffected).
+CONCLUSION: the fundamental axis shows NO edge on free data either. Across price
+AND fundamentals, rigorously split-tested, there is no tradable cross-sectional
+edge in free data. The data ceiling is real and now doubly confirmed.
