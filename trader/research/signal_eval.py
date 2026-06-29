@@ -127,6 +127,7 @@ def evaluate_ic(
     date_start: Optional[str] = None,
     date_end: Optional[str] = None,
     strict_split: bool = True,
+    allowed_dates: Optional[set] = None,
 ) -> ICResult:
     """Compute the cross-sectional Information Coefficient of ``signal_fn``.
 
@@ -149,6 +150,9 @@ def evaluate_ic(
                         window (exit at t+horizon) crosses date_end, so a train
                         score never uses validation-period realized returns
                         (split-disciplined selection).  Default True.
+        allowed_dates:  optional set of date objects — when given, only rebalance
+                        dates in the set are evaluated (used for macro-REGIME
+                        conditioning, e.g. yield-curve-inverted days only).
 
     Returns:
         ICResult.
@@ -196,6 +200,11 @@ def evaluate_ic(
 
         # split-discipline: don't let a train forward-window peek into validation
         if strict_split and d_end is not None and exit_date >= d_end:
+            i += spacing
+            continue
+
+        # regime conditioning: only evaluate rebalance dates in the allowed set
+        if allowed_dates is not None and t not in allowed_dates:
             i += spacing
             continue
 
