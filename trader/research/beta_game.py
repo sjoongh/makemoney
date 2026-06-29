@@ -66,11 +66,22 @@ def run_beta_game(
     *,
     target_vol: float = 0.12,
     max_leverage: float = 1.0,
+    trend_window: int | None = None,
 ) -> dict:
-    """Backtest risk-managed beta (vol-targeted EW) vs naive buy&hold EW.
+    """Backtest risk-managed beta vs naive buy&hold EW.
 
-    Returns {"strategy": metrics, "benchmark": metrics, "n_days": int,
-             "avg_exposure": float}.
+    Exposure = vol-target scalar, optionally gated by a TREND FILTER: when
+    ``trend_window`` is set, hold the market only while the EW index level is
+    ABOVE its trailing ``trend_window``-day moving average; otherwise go to CASH
+    (capital preservation — sidesteps sustained downtrends/bear markets). This
+    does NOT guarantee zero loss (whipsaws cost a little) but it slashes the
+    deep, catastrophic drawdowns.
+
+    Look-ahead-safe: the exposure for the [t, t+1] return uses only the index
+    level + trailing MA through t.
+
+    Returns {"strategy", "benchmark" (metrics), "n_days", "avg_exposure",
+             "time_in_market", ...}.
     """
     rets = ew_daily_returns(panel)
     if len(rets) < 30:
@@ -83,18 +94,35 @@ def run_beta_game(
     strat: list[float] = []
     bench: list[float] = []
     exposures: list[float] = []
+    level = 1.0
+    level_hist: list[float] = [1.0]  # index level through the *previous* day
+    days_in_market = 0
     for _d, r in rets:
-        exposure = min(targeter.scalar(), max_leverage)  # decided from returns through prev day
-        strat.append(exposure * r)
+        vol_scalar = min(targeter.scalar(), max_leverage)  # info through prev day
+
+        in_market = True
+        if trend_window is not None and len(level_hist) >= trend_window:
+            sma = sum(level_hist[-trend_window:]) / trend_window
+            in_market = level_hist[-1] > sma  # level through prev day vs its MA
+
+        exposure = vol_scalar * (1.0 if in_market else 0.0)
+        strat.append(exposure * r)         # cash (exposure 0) earns 0
         bench.append(r)
         exposures.append(exposure)
+        if in_market:
+            days_in_market += 1
+
         mkt_equity *= (1.0 + r)
-        targeter.update(mkt_equity)  # include this day for the NEXT decision
+        targeter.update(mkt_equity)        # include this day for the NEXT decision
+        level *= (1.0 + r)
+        level_hist.append(level)
 
     return {
-        "strategy": _metrics(strat),       # vol-targeted (risk-managed beta)
+        "strategy": _metrics(strat),       # risk-managed (vol-target [+ trend])
         "benchmark": _metrics(bench),      # naive buy&hold EW
         "n_days": len(rets),
         "avg_exposure": float(np.mean(exposures)),
+        "time_in_market": days_in_market / len(rets),
         "target_vol": target_vol,
+        "trend_window": trend_window,
     }
