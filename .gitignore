@@ -35,3 +35,6 @@ research_data/_universe_log.jsonl
 
 # EDGAR fundamentals store (point-in-time, fetched — re-fetchable, not committed)
 fundamentals_edgar/
+
+# Beta/defensive paper forward track (grows daily via cron)
+beta_paper_track.jsonl
