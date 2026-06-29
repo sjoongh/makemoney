@@ -85,3 +85,14 @@ leg used adjusted price (threatens only a POSITIVE; result is NULL so unaffected
 CONCLUSION: the fundamental axis shows NO edge on free data either. Across price
 AND fundamentals, rigorously split-tested, there is no tradable cross-sectional
 edge in free data. The data ceiling is real and now doubly confirmed.
+
+### R6 — 2026-06-29 — FRED macro REGIME conditioning (no alpha; beta artifact)
+Added keyless FRED (trader/data/fred.py) + evaluate_ic allowed_dates regime
+filter. Yield-curve (T10Y2Y) normal vs inverted, momentum & low-vol (h=21):
+  momentum_12_1: normal +0.011 (t0.54) / inverted +0.052 (t1.30) — n.s.
+  low_vol_60:    normal -0.067 (t-2.74) / inverted -0.060 (t-1.31)
+The lone |t|>2 (low-vol normal-regime) is WRONG-SIGNED for the anomaly: it means
+high-vol/high-BETA names outperform in calm markets — beta-timing, not alpha;
+full-sample (no holdout); inverts in the stress regime → not robust. Conclusion:
+no alpha edge; the only thing that "works" is market BETA in calm regimes. This
+justifies pivoting to the beta game (Task 3): own the market with risk management.
