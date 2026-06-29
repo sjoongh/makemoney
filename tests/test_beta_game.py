@@ -43,6 +43,22 @@ def test_vol_target_cuts_drawdown_in_a_crash():
     assert 0.0 < res["avg_exposure"] <= 1.0
 
 
+def test_trend_filter_exits_before_sustained_crash():
+    # long uptrend then a sustained downtrend; the trend filter should move to
+    # cash and avoid most of the bear market → much shallower drawdown.
+    closes = [100.0]
+    for _ in range(250):
+        closes.append(closes[-1] * 1.002)    # long bull
+    for _ in range(120):
+        closes.append(closes[-1] * 0.99)     # sustained bear
+    panel = _panel({"A": closes, "B": closes})
+    defended = run_beta_game(panel, target_vol=0.15, trend_window=100)
+    plain = run_beta_game(panel, target_vol=0.15)  # no trend filter
+    # trend-filtered strategy avoids most of the downtrend → shallower MaxDD
+    assert defended["strategy"]["max_drawdown"] > plain["strategy"]["max_drawdown"]
+    assert defended["time_in_market"] < 1.0     # spent time in cash
+
+
 def test_flat_calm_market_exposure_high():
     # steady low-vol rise → vol targeting wants full (capped) exposure
     closes = [100.0 * (1.0005 ** i) for i in range(120)]
