@@ -96,3 +96,20 @@ high-vol/high-BETA names outperform in calm markets — beta-timing, not alpha;
 full-sample (no holdout); inverts in the stress regime → not robust. Conclusion:
 no alpha edge; the only thing that "works" is market BETA in calm regimes. This
 justifies pivoting to the beta game (Task 3): own the market with risk management.
+
+### R7 — 2026-06-29 — the BETA GAME (constructive, honest, works)
+No alpha → own the market with risk management. Vol-targeted equal-weight US
+(EWMA target vol) vs naive buy&hold, 2016-2026 (2518 days):
+  target_vol=15%: vol-tgt CAGR 15.2% / vol 13.1% / Sharpe 1.15 / MaxDD -19.2%
+                  buy&hold CAGR 18.2% / vol 18.6% / Sharpe 0.99 / MaxDD -38.3%
+Gives up raw CAGR (no alpha) but BETTER Sharpe and ~HALF the drawdown. This is
+the honest deliverable: a better risk-adjusted way to own market BETA, not a
+skill edge. Caveats: survivorship-biased universe (real return lower); exposure-
+change costs not modeled; beta-dependent (needs market to rise). trader/research/
+beta_game.py + run_beta_game CLI; 3 tests.
+
+## FINAL STANDING (2026-06-29)
+Free-data ALPHA: exhaustively searched (price R1-2, fundamentals/EDGAR R5, macro
+regime R6) — NONE. The only thing that "works" is risk-managed BETA (R7). Honest
+end state: a production-grade platform + a vol-targeted beta strategy that owns
+the market safely. Real alpha needs paid alt-data, or accept beta.
