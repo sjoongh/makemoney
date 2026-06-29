@@ -15,12 +15,16 @@ NEVER import from live/paper trading or the backtest/live parity path.
 """
 from __future__ import annotations
 
+import json
+import os
 from datetime import date
 
 import numpy as np
 
 from trader.core.events import BarEvent
 from trader.strategy.vol_target import PortfolioVolTargeter
+
+BETA_TRACK_PATH = "beta_paper_track.jsonl"
 
 
 def ew_daily_returns(panel: dict[str, list[BarEvent]]) -> list[tuple[date, float]]:
@@ -125,4 +129,30 @@ def run_beta_game(
         "time_in_market": days_in_market / len(rets),
         "target_vol": target_vol,
         "trend_window": trend_window,
+        "last_date": rets[-1][0].isoformat(),
+        "strat_equity": float(np.prod([1.0 + x for x in strat])),
+        "bench_equity": float(np.prod([1.0 + x for x in bench])),
+        "latest_exposure": float(exposures[-1]),
     }
+
+
+def append_beta_track(record: dict, *, path: str = BETA_TRACK_PATH) -> bool:
+    """Append a daily beta-paper-track snapshot, idempotent on ``last_date``
+    (so re-running the same day is a no-op; the track only advances when new
+    market data arrives). Returns True on append."""
+    last_date = record.get("last_date")
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    if json.loads(line).get("last_date") == last_date:
+                        return False
+                except json.JSONDecodeError:
+                    continue
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(record, ensure_ascii=False) + "\n")
+    return True

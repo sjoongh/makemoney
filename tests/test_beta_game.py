@@ -66,3 +66,13 @@ def test_flat_calm_market_exposure_high():
     res = run_beta_game(panel, target_vol=0.12)
     assert res["avg_exposure"] > 0.8
     assert res["n_days"] == 119
+
+
+def test_append_beta_track_idempotent(tmp_path):
+    from trader.research.beta_game import append_beta_track
+    p = str(tmp_path / "track.jsonl")
+    rec = {"last_date": "2026-06-26", "strat_equity": 2.0}
+    assert append_beta_track(rec, path=p) is True
+    assert append_beta_track(rec, path=p) is False           # same last_date → no dup
+    assert append_beta_track({"last_date": "2026-06-29", "strat_equity": 2.1}, path=p) is True
+    assert len(open(p).read().strip().splitlines()) == 2
