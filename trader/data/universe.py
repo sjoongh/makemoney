@@ -18,7 +18,9 @@ from __future__ import annotations
 
 import csv
 import io
+import json
 import logging
+import os
 from typing import TYPE_CHECKING
 
 import httpx
@@ -124,13 +126,51 @@ def load_sp500(client: httpx.Client | None = None) -> list[str]:
                 tickers.append(raw.replace(".", "-"))
         if not tickers:
             raise ValueError("CSV parsed but contained no tickers")
+        _save_sp500_cache(tickers)   # refresh disk cache on a good full fetch
         return tickers
 
     except Exception as exc:
+        # A transient fetch failure must NOT collapse the universe to the tiny
+        # hardcoded fallback (that silently shrank the accumulator to ~20 US
+        # names). Prefer the last good disk cache; only then the fallback.
+        cached = _load_sp500_cache()
+        if cached:
+            logger.warning(
+                "load_sp500: fetch failed (%s); using cached list (%d tickers).",
+                exc, len(cached),
+            )
+            return cached
         logger.warning(
-            "load_sp500: failed to fetch from GitHub (%s); using fallback list.", exc
+            "load_sp500: fetch failed (%s) and no cache; using small fallback list.", exc
         )
         return list(_SP500_FALLBACK)
+
+
+_SP500_CACHE_PATH = "research_data/_sp500_cache.json"
+
+
+def _save_sp500_cache(tickers: list[str], path: str = _SP500_CACHE_PATH) -> None:
+    # Only cache a plausibly-full list, so small injected test samples don't
+    # overwrite the real cache.
+    if len(tickers) < 400:
+        return
+    try:
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(tickers, fh)
+    except OSError:
+        pass  # cache is best-effort
+
+
+def _load_sp500_cache(path: str = _SP500_CACHE_PATH) -> list[str]:
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+        if isinstance(data, list) and len(data) >= 400:
+            return [str(t) for t in data]
+    except (OSError, json.JSONDecodeError):
+        pass
+    return []
 
 
 # ---------------------------------------------------------------------------

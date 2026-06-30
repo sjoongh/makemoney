@@ -38,3 +38,6 @@ fundamentals_edgar/
 
 # Beta/defensive paper forward track (grows daily via cron)
 beta_paper_track.jsonl
+
+# S&P500 list cache (machine-regenerated resilience cache)
+research_data/_sp500_cache.json
