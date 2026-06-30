@@ -65,18 +65,26 @@ class TestLoadSp500:
         tickers = load_sp500(client=_client(_SAMPLE_CSV))
         assert len(tickers) == 5
 
-    def test_fallback_on_http_error(self):
-        """Non-200 status must trigger fallback list, not raise."""
+    @staticmethod
+    def _no_cache(monkeypatch):
+        import trader.data.universe as U
+        monkeypatch.setattr(U, "_load_sp500_cache", lambda path=U._SP500_CACHE_PATH: [])
+
+    def test_fallback_on_http_error(self, monkeypatch):
+        """Non-200 status, no cache → fallback list, not raise."""
+        self._no_cache(monkeypatch)
         tickers = load_sp500(client=_client("", status_code=503))
         assert tickers == _SP500_FALLBACK
 
-    def test_fallback_on_empty_csv(self):
-        """Empty or header-only CSV must trigger fallback, not raise."""
+    def test_fallback_on_empty_csv(self, monkeypatch):
+        """Empty/header-only CSV, no cache → fallback, not raise."""
+        self._no_cache(monkeypatch)
         tickers = load_sp500(client=_client("Symbol,Name,Sector\n"))
         assert tickers == _SP500_FALLBACK
 
-    def test_fallback_on_network_error(self):
-        """Connection errors must trigger fallback, not propagate."""
+    def test_fallback_on_network_error(self, monkeypatch):
+        """Connection error, no cache → fallback, not propagate."""
+        self._no_cache(monkeypatch)
 
         class _ErrorTransport(httpx.BaseTransport):
             def handle_request(self, request):
@@ -159,3 +167,48 @@ class TestUniverse:
         tickers = [t for t, _ in result]
         assert "BRK-B" in tickers
         assert "BRK.B" not in tickers
+
+
+# ---------------------------------------------------------------------------
+# S&P500 cache resilience — transient fetch failure must NOT collapse universe
+# ---------------------------------------------------------------------------
+
+class TestSp500CacheResilience:
+    def test_cache_roundtrip(self, tmp_path):
+        from trader.data import universe as U
+        p = str(tmp_path / "c.json")
+        big = [f"T{i}" for i in range(503)]
+        U._save_sp500_cache(big, path=p)
+        assert U._load_sp500_cache(path=p) == big
+
+    def test_small_list_not_cached(self, tmp_path):
+        from trader.data import universe as U
+        p = str(tmp_path / "c.json")
+        U._save_sp500_cache(["A", "B"], path=p)        # <400 → not saved
+        assert U._load_sp500_cache(path=p) == []
+
+    def test_fetch_failure_uses_cache_not_fallback(self, monkeypatch):
+        import httpx
+        from trader.data import universe as U
+        big = [f"T{i}" for i in range(450)]
+        monkeypatch.setattr(U, "_load_sp500_cache", lambda path=U._SP500_CACHE_PATH: big)
+
+        def _raise(request):
+            raise httpx.ConnectError("boom")
+
+        client = httpx.Client(transport=httpx.MockTransport(_raise))
+        out = U.load_sp500(client=client)
+        assert out == big                               # cache, not the ~20 fallback
+        assert len(out) >= 400
+
+    def test_fetch_failure_falls_back_when_no_cache(self, monkeypatch):
+        import httpx
+        from trader.data import universe as U
+        monkeypatch.setattr(U, "_load_sp500_cache", lambda path=U._SP500_CACHE_PATH: [])
+
+        def _raise(request):
+            raise httpx.ConnectError("boom")
+
+        client = httpx.Client(transport=httpx.MockTransport(_raise))
+        out = U.load_sp500(client=client)
+        assert out == list(U._SP500_FALLBACK)
