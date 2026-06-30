@@ -30,14 +30,18 @@ experiments/
 
 # Forward recorder output — point-in-time raw bars + membership log, grows
 # daily via cron (machine-local; snapshot to git periodically like research_data).
-forward_data/
-research_data/_universe_log.jsonl
 
 # EDGAR fundamentals store (point-in-time, fetched — re-fetchable, not committed)
-fundamentals_edgar/
 
 # Beta/defensive paper forward track (grows daily via cron)
-beta_paper_track.jsonl
 
 # S&P500 list cache (machine-regenerated resilience cache)
 research_data/_sp500_cache.json
+
+# Forward stores: ignore the BULKY re-fetchable parts, BACK UP the small
+# irreplaceable point-in-time logs (universe membership, fundamentals snapshot,
+# beta track) — those are committed by the daily backup cron.
+forward_data/*.parquet
+forward_data/*.parquet.tmp
+fundamentals_edgar/
+!forward_data/_fundamentals.jsonl
