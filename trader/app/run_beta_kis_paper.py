@@ -91,10 +91,14 @@ def main(argv: list[str] | None = None) -> None:
         if not allowed:
             print(f"  [LIVE GATE REFUSED] {reason} → not submitting")
         else:
-            odno = kis.submit_order(ETF_TICKER, ETF_MARKET, order["side"],
-                                    order["qty"], price=0.0, order_type="01")
-            submitted = odno
-            print(f"  [LIVE] submitted {order['side']} {order['qty']} 069500 → ODNO {odno}")
+            try:
+                odno = kis.submit_order(ETF_TICKER, ETF_MARKET, order["side"],
+                                        order["qty"], price=0.0, order_type="01")
+                submitted = odno
+                print(f"  [LIVE] submitted {order['side']} {order['qty']} 069500 → ODNO {odno}")
+            except RuntimeError as exc:
+                # e.g. "모의투자 장종료" outside KOSPI hours — expected, not fatal
+                print(f"  [LIVE] submit not accepted: {exc}")
     elif args.live:
         print("  [LIVE] nothing to do (HOLD)")
 
