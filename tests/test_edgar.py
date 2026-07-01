@@ -97,3 +97,30 @@ def test_ttm_no_lookahead_at_filing_boundary():
     # Q4 filed 2024-02-15; the day before, only 3 quarters known → None
     assert edgar.ttm_as_of(_SER, date(2024, 2, 14)) is None
     assert edgar.ttm_as_of(_SER, date(2024, 2, 15)) == 500.0
+
+
+def test_sue_as_of_positive_surprise():
+    # 12 quarters, flat then a big jump in the latest → positive SUE
+    from datetime import date as D
+    vals = [100, 102, 101, 103,  106, 107, 105, 110,  109, 112, 110, 260]
+    q = []
+    for i, v in enumerate(vals):
+        yr = 2021 + i // 4
+        mo = [3, 6, 9, 12][i % 4]
+        q.append({"period_end": D(yr, mo, 28), "filed": D(yr, mo, 28), "val": float(v)})
+    sue = edgar.sue_as_of(q, D(2024, 12, 31), min_hist=8)
+    assert sue is not None and sue > 2.0     # large positive surprise vs prior YoY
+
+def test_sue_none_insufficient_history():
+    from datetime import date as D
+    q = [{"period_end": D(2023, m, 28), "filed": D(2023, m, 28), "val": 100.0}
+         for m in (3, 6, 9, 12)]
+    assert edgar.sue_as_of(q, D(2024, 1, 1), min_hist=8) is None
+
+def test_sue_point_in_time_filed():
+    from datetime import date as D
+    q = [{"period_end": D(2021 + i // 4, [3, 6, 9, 12][i % 4], 28),
+          "filed": D(2021 + i // 4, [3, 6, 9, 12][i % 4], 28), "val": 100.0 + i}
+         for i in range(12)]
+    # before enough quarters are filed → None
+    assert edgar.sue_as_of(q, D(2021, 6, 1), min_hist=8) is None
