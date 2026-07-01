@@ -43,3 +43,6 @@ forward_data/*.parquet
 forward_data/*.parquet.tmp
 fundamentals_edgar/
 !forward_data/_fundamentals.jsonl
+
+# Beta KIS paper track (grows via cron)
+beta_kis_track.jsonl
