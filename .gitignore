@@ -46,3 +46,6 @@ fundamentals_edgar/
 
 # Beta KIS paper track (grows via cron)
 beta_kis_track.jsonl
+
+# KOSDAQ research data (re-fetchable via FDR)
+kosdaq_data/

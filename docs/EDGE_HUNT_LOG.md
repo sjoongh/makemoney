@@ -123,3 +123,21 @@ Sign FLIPS train→val, none significant (|t|<2). Large-cap PEAD is dead (matche
 may survive in SMALL/neglected caps — Axis 2 pending micro-cap data feasibility.
 Honest odds (Codex) for a real after-cost small-cap edge: 10-25% with strict
 liquidity/delisting controls, <10% on survivorship-biased free names.
+
+### R9 — 2026-07-01 — KOSDAQ small-caps: signal EXISTS but not tradable after costs
+Axis 2. Survivorship-lighter KOSDAQ small-caps via FDR (146 liquidity-filtered
+names, incl. some delisted). Technical battery, split-disciplined (h=21): unlike
+large-caps, several signals kept CONSISTENT sign train→val — 21d reversal
+(train t+2.89 / val +1.16), MAX/lottery (+2.55/+1.32), Amihud illiquidity
+(+1.13/+1.43). Reversal SURVIVED the bid-ask-bounce test (skip last 5 days → val
+t rose to +2.03) → not a bounce artifact; the first genuinely train+val-significant
+signal of the whole hunt.
+BUT the DECISIVE cost test killed it: long-only top-20% reversal, monthly rebal,
+1.5% round-trip cost → TRAIN +11.4% vs bench +25.7% (−14.3%), VAL −16.8% vs
+−2.0% (−14.8%). Gross edge ~3%/yr is entirely eaten by ~18%/yr turnover cost.
+CONCLUSION: small-cap anomalies (reversal/MAX/illiquidity) genuinely EXIST in the
+data but are NOT tradable after realistic frictions — which is precisely why they
+persist (uncapturable = unarbitraged). No free-data tradable alpha, now confirmed
+even in the less-arbitraged corner. (Caveats: current-listing universe still
+somewhat survivorship-biased; long-only; no holdout opened — but a strategy that
+loses to benchmark after costs in BOTH train and val doesn't warrant a holdout.)
