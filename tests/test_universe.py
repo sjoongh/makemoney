@@ -212,3 +212,12 @@ class TestSp500CacheResilience:
         client = httpx.Client(transport=httpx.MockTransport(_raise))
         out = U.load_sp500(client=client)
         assert out == list(U._SP500_FALLBACK)
+
+
+def test_load_sp500_prefers_cache_when_present(monkeypatch, tmp_path):
+    """Real run (client=None) with a cache present must NOT hit the network."""
+    import trader.data.universe as U
+    big = [f"T{i}" for i in range(503)]
+    monkeypatch.setattr(U, "_load_sp500_cache", lambda path=U._SP500_CACHE_PATH: big)
+    # if it tried to build an httpx.Client it would (in this env) hang; cache short-circuits
+    assert U.load_sp500() == big
