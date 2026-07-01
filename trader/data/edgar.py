@@ -140,6 +140,39 @@ def as_of(series: list[dict], t: date) -> Optional[float]:
     return max(elig, key=lambda r: r["period_end"])["val"]
 
 
+def sue_as_of(quarterly: list[dict], t: date, *, min_hist: int = 8) -> Optional[float]:
+    """Standardized Unexpected Earnings (no analyst estimates) known at *t*.
+
+    Seasonal random walk: expected NI_q = NI_{q-4}. Unexpected = NI_q - NI_{q-4}.
+    SUE = latest unexpected / stdev(prior year-over-year NI changes). This is the
+    classic estimate-free PEAD signal. Point-in-time: only quarters with
+    filed <= t. Needs >= ``min_hist`` filed quarters (so several YoY changes
+    exist for the stdev). Returns None otherwise or on zero variance.
+    """
+    elig = sorted((r for r in quarterly if r["filed"] <= t),
+                  key=lambda r: r["period_end"])
+    # de-dup by period_end (keep earliest-filed original)
+    seen, uniq = set(), []
+    for r in elig:
+        if r["period_end"] in seen:
+            continue
+        seen.add(r["period_end"]); uniq.append(r)
+    if len(uniq) < min_hist:
+        return None
+    vals = [r["val"] for r in uniq]
+    yoy = [vals[i] - vals[i - 4] for i in range(4, len(vals))]
+    if len(yoy) < 2:
+        return None
+    latest = yoy[-1]
+    prior = yoy[:-1]
+    mean = sum(prior) / len(prior)          # drift term (Codex): standardize around it
+    var = sum((x - mean) ** 2 for x in prior) / (len(prior) - 1) if len(prior) > 1 else 0.0
+    sd = var ** 0.5
+    if sd == 0:
+        return None
+    return (latest - mean) / sd             # drift-adjusted SUE
+
+
 def ttm_as_of(quarterly: list[dict], t: date, n: int = 4) -> Optional[float]:
     """Trailing-n-quarter sum known at *t* (filed <= t). None if < n quarters."""
     elig = sorted((r for r in quarterly if r["filed"] <= t),

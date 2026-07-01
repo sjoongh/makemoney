@@ -113,3 +113,13 @@ Free-data ALPHA: exhaustively searched (price R1-2, fundamentals/EDGAR R5, macro
 regime R6) — NONE. The only thing that "works" is risk-managed BETA (R7). Honest
 end state: a production-grade platform + a vol-targeted beta strategy that owns
 the market safely. Real alpha needs paid alt-data, or accept beta.
+
+### R8 — 2026-07-01 — PEAD / filing-date earnings drift (SUE), large-cap: no edge
+Built estimate-free, drift-adjusted SUE from EDGAR point-in-time NI+filing dates
+(edgar.sue_as_of, make_sue). US large-cap, split-disciplined:
+  h21 train -0.0088(t-0.89) → val +0.0229(t+1.89); h63 train -0.019 → val +0.032
+Sign FLIPS train→val, none significant (|t|<2). Large-cap PEAD is dead (matches
+"Rest in Peace PEAD", Martineau). The val positive IC (right direction) hints it
+may survive in SMALL/neglected caps — Axis 2 pending micro-cap data feasibility.
+Honest odds (Codex) for a real after-cost small-cap edge: 10-25% with strict
+liquidity/delisting controls, <10% on survivorship-biased free names.

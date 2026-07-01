@@ -84,6 +84,21 @@ def make_book_to_market(fund: dict[str, dict]) -> SignalFn:
     return _bm
 
 
+def make_sue(fund: dict[str, dict], *, min_hist: int = 8) -> SignalFn:
+    """PEAD / filing-date earnings-drift signal: standardized unexpected earnings
+    (estimate-free, drift-adjusted) known at t (filed <= t). Higher = bigger
+    positive earnings surprise → hypothesised upward drift. NOTE: uses the SEC
+    FILING date, not the (usually earlier) press-release date, so this is
+    'filing-date drift', a conservative PEAD proxy."""
+    def _sue(hist: list[BarEvent]) -> Optional[float]:
+        b = hist[-1]
+        f = fund.get(b.symbol.ticker)
+        if not f:
+            return None
+        return edgar.sue_as_of(f["ni_quarterly"], b.ts.date(), min_hist=min_hist)
+    return _sue
+
+
 def make_earnings_yield(fund: dict[str, dict]) -> SignalFn:
     def _ey(hist: list[BarEvent]) -> Optional[float]:
         b = hist[-1]
