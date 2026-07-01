@@ -35,8 +35,6 @@ experiments/
 
 # Beta/defensive paper forward track (grows daily via cron)
 
-# S&P500 list cache (machine-regenerated resilience cache)
-research_data/_sp500_cache.json
 
 # Forward stores: ignore the BULKY re-fetchable parts, BACK UP the small
 # irreplaceable point-in-time logs (universe membership, fundamentals snapshot,
