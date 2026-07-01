@@ -97,7 +97,18 @@ def load_sp500(client: httpx.Client | None = None) -> list[str]:
     Args:
         client: Optional injectable httpx.Client (used in tests to avoid
                 real network calls).  If None, a short-lived client is used.
+
+    Real runs (client is None): a committed cache is preferred and the flaky
+    GitHub raw endpoint is skipped entirely — it can HANG and block the daily
+    accumulator, and the constituent list changes rarely. Delete
+    research_data/_sp500_cache.json to force a refresh-fetch on the next run.
+    Tests inject a client to exercise the fetch/parse/fallback paths.
     """
+    if client is None:
+        cached = _load_sp500_cache()
+        if cached:
+            return cached
+
     _headers = {
         "User-Agent": (
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -109,7 +120,13 @@ def load_sp500(client: httpx.Client | None = None) -> list[str]:
         if client is not None:
             resp = client.get(_SP500_CSV_URL, headers=_headers)
         else:
-            with httpx.Client(timeout=20) as c:
+            # Tight timeout: the GitHub raw endpoint can HANG. Since a committed
+            # cache is the fallback, fail fast (don't block the accumulator) and
+            # use the cache. connect+read capped so a stalled socket resolves
+            # in seconds, not tens of seconds.
+            with httpx.Client(
+                timeout=httpx.Timeout(6.0, connect=4.0)
+            ) as c:
                 resp = c.get(_SP500_CSV_URL, headers=_headers)
 
         resp.raise_for_status()
