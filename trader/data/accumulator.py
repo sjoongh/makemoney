@@ -65,17 +65,13 @@ def _key(market: str, ticker: str) -> str:
 def provider_for(market: str) -> str:
     """Return the data provider name for a given market string.
 
-    Mirrors the dispatch logic in ResearchDataProvider.daily_history:
-      KOSPI  → "naver"
-      everything else (NASDAQ, NYSE, …) → "yahoo"
-
-    This is used by run_once() to build a per-run per-provider cooldown set
-    so that a Yahoo (US) 429 does not block Naver (KR) accumulation and
-    vice-versa.
+    Mirrors the dispatch logic in ResearchDataProvider.daily_history — which,
+    since the 2026-06 migration, routes BOTH markets through yfinance
+    (KOSPI via the .KS suffix).  A yfinance 429 therefore affects ALL symbols,
+    so run_once()'s per-provider cooldown must halt everything, not keep
+    hammering KOSPI symbols under a stale "naver" label (2026-07-02 audit fix).
     """
-    if market.upper() == "KOSPI":
-        return "naver"
-    return "yahoo"
+    return "yfinance"
 
 
 # ---------------------------------------------------------------------------

@@ -378,21 +378,18 @@ class TestProgress:
 # ---------------------------------------------------------------------------
 
 class TestProviderFor:
-    def test_nasdaq_maps_to_yahoo(self):
-        assert provider_for("NASDAQ") == "yahoo"
+    # Since the 2026-06 migration BOTH markets route through yfinance
+    # (KOSPI via .KS) — provider_for must reflect that so a 429 cools
+    # everything instead of hammering KOSPI under a stale "naver" label
+    # (2026-07-02 audit fix).
+    def test_nasdaq_maps_to_yfinance(self):
+        assert provider_for("NASDAQ") == "yfinance"
 
-    def test_nasdaq_case_insensitive(self):
-        assert provider_for("nasdaq") == "yahoo"
+    def test_kospi_maps_to_yfinance(self):
+        assert provider_for("KOSPI") == "yfinance"
 
-    def test_kospi_maps_to_naver(self):
-        assert provider_for("KOSPI") == "naver"
-
-    def test_kospi_case_insensitive(self):
-        assert provider_for("kospi") == "naver"
-
-    def test_unknown_market_returns_yahoo(self):
-        # Fallback matches research_provider behaviour (else → Yahoo path)
-        assert provider_for("NYSE") == "yahoo"
+    def test_all_markets_single_provider(self):
+        assert provider_for("NYSE") == provider_for("kospi") == "yfinance"
 
 
 # ---------------------------------------------------------------------------
@@ -415,75 +412,49 @@ class FakeProviderMixed:
 
 
 class TestPerProviderCooldown:
-    def test_yahoo_429_does_not_block_naver(self, tmp_path):
-        """KEY REGRESSION: Yahoo 429 must not prevent KR/Naver symbols from being fetched."""
+    # Single provider (yfinance) since the 2026-06 migration: a 429 halts the
+    # WHOLE run — KOSPI symbols must not keep hammering the same rate-limited
+    # backend under a stale "naver" label (2026-07-02 audit fix).
+    def test_429_halts_all_markets(self, tmp_path):
         uni = [
             ("AAPL", "NASDAQ"),
             ("MSFT", "NASDAQ"),
             ("005930", "KOSPI"),
             ("000660", "KOSPI"),
         ]
-        # All NASDAQ symbols will 429; KOSPI symbols should still succeed
-        prov = FakeProviderMixed(yahoo_429_tickers={"AAPL", "MSFT"})
+        prov = FakeProviderMixed(yahoo_429_tickers={"AAPL"})
         acc, manifest_path = _acc(prov, uni, tmp_path, per_run=10)
 
         summary = acc.run_once()
 
-        # KOSPI symbols must have been fetched
-        called_kospi = [(t, m) for t, m in prov.calls if m == "KOSPI"]
-        assert ("005930", "KOSPI") in called_kospi
-        assert ("000660", "KOSPI") in called_kospi
+        # AAPL 429 → EVERYTHING after it (same provider) is skipped this run
+        assert prov.calls == [("AAPL", "NASDAQ")]
+        assert summary["cooled"] == 1
+        assert summary["fetched"] == 0
 
-        # Summary: 2 cooled (yahoo), 2 fetched (naver)
-        assert summary["cooled"] >= 1
-        assert summary["fetched"] == 2
-
-        # Manifest: KOSPI symbols ok, NASDAQ symbols in cooldown
         with open(manifest_path) as f:
             m = json.load(f)
-
-        assert m["KOSPI|005930"]["status"] == "ok"
-        assert m["KOSPI|000660"]["status"] == "ok"
         assert m["NASDAQ|AAPL"]["status"] == "cooldown"
+        # KOSPI untouched → still pending next run
+        assert "KOSPI|005930" not in m or m["KOSPI|005930"]["status"] == "pending"
 
-    def test_yahoo_429_stops_further_yahoo_fetches(self, tmp_path):
-        """After Yahoo 429, no more Yahoo (NASDAQ) symbols are attempted that run."""
+    def test_429_mid_run_stops_remaining(self, tmp_path):
         uni = [
-            ("AAPL", "NASDAQ"),
-            ("MSFT", "NASDAQ"),
-            ("GOOG", "NASDAQ"),
-            ("005930", "KOSPI"),
+            ("005930", "KOSPI"),   # succeeds first
+            ("AAPL", "NASDAQ"),    # 429
+            ("MSFT", "NASDAQ"),    # must be skipped
+            ("000660", "KOSPI"),   # must be skipped (same single provider)
         ]
         prov = FakeProviderMixed(yahoo_429_tickers={"AAPL"})
         acc, _ = _acc(prov, uni, tmp_path, per_run=10)
 
-        acc.run_once()
+        summary = acc.run_once()
 
-        called_nasdaq = [t for t, m in prov.calls if m == "NASDAQ"]
-        # AAPL hit 429 → MSFT and GOOG must NOT be called
-        assert "MSFT" not in called_nasdaq
-        assert "GOOG" not in called_nasdaq
-        # But KOSPI should still have been called
-        assert ("005930", "KOSPI") in prov.calls
-
-    def test_naver_429_stops_naver_but_not_yahoo(self, tmp_path):
-        """Symmetric: a Naver 429 should cool Naver but leave Yahoo running."""
-        uni = [
-            ("AAPL", "NASDAQ"),
-            ("005930", "KOSPI"),
-            ("000660", "KOSPI"),
-        ]
-        exc_429 = RuntimeError("[RESEARCH] Naver rate-limited (429) for 005930.")
-        prov = FakeProvider(raises={"KOSPI|005930": exc_429})
-        acc, _ = _acc(prov, uni, tmp_path, per_run=10)
-
-        acc.run_once()
-
-        called = prov.calls
-        # Yahoo (AAPL) must still have been called
-        assert ("AAPL", "NASDAQ") in called
-        # 000660 (also naver) must NOT be called after the 005930 429
-        assert ("000660", "KOSPI") not in called
+        assert ("005930", "KOSPI") in prov.calls        # before the 429
+        assert ("MSFT", "NASDAQ") not in prov.calls     # after → skipped
+        assert ("000660", "KOSPI") not in prov.calls    # after → skipped
+        assert summary["fetched"] == 1
+        assert summary["cooled"] == 1
 
     def test_cooled_provider_set_is_per_run(self, tmp_path):
         """Cooled provider set resets between run_once() calls."""
@@ -515,11 +486,11 @@ class TestPerProviderCooldown:
 # Provider-interleaved selection — KR(Naver) must not be starved by US(Yahoo)
 # ---------------------------------------------------------------------------
 
-class TestSelectNextInterleaved:
-    def test_batch_contains_naver_symbols(self, tmp_path):
-        """KEY REGRESSION: with many US then few KR symbols all pending,
-        select_next must include KR/Naver symbols (not be all-Yahoo)."""
-        # 10 US symbols followed by 3 KR symbols — all pending
+class TestSelectNextSingleProvider:
+    # With a single provider (yfinance) the round-robin degenerates to plain
+    # universe order — these tests pin that batches still form correctly and
+    # respect per_run.
+    def test_batch_follows_universe_order(self, tmp_path):
         us_symbols = [(f"US{i:02d}", "NASDAQ") for i in range(10)]
         kr_symbols = [("005930", "KOSPI"), ("000660", "KOSPI"), ("035420", "KOSPI")]
         uni = us_symbols + kr_symbols
@@ -528,13 +499,10 @@ class TestSelectNextInterleaved:
 
         selected = acc.select_next()
 
-        providers_selected = {provider_for(mkt) for _, mkt in selected}
-        assert "naver" in providers_selected, (
-            "select_next returned all-Yahoo batch — KR symbols starved"
-        )
+        assert len(selected) == 6
+        assert selected == uni[:6]          # plain order, no starvation logic needed
 
-    def test_round_robin_two_providers_splits_evenly(self, tmp_path):
-        """per_run=4, 2 providers with >=2 symbols each → ~2 from each."""
+    def test_per_run_respected_mixed_markets(self, tmp_path):
         uni = [
             ("US00", "NASDAQ"), ("US01", "NASDAQ"), ("US02", "NASDAQ"),
             ("005930", "KOSPI"), ("000660", "KOSPI"), ("035420", "KOSPI"),
@@ -543,65 +511,16 @@ class TestSelectNextInterleaved:
         acc, _ = _acc(prov, uni, tmp_path, per_run=4)
 
         selected = acc.select_next()
-
         assert len(selected) == 4
-        yahoo_count = sum(1 for _, m in selected if provider_for(m) == "yahoo")
-        naver_count = sum(1 for _, m in selected if provider_for(m) == "naver")
-        # Round-robin: 2 from each provider
-        assert yahoo_count == 2
-        assert naver_count == 2
+        assert all(provider_for(m) == "yfinance" for _, m in selected)
 
-    def test_single_provider_no_error(self, tmp_path):
-        """When only one provider has eligible symbols, batch is just that provider."""
+    def test_single_market_no_error(self, tmp_path):
         uni = [("AAPL", "NASDAQ"), ("MSFT", "NASDAQ"), ("GOOG", "NASDAQ")]
         prov = FakeProvider()
         acc, _ = _acc(prov, uni, tmp_path, per_run=5)
 
         selected = acc.select_next()
-
         assert len(selected) == 3
-        assert all(provider_for(m) == "yahoo" for _, m in selected)
-
-    def test_run_once_yahoo_429_naver_fetched(self, tmp_path):
-        """Full run_once sim: all yahoo 429 → naver symbols still fetched (manifest ok)."""
-        us_symbols = [(f"US{i:02d}", "NASDAQ") for i in range(5)]
-        kr_symbols = [("005930", "KOSPI"), ("000660", "KOSPI")]
-        uni = us_symbols + kr_symbols
-
-        # All NASDAQ raise 429; KOSPI always succeeds
-        prov = FakeProviderMixed(yahoo_429_tickers={t for t, _ in us_symbols})
-        acc, manifest_path = _acc(prov, uni, tmp_path, per_run=8)
-
-        summary = acc.run_once()
-
-        # KR symbols must be in the batch AND fetched
-        called_markets = [m for _, m in prov.calls]
-        assert "KOSPI" in called_markets, "KOSPI symbols never entered the batch"
-        assert summary["fetched"] == 2  # only naver succeeded
-        assert summary["cooled"] >= 1   # at least one yahoo was cooled
-
-        with open(manifest_path) as f:
-            m = json.load(f)
-        assert m["KOSPI|005930"]["status"] == "ok"
-        assert m["KOSPI|000660"]["status"] == "ok"
-
-    def test_more_yahoo_than_naver_fills_remainder_from_yahoo(self, tmp_path):
-        """Round-robin exhausts naver early; remaining slots filled with yahoo."""
-        # 6 yahoo, 2 naver, per_run=6
-        uni = [(f"US{i:02d}", "NASDAQ") for i in range(6)] + [
-            ("005930", "KOSPI"), ("000660", "KOSPI")
-        ]
-        prov = FakeProvider()
-        acc, _ = _acc(prov, uni, tmp_path, per_run=6)
-
-        selected = acc.select_next()
-
-        assert len(selected) == 6
-        naver_count = sum(1 for _, m in selected if provider_for(m) == "naver")
-        yahoo_count = sum(1 for _, m in selected if provider_for(m) == "yahoo")
-        # All 2 naver symbols included; remaining 4 slots filled from yahoo
-        assert naver_count == 2
-        assert yahoo_count == 4
 
 
 # ---------------------------------------------------------------------------
