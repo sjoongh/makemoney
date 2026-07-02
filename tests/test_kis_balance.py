@@ -111,8 +111,11 @@ def test_overseas_balance_returns_parsed_body(tmp_path):
 
 def test_account_snapshot_cash_krw(tmp_path):
     snap = _client(tmp_path).account_snapshot()
-    # dnca_tot_amt = "5000000"
-    assert snap["cash_krw"] == 5_000_000.0
+    # settled cash prvs_rcdl_excc_amt = "4800000" — NOT the never-decreasing
+    # dnca_tot_amt=5000000 (2026-07-02 audit fix) — minus overseas purchase
+    # cost (fixture output2 has none → 0).
+    assert snap["cash_krw"] == 4_800_000.0
+    assert snap["ovr_purchase_krw"] == 0.0
 
 
 def test_account_snapshot_domestic_position(tmp_path):

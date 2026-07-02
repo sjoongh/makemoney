@@ -12,9 +12,57 @@ from index history up to the decision day only.
 """
 from __future__ import annotations
 
+from datetime import date as _date
 from typing import Optional
 
 from trader.strategy.vol_target import PortfolioVolTargeter
+
+
+def robust_index_returns(
+    bars_by_symbol: dict,
+    *,
+    min_coverage: float = 0.5,
+    exclude_from: Optional[_date] = None,
+) -> list:
+    """Equal-weight index daily returns with a COVERAGE FLOOR and partial-bar
+    exclusion — the live-executor-safe replacement for raw ew_daily_returns.
+
+    Guards (audit 2026-07-02): a ragged panel tail let the raw EW return be
+    computed from 3/200 names (+4.88% garbage) and feed vol targeting; and the
+    13:00 KST accumulator wrote PARTIAL intraday KOSPI bars for the fetch day.
+
+      - a date contributes a return only if >= min_coverage of all names have
+        prices on BOTH that date and the previous kept date;
+      - dates >= exclude_from are dropped entirely (e.g. today's partial bar).
+
+    Returns ascending [(date, ret)].
+    """
+    price: dict = {}
+    all_dates: set = set()
+    for sym, bars in bars_by_symbol.items():
+        m = {b.ts.date(): b.close for b in bars}
+        price[sym] = m
+        all_dates.update(m)
+    if exclude_from is not None:
+        all_dates = {d for d in all_dates if d < exclude_from}
+    dates = sorted(all_dates)
+    n_names = len(price)
+    out: list = []
+    prev = None
+    for d in dates:
+        cov = sum(1 for m in price.values() if d in m)
+        if n_names == 0 or cov / n_names < min_coverage:
+            continue  # ragged/holiday date — skip entirely
+        if prev is not None:
+            rets = []
+            for m in price.values():
+                p0, p1 = m.get(prev), m.get(d)
+                if p0 and p1 and p0 > 0:
+                    rets.append(p1 / p0 - 1.0)
+            if len(rets) >= n_names * min_coverage:
+                out.append((d, sum(rets) / len(rets)))
+        prev = d
+    return out
 
 
 def latest_exposure(
@@ -54,21 +102,30 @@ def rebalance_order(
     cash_krw: float,
     current_shares: int,
     *,
+    equity_krw: Optional[float] = None,
     min_trade_shares: int = 1,
     rebalance_band: float = 0.05,
 ) -> dict:
     """Compute the rebalance order toward `exposure × equity` in the ETF.
 
-    equity = cash + current_shares × price. Only trades when the share delta is
-    at least `min_trade_shares` AND the weight gap exceeds `rebalance_band`
-    (avoids churny tiny rebalances / costs). Returns a decision dict with side
-    in {"BUY","SELL","HOLD"} and an unsigned quantity.
+    ``equity_krw`` should be the TRUE, SHARED total account equity (settled
+    cash + ALL positions across sleeves).  When multiple sleeves size against
+    the same account, passing it explicitly is REQUIRED for correctness —
+    deriving equity per-sleeve as cash + own-shares double-counts the shared
+    cash across sleeves (this caused runaway over-buying; fixed 2026-07-02).
+    Falls back to cash + own-position value only when not provided (single-
+    sleeve/backtest use).
+
+    Only trades when the share delta is at least `min_trade_shares` AND the
+    weight gap exceeds `rebalance_band` (avoids churny tiny rebalances/costs).
+    Buys are additionally capped by available ``cash_krw``. Returns a decision
+    dict with side in {"BUY","SELL","HOLD"} and an unsigned quantity.
     """
     if etf_price <= 0:
         return {"side": "HOLD", "qty": 0, "reason": "bad price",
                 "target_shares": current_shares, "exposure": exposure}
 
-    equity = cash_krw + current_shares * etf_price
+    equity = equity_krw if equity_krw is not None else cash_krw + current_shares * etf_price
     target_value = max(0.0, exposure) * equity
     target_shares = int(target_value // etf_price)
 

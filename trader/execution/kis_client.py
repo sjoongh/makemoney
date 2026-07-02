@@ -973,10 +973,15 @@ class KisClient:
                 "marks":     {(market, ticker): price}, # float last price in native currency
             }
 
-        Cash note: we use `dnca_tot_amt` (예수금총금액 — total deposit amount) from
-        domestic output2[0] as the base KRW cash figure.  This is the gross available
-        cash before settlement netting; it is the most reliably present field across
-        KIS paper accounts.  Overseas USD cash is a TODO (folded later via FX).
+        Cash note (FIXED 2026-07-02): base KRW cash is `prvs_rcdl_excc_amt`
+        (D+2 settled cash — nets domestic buys+fees exactly), NOT `dnca_tot_amt`
+        (D+0 gross deposit, which never decreases on buys and caused runaway
+        over-buying).  The cumulative overseas purchase cost (overseas output2
+        `frcr_pchs_amt1`, KRW on paper accounts) is virtually debited because
+        KIS paper funds overseas buys from a phantom pool that never touches
+        domestic KRW.  Extra fields `nass_krw` (domestic net asset) and
+        `ovr_purchase_krw` let callers compute true total equity:
+        equity = nass_krw - ovr_purchase_krw + Σ(overseas qty × mark × FX).
 
         B1 (RESOLVED 2026-06-27 by live inspection): the overseas present-balance
         endpoint (VTRP6504R) reports ``tot_asst_amt``/``frcr_evlu_tota`` ≈ 388M KRW
@@ -994,10 +999,33 @@ class KisClient:
         dom = self.domestic_balance()
         ovr = self.overseas_balance()
 
-        # --- KRW cash ---
+        # --- KRW cash (settlement-correct) ---
+        # dnca_tot_amt is the D+0 GROSS deposit and NEVER decreases on buys
+        # (verified live 2026-07-02: unchanged at 99,998,740 while the account
+        # held 122x 069500 + 64x SPY).  prvs_rcdl_excc_amt is the D+2 settled
+        # cash and nets domestic buys+fees exactly — use it, with fallbacks.
         dom_summary = dom.get("output2", [{}])
         summary_row = dom_summary[0] if dom_summary else {}
-        cash_krw = _safe_float(summary_row.get("dnca_tot_amt", "0"))
+        cash_krw = _safe_float(
+            summary_row.get("prvs_rcdl_excc_amt")
+            or summary_row.get("nxdy_excc_amt")
+            or summary_row.get("dnca_tot_amt", "0")
+        )
+
+        # KIS paper funds OVERSEAS buys from a separate phantom pool that never
+        # debits domestic KRW (frcr_use_psbl_amt=0 throughout).  Virtually debit
+        # the cumulative overseas purchase cost so cash reflects reality.
+        # overseas output2 is a DICT; frcr_pchs_amt1 is KRW-denominated here.
+        ovr_o2 = ovr.get("output2") or {}
+        if isinstance(ovr_o2, list):  # defensive: some TRs return a list
+            ovr_o2 = ovr_o2[0] if ovr_o2 else {}
+        ovr_purchase_krw = _safe_float(ovr_o2.get("frcr_pchs_amt1", "0"))
+        cash_krw = max(0.0, cash_krw - ovr_purchase_krw)
+
+        # Domestic net asset (settled cash + domestic position value).  Total
+        # account equity = nass_krw - ovr_purchase_krw + overseas position
+        # value×FX; the caller computes the FX leg (see run_beta_kis_paper).
+        nass_krw = _safe_float(summary_row.get("nass_amt", "0"))
 
         positions: dict[tuple[str, str], int] = {}
         marks: dict[tuple[str, str], float] = {}
@@ -1028,6 +1056,8 @@ class KisClient:
             "cash_krw": cash_krw,
             "positions": positions,
             "marks": marks,
+            "nass_krw": nass_krw,
+            "ovr_purchase_krw": ovr_purchase_krw,
         }
 
 
