@@ -25,13 +25,25 @@ from trader.live.monitor import LogAlertSink, Monitor, WebhookAlertSink
 # Daily data jobs run every day (weekends too); the trade dry-runs run on
 # weekdays, so they get a weekend-tolerant window.
 DEFAULT_EXPECTATIONS = {
-    "accumulator": 30.0,      # cron daily 13:00 (runs every day)
-    "forward_record": 30.0,   # cron daily 14:00 (runs every day)
-    "daily_run": 80.0,        # run_daily.sh ALL — weekday runs; weekend-tolerant
+    "accumulator": 30.0,       # cron daily (runs every day)
+    "forward_record": 30.0,    # cron daily 14:00 (runs every day)
+    # THE order-submitting jobs — weekday runs; weekend-tolerant window.
+    # (fusion daily_run was removed 2026-07-01; audit found the dead-man switch
+    #  monitored everything EXCEPT the jobs that actually place orders.)
+    "beta_kis_kr": 80.0,
+    "beta_kis_us": 80.0,
 }
 
 
 def _build_monitor() -> Monitor:
+    # load .env so ALERT_WEBHOOK_URL set there is honoured under cron
+    # (audit: healthcheck never called _load_dotenv → webhook silently unused)
+    if "ALERT_WEBHOOK_URL" not in os.environ:
+        try:
+            from trader.app.run_daily import _load_dotenv
+            _load_dotenv()
+        except Exception:
+            pass
     sinks = [LogAlertSink()]
     url = os.environ.get("ALERT_WEBHOOK_URL")
     if url:

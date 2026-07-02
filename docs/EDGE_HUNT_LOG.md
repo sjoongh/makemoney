@@ -141,3 +141,25 @@ persist (uncapturable = unarbitraged). No free-data tradable alpha, now confirme
 even in the less-arbitraged corner. (Caveats: current-listing universe still
 somewhat survivorship-biased; long-only; no holdout opened — but a strategy that
 loses to benchmark after costs in BOTH train and val doesn't warrant a holdout.)
+
+### R10 — 2026-07-02 — ULTRACODE full-system audit → paper-trading correctness fixes
+User sensed "약간 이상해" — a 32-agent audit (5 dimensions, adversarially verified)
+confirmed he was right. CRITICAL: (1) account_snapshot used dnca_tot_amt (D+0
+gross deposit, never decreases on buys) as cash, and KIS-paper overseas buys are
+funded from a phantom pool that never debits domestic KRW → (2) each sleeve saw
+equity = full stale cash + own position → compounding daily OVER-BUY (89M
+deployed on 99.6M true equity = 90% vs ~65% intended; replay predicted +11 more
+SPY tonight). HIGH: no same-day idempotency (double-submit actually happened
+07-01), pretrade caps bypassed, EW index tail computed from 3/200 names (+4.88%
+garbage) fed vol targeting, no data-recency gate, FX silently fell back to 1380,
+healthcheck didn't monitor the only order-submitting jobs, 13:00 accumulator
+stored PARTIAL intraday KOSPI bars.
+FIXES: settled-cash (prvs_rcdl_excc_amt) + virtual overseas debit + nass_krw in
+account_snapshot; rebalance_order takes explicit SHARED equity; executor rebuilt
+(idempotency/day, FX gate, coverage-floor+partial-bar-excluding robust index,
+recency abort, notional/fat-finger/weight caps); healthcheck now watches
+beta_kis_kr/us (+.env webhook); accumulate cron 13:00→16:10 KST (post-close);
+buggy track archived (beta_kis_track.buggy-sizing.jsonl.bak). Verified: KR now
+HOLD at true equity 99.64M; US SELL 22 SPY self-heals tonight. 926 tests.
+Known follow-ups: sp500 cache never auto-refreshes (30d refresh), accumulator
+provider_for still maps KOSPI→naver (cooldown isolation ineffective).
