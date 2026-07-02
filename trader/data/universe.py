@@ -98,16 +98,21 @@ def load_sp500(client: httpx.Client | None = None) -> list[str]:
         client: Optional injectable httpx.Client (used in tests to avoid
                 real network calls).  If None, a short-lived client is used.
 
-    Real runs (client is None): a committed cache is preferred and the flaky
-    GitHub raw endpoint is skipped entirely — it can HANG and block the daily
-    accumulator, and the constituent list changes rarely. Delete
-    research_data/_sp500_cache.json to force a refresh-fetch on the next run.
-    Tests inject a client to exercise the fetch/parse/fallback paths.
+    Real runs (client is None): a FRESH cache (< _CACHE_MAX_AGE_DAYS old) is
+    preferred and the flaky GitHub raw endpoint is skipped entirely — it can
+    HANG and block the daily accumulator, and the constituent list changes
+    rarely. When the cache file is older than that, a refresh-fetch is
+    attempted (tight timeout) and on failure the stale cache is still used
+    (never the tiny fallback while a cache exists). Delete the cache file to
+    force a refresh on the next run. Tests inject a client to exercise the
+    fetch/parse/fallback paths.
     """
     if client is None:
         cached = _load_sp500_cache()
-        if cached:
+        if cached and _cache_age_days() <= _CACHE_MAX_AGE_DAYS:
             return cached
+        # stale or missing cache → fall through to a (tight-timeout) fetch;
+        # the except-path below prefers the stale cache over the fallback.
 
     _headers = {
         "User-Agent": (
@@ -164,6 +169,16 @@ def load_sp500(client: httpx.Client | None = None) -> list[str]:
 
 
 _SP500_CACHE_PATH = "research_data/_sp500_cache.json"
+_CACHE_MAX_AGE_DAYS = 30.0
+
+
+def _cache_age_days(path: str = _SP500_CACHE_PATH) -> float:
+    """Age of the cache file in days; +inf when missing/unreadable."""
+    import time
+    try:
+        return (time.time() - os.path.getmtime(path)) / 86400.0
+    except OSError:
+        return float("inf")
 
 
 def _save_sp500_cache(tickers: list[str], path: str = _SP500_CACHE_PATH) -> None:
