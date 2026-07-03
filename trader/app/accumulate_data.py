@@ -126,6 +126,11 @@ def main(argv: list[str] | None = None) -> None:
             f"{prog['cooldown']} in cooldown."
         )
         _print_progress(acc)
+        # "nothing to fetch" IS a successful run — record the heartbeat so the
+        # dead-man switch doesn't false-alarm on fully-fresh days.
+        from datetime import datetime, timezone
+        from trader.live import heartbeat as hb
+        hb.record("accumulator", ts=datetime.now(tz=timezone.utc).isoformat())
         return
 
     print(f"\nFetching… (sleeping {args.sleep_secs}s between symbols)\n")
