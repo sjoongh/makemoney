@@ -49,3 +49,6 @@ beta_kis_track.jsonl
 
 # KOSDAQ research data (re-fetchable via FDR)
 kosdaq_data/
+
+# generated status dashboard
+status.html
