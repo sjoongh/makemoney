@@ -163,3 +163,14 @@ buggy track archived (beta_kis_track.buggy-sizing.jsonl.bak). Verified: KR now
 HOLD at true equity 99.64M; US SELL 22 SPY self-heals tonight. 926 tests.
 Known follow-ups: sp500 cache never auto-refreshes (30d refresh), accumulator
 provider_for still maps KOSPI→naver (cooldown isolation ineffective).
+
+### R11 — 2026-07-03 — defensive-overlay robustness grid (train/val, both markets)
+Grid tvol{0.10-0.18}×trend{None,100,200,300}: current (0.15/200) sits on a
+PLATEAU, not a knife-edge → no overfit. Asymmetric mechanism found and adopted:
+US bears are HIGH-VOL (vol-targeting already derisks; trend filter only adds
+whipsaw — val Sharpe 0.57-0.59 w/o trend vs 0.09-0.29 with, dd no better) while
+KR bears are low-vol grinds (trend=200 HALVES val dd −16.6% vs −25.5%, Sharpe
+equal). CHANGE: US sleeve now runs trend-window 0 (vol-target only) via cron
+flag; KR keeps vol+trend200. tvol stays 0.15 (robust across rows). Also shipped:
+live performance report CLI (+ daily 16:45 log) — first reading equity
+100,470,111 KRW (+0.88% since the 07-02 clean-era fix).
