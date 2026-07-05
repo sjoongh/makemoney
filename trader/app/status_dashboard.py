@@ -147,6 +147,19 @@ def gather_status(
              for r in track if r.get("submitted_odno")]
     status["sections"]["fills"] = fills[-8:]
 
+    # ── latest decision per market (incl HOLD — the dashboard was blank on
+    #    within-band days, which is most days) ──────────────────────────────
+    decisions = {}
+    for r in track:  # appends are chronological → last write per market wins
+        m = r.get("market")
+        if m:
+            decisions[m] = {
+                "when": r["as_of"][:16], "etf": r.get("etf"), "side": r["side"],
+                "qty": r["qty"], "reason": r.get("reason"),
+                "exposure": r.get("exposure"), "capital_frac": r.get("capital_frac"),
+            }
+    status["sections"]["decisions"] = decisions
+
     # ── overall health rollup ────────────────────────────────────────────
     problems = []
     if acct.get("error"):
@@ -194,6 +207,17 @@ def render_terminal(s: dict) -> str:
         for p in a["positions"]:
             L.append(f"   · {p['ticker']:<7}[{p['market']}] {p['qty']:>4} @ "
                      f"{p['mark']:>10,.2f}  →  {_krw(p['value_krw'])} KRW ({p['weight']:.0%})")
+
+    decisions = s["sections"].get("decisions", {})
+    if decisions:
+        L.append("-" * 60)
+        L.append(" 최근 결정 (시장별)")
+        for m in ("KR", "US"):
+            d = decisions.get(m)
+            if d:
+                tgt = (d["exposure"] or 0) * (d["capital_frac"] or 0)
+                L.append(f"   {m}  {d['side']} {d['qty']} {d['etf']}  "
+                         f"(목표 {tgt:.0%}, {d['reason']}) · {d['when'][5:].replace('T',' ')}")
 
     perf = s["sections"]["performance"]
     if perf.get("strategy_return") is not None:
@@ -287,6 +311,19 @@ def render_html(s: dict) -> str:
         f'<li>{esc(f["when"])} · {esc(f["market"])} <b>{esc(f["side"])} {f["qty"]}</b> '
         f'{esc(f["etf"])}</li>' for f in reversed(fills)) or "<li>—</li>")
 
+    # decisions card (latest per market, incl HOLD)
+    decisions = s["sections"].get("decisions", {})
+    dec_items = []
+    for m in ("KR", "US"):
+        dd = decisions.get(m)
+        if dd:
+            tgt = (dd["exposure"] or 0) * (dd["capital_frac"] or 0)
+            act = f'{esc(dd["side"])} {dd["qty"]} {esc(str(dd["etf"]))}'
+            dec_items.append(
+                f'<li><b>{m}</b> {act}<span class="age">목표 {tgt:.0%} · '
+                f'{esc(str(dd["reason"]))}</span></li>')
+    dec_body = f'<ul class="jobs">{"".join(dec_items) or "<li>—</li>"}</ul>'
+
     return f"""<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="refresh" content="300">
@@ -325,16 +362,31 @@ footer{{max-width:960px;margin:18px auto 0;color:#5b6478;font-size:12px}}
 </style></head><body>
 <header><h1>makemoney</h1>
 <span class="badge"><span class="dot"></span>{esc(label)}</span>
-<span class="ts">{esc(s["as_of"][:16].replace("T", " "))} UTC · 5분마다 갱신</span></header>
+<span class="ts">{esc(s["as_of"][:16].replace("T", " "))} UTC<span id="stale"></span></span></header>
 {'<div class="warn">⚠️ ' + esc(" | ".join(s["problems"])) + "</div>" if s["problems"] else ""}
 <div class="grid">
 {card("자산", acc_body)}
+{card("최근 결정", dec_body)}
 {card("성과", perf_body)}
 {card("작업 상태", jobs_body)}
 {card("데이터", data_body)}
 {card("최근 체결", f'<ul>{fills_body}</ul>')}
 </div>
 <footer>방어 베타(리스크관리) · 모의투자 · 실거래 아님. 알파 없음 — 시장을 낮은 낙폭으로 추종.</footer>
+<script>
+// Client-side staleness cue: if the writer (cron) dies, this page still reloads
+// every 300s but shows the SAME as_of, so "N분 전" grows and turns red — but only
+// during the write window (KST 09–23), so we don't cry wolf overnight.
+(function(){{
+  var asof = Date.parse("{s["as_of"]}");
+  var el = document.getElementById("stale");
+  var mins = Math.floor((Date.now() - asof) / 60000);
+  var kstHour = (new Date().getUTCHours() + 9) % 24;
+  var writeWindow = kstHour >= 9 && kstHour <= 23;
+  el.textContent = " · " + (mins < 1 ? "방금" : mins + "분 전");
+  if (writeWindow && mins > 40) {{ el.style.color = "#f87171"; el.textContent += " ⚠ 갱신 멈춤?"; }}
+}})();
+</script>
 </body></html>"""
 
 
