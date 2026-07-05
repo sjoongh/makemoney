@@ -8,6 +8,16 @@ autonomous real-money orders.
 
 ## Completion estimate: ~90% (2026-06-27 update) → target ≥90% ✅ (human-only items remain)
 
+> **⚠️ Path-accuracy note (2026-07-05 audit):** several `[x]` platform controls
+> below — pre-trade risk gate, kill-switch auto-trip, position reconciliation,
+> circuit breaker — are wired into the **retired `DailyActEngine`/fusion path**,
+> NOT into the strategy that actually trades the paper account today
+> (`run_beta_kis_paper`, the defensive-beta cron). The live path has its OWN
+> inline guards (idempotency, FX gate, data-recency, pre-trade caps, kill-switch
+> via `live_allowed`) but does NOT yet route through `ResilientSubmitter` or a
+> post-trade reconcile. Treat those specific rows as `[~]` for the live path —
+> a real-money go-live gate, not a paper-tracking gap.
+
 Legend: [x] done & in code, [~] partial/needs wiring, [ ] missing.
 
 ### 1. Safety / risk controls — ~90% (table-stakes)
