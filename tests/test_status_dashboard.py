@@ -75,6 +75,37 @@ def test_gather_flags_stale_job(tmp_path):
     assert any("STALE" in p for p in s["problems"])
 
 
+def test_gather_flags_missing_job_as_unhealthy(tmp_path):
+    # a monitored job that NEVER emitted a heartbeat must break health (MISSING),
+    # not silently render green (dead-man's-switch blind spot, 2026-07-03 audit)
+    hb = {"accumulator": "2026-07-03T06:00:00+00:00",
+          "forward_record": "2026-07-03T05:00:00+00:00",
+          "beta_kis_kr": "2026-07-03T01:00:00+00:00"}  # beta_kis_us ABSENT
+    hbp, mp, tp = _write(tmp_path, hb, {"X|Y": {"status": "ok", "last_date": "2026-07-02"}}, [])
+    s = sd.gather_status(kis=FakeKis(_snap()), heartbeat_path=hbp, manifest_path=mp,
+                         track_path=tp, now=NOW, with_benchmarks=False)
+    assert s["healthy"] is False
+    assert any("MISSING" in p for p in s["problems"])
+
+
+def test_fx_unknown_makes_equity_none_and_unhealthy(tmp_path):
+    # FX down while holding a NASDAQ position → equity is genuinely unknown,
+    # not a grossly-understated number (2026-07-03 audit)
+    hbp, mp, tp = _write(tmp_path, {"accumulator": "2026-07-03T06:00:00+00:00",
+        "forward_record": "2026-07-03T05:00:00+00:00",
+        "beta_kis_kr": "2026-07-03T01:00:00+00:00",
+        "beta_kis_us": "2026-07-02T14:00:00+00:00"},
+        {"X|Y": {"status": "ok", "last_date": "2026-07-02"}}, [])
+    s = sd.gather_status(kis=FakeKis(_snap(), fx=-1.0), heartbeat_path=hbp,
+                         manifest_path=mp, track_path=tp, now=NOW, with_benchmarks=False)
+    assert s["sections"]["account"]["equity_krw"] is None
+    assert s["sections"]["account"]["fx_unknown"] is True
+    assert any("FX" in p for p in s["problems"])
+    # renderers must not crash on None equity
+    assert "unknown" in sd.render_terminal(s)
+    assert sd.render_html(s).startswith("<!doctype html>")
+
+
 def test_gather_survives_account_error(tmp_path):
     class Broken:
         account = "x"

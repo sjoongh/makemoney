@@ -16,7 +16,13 @@ import json
 import os
 from datetime import datetime, timezone
 
-from trader.app.run_performance import benchmark_return, inception, load_track, pct
+from trader.app.run_performance import (
+    benchmark_return,
+    inception,
+    inception_usd_fx,
+    load_track,
+    pct,
+)
 
 # component -> (label, stale-after hours)  — mirrors run_healthcheck expectations
 JOBS = {
@@ -49,30 +55,43 @@ def gather_status(
     status: dict = {"as_of": now.isoformat(), "sections": {}}
 
     # ── account + performance ────────────────────────────────────────────
+    # KIS paper balance endpoints have no internal retry and 500 on bursts, so
+    # tolerate a transient failure here before flipping the dashboard red.
     acct: dict = {}
-    try:
-        if kis is None:
-            from trader.app.run_daily import build_kis_client, _load_dotenv
-            if "KIS_APP_KEY" not in os.environ:
-                _load_dotenv()
-            kis = build_kis_client()
-        snap = kis.account_snapshot()
-        fx = kis.usd_krw_rate(default=-1.0)
-        usd_fx = fx if fx > 0 else 0.0
-        ovr_val = sum(q * snap["marks"].get((m, t), 0.0) * usd_fx
-                      for (m, t), q in snap["positions"].items() if m == "NASDAQ")
-        equity = snap["nass_krw"] - snap["ovr_purchase_krw"] + ovr_val
-        positions = []
-        for (m, t), q in sorted(snap["positions"].items()):
-            mark = snap["marks"].get((m, t), 0.0)
-            val = q * mark * (usd_fx if m == "NASDAQ" else 1.0)
-            positions.append({"market": m, "ticker": t, "qty": q, "mark": mark,
-                              "value_krw": val, "weight": val / equity if equity else 0.0})
-        acct = {"equity_krw": equity, "cash_krw": snap["cash_krw"],
-                "cash_weight": snap["cash_krw"] / equity if equity else 0.0,
-                "fx": fx, "positions": positions}
-    except Exception as exc:  # noqa: BLE001 — status must never crash
-        acct = {"error": f"{type(exc).__name__}: {exc}"}
+    for attempt in range(3):
+        try:
+            if kis is None:
+                from trader.app.run_daily import build_kis_client, _load_dotenv
+                if "KIS_APP_KEY" not in os.environ:
+                    _load_dotenv()
+                kis = build_kis_client()
+            snap = kis.account_snapshot()
+            fx = kis.usd_krw_rate(default=-1.0)
+            usd_fx = fx if fx > 0 else 0.0
+            has_us = any(m == "NASDAQ" for (m, _t) in snap["positions"])
+            # If FX is down while holding USD names, equity CANNOT be computed
+            # (nass already netted the phantom overseas cost; without ovr_val we
+            # would report a grossly understated equity). Report it as unknown.
+            fx_unknown = has_us and usd_fx <= 0
+            ovr_val = sum(q * snap["marks"].get((m, t), 0.0) * usd_fx
+                          for (m, t), q in snap["positions"].items() if m == "NASDAQ")
+            equity = None if fx_unknown else snap["nass_krw"] - snap["ovr_purchase_krw"] + ovr_val
+            positions = []
+            for (m, t), q in sorted(snap["positions"].items()):
+                mark = snap["marks"].get((m, t), 0.0)
+                val = q * mark * (usd_fx if m == "NASDAQ" else 1.0)
+                positions.append({"market": m, "ticker": t, "qty": q, "mark": mark,
+                                  "value_krw": val,
+                                  "weight": val / equity if equity else 0.0})
+            acct = {"equity_krw": equity, "cash_krw": snap["cash_krw"],
+                    "cash_weight": snap["cash_krw"] / equity if equity else 0.0,
+                    "fx": fx, "fx_unknown": fx_unknown, "positions": positions}
+            break
+        except Exception as exc:  # noqa: BLE001 — status must never crash
+            acct = {"error": f"{type(exc).__name__}: {exc}"}
+            if attempt < 2:
+                import time
+                time.sleep(1.5 * (attempt + 1))   # 1.5s, 3s backoff
     status["sections"]["account"] = acct
 
     # ── performance since clean-era inception ────────────────────────────
@@ -84,8 +103,11 @@ def gather_status(
         perf["inception_equity"] = base["equity_krw"]
         perf["strategy_return"] = pct(acct["equity_krw"], base["equity_krw"])
         if with_benchmarks:
-            for label, sym in (("SPY", "SPY"), ("KODEX200", "069500.KS")):
-                br = benchmark_return(sym, base["as_of"])
+            base_fx = inception_usd_fx(track)
+            latest_fx = acct.get("fx") if acct.get("fx", 0) > 0 else None
+            for label, sym, to_krw in (("SPY", "SPY", True), ("KODEX200", "069500.KS", False)):
+                br = benchmark_return(sym, base["as_of"], to_krw=to_krw,
+                                      base_fx=base_fx, latest_fx=latest_fx)
                 if br is not None:
                     perf.setdefault("benchmarks", {})[label] = br
     status["sections"]["performance"] = perf
@@ -129,7 +151,12 @@ def gather_status(
     problems = []
     if acct.get("error"):
         problems.append("account unreadable")
-    problems += [f"{j['label']} STALE" for j in jobs if not j["ok"] and not j["never"]]
+    elif acct.get("fx_unknown"):
+        problems.append("FX unavailable (equity unknown)")
+    # A monitored job that never emitted a heartbeat is a problem too (MISSING),
+    # matching run_healthcheck's default — a mis-keyed/dead job must not show green.
+    problems += [f"{j['label']} " + ("MISSING" if j["never"] else "STALE")
+                 for j in jobs if not j["ok"]]
     if data.get("error"):
         problems.append("data manifest unreadable")
     status["healthy"] = not problems
@@ -158,6 +185,10 @@ def render_terminal(s: dict) -> str:
     a = s["sections"]["account"]
     if a.get("error"):
         L.append(f" 계좌: 읽기 실패 — {a['error']}")
+    elif a.get("fx_unknown"):
+        L.append(" 자산  unknown (FX 조회 실패 — USD 평가 불가)")
+        for p in a["positions"]:
+            L.append(f"   · {p['ticker']:<7}[{p['market']}] {p['qty']:>4} @ {p['mark']:>10,.2f}")
     else:
         L.append(f" 자산  {_krw(a['equity_krw'])} KRW   (현금 {a['cash_weight']:.0%})")
         for p in a["positions"]:
@@ -208,6 +239,9 @@ def render_html(s: dict) -> str:
     # account card
     if a.get("error"):
         acc_body = f'<p class="err">읽기 실패 — {esc(str(a["error"]))}</p>'
+    elif a.get("fx_unknown"):
+        acc_body = ('<p class="big">unknown</p>'
+                    '<p class="sub">FX 조회 실패 — USD 평가 불가</p>')
     else:
         rows = "".join(
             f'<tr><td>{esc(p["ticker"])} <span class="mkt">{esc(p["market"])}</span></td>'
