@@ -238,6 +238,14 @@ def main(argv: list[str] | None = None) -> int:
             "submitted_odno": submitted, "live": args.live,
         }, ensure_ascii=False) + "\n")
     hb.record(f"beta_kis_{args.market.lower()}", ts=datetime.now(tz=timezone.utc).isoformat())
+
+    # Refresh the browsable status dashboard after each paper run (reuses this
+    # client; keeps status.html fresh 3x/weekday without a dedicated cron).
+    try:
+        from trader.app.status_dashboard import gather_status, write_html
+        write_html(gather_status(kis=kis, with_benchmarks=False))
+    except Exception:  # noqa: BLE001 — never let reporting affect the trade run
+        pass
     return 0
 
 
