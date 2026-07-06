@@ -193,3 +193,23 @@ holdout 2025-26.
   the one honest avenue left, gated behind non-free data.
 CONCLUSION: no free-data tradable alpha in crypto spot either. The no-alpha ceiling
 now holds across equities (price/fundamental/macro), KOSDAQ small-caps, AND crypto.
+
+### R13 — 2026-07-06 — Crypto funding/basis carry: real risk-premium, NOT free alpha
+Tested Codex's highest-odds crypto avenue (funding/basis carry, ~30-40%) using
+Binance keyless funding-rate history (30 perps, 2020-09→2026-07, forward-paginated).
+- Test A (funding as a cross-sectional SPOT predictor — clean, no derivatives):
+  w=3 train IC -0.040 (t-1.76, right sign for crowded-long reversal) but NOT
+  significant and inconsistent across val/holdout. No spot-tradable edge.
+- Test B (delta-neutral carry, short perp + long spot on positive funding):
+  GROSS funding yield persistently POSITIVE but DECLINING — +35.8%/yr (2020-22)
+  → +11.6% (val) → +6.3% (holdout 25-26). The perpetual funding premium is real.
+HONEST VERDICT: this is a RISK PREMIUM, not alpha. (1) The apparent Sharpe (7.3)
+is a modeling artifact — funding treated as riskless accrual; true basis/liquidation/
+counterparty risk (FTX!) NOT modeled. (2) It's a DERIVATIVES strategy (perps →
+liquidation/margin/exchange risk that delta-neutrality does NOT remove). (3) It's
+being arbitraged away (yield halving each period). (4) Classic "works until it
+blows up" premium-harvesting — exactly what was flagged upfront. It is the ONE
+avenue with genuine substance, and it is not free money: it pays you for bearing
+tail/counterparty risk in a riskier game. CONCLUSION unchanged: no free-data
+tradable ALPHA anywhere (equities, KOSDAQ, crypto spot, crypto carry) — carry is
+a declining risk premium, not an edge.
