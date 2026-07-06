@@ -145,10 +145,18 @@ def main(argv: list[str] | None = None) -> None:
 
     _print_progress(acc)
 
-    # dead-man's switch: record a successful run
-    from datetime import datetime, timezone
-    from trader.live import heartbeat as hb
-    hb.record("accumulator", ts=datetime.now(tz=timezone.utc).isoformat())
+    # dead-man's switch: record ONLY a genuinely-successful run. A total outage
+    # (attempted symbols, zero fetched, all errored/cooled) must NOT look healthy
+    # — otherwise the switch is blind to a full yfinance/network failure.
+    attempted = summary["fetched"] + summary["errored"] + summary["cooled"]
+    total_failure = attempted > 0 and summary["fetched"] == 0
+    if total_failure:
+        print("\nWARNING: total failure this run (0 fetched) — NOT recording a "
+              "healthy heartbeat so the dead-man switch can fire.")
+    else:
+        from datetime import datetime, timezone
+        from trader.live import heartbeat as hb
+        hb.record("accumulator", ts=datetime.now(tz=timezone.utc).isoformat())
 
     if summary["cooled"] > 0:
         print(
