@@ -52,3 +52,6 @@ kosdaq_data/
 
 # generated status dashboard
 status.html
+
+# crypto research data (re-fetchable via yfinance)
+crypto_data/

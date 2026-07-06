@@ -174,3 +174,22 @@ equal). CHANGE: US sleeve now runs trend-window 0 (vol-target only) via cron
 flag; KR keeps vol+trend200. tvol stays 0.15 (robust across rows). Also shipped:
 live performance report CLI (+ daily 16:45 log) — first reading equity
 100,470,111 KRW (+0.88% since the 07-02 clean-era fix).
+
+### R12 — 2026-07-06 — CRYPTO truth-machine: no tradable free-data edge (carry untested)
+Extended the alpha hunt to crypto (Codex-consulted). Survivorship-AWARE universe:
+48 coins curated as the union of ever-prominent 2017-2026 names INCLUDING dead
+ones (LUNA→2022-05, UST, FTT), via yfinance (retains delisted coins; clean 24/7
+bars). Excluded stablecoins/wrapped. Split: train pre-2022 / val 2022-24 /
+holdout 2025-26.
+- Cross-sectional momentum/reversal (7/14/30/90d): sign FLIPS train→val (momentum
+  in the 2017-21 bull, reversal in the 2022-24 bear) — t up to +2.4 in val but
+  OPPOSITE sign in train → no robust edge, same failure mode as equities. Holdout
+  not opened (failed val).
+- Time-series trend (100d MA follow, cost-stressed): reduced drawdown in train/val
+  but WHIPSAWED in holdout (Sharpe -1.64, CAGR -40% vs buy&hold -12%). No edge.
+- UNTESTED: funding/basis carry — Codex's highest-odds crypto avenue (~30-40%) —
+  needs historical funding-rate data which is NOT freely available (CoinGecko free
+  = 365d + today-only ranks; Binance funding history needs exchange API). This is
+  the one honest avenue left, gated behind non-free data.
+CONCLUSION: no free-data tradable alpha in crypto spot either. The no-alpha ceiling
+now holds across equities (price/fundamental/macro), KOSDAQ small-caps, AND crypto.
