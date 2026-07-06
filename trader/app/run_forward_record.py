@@ -64,8 +64,16 @@ def main(argv: list[str] | None = None) -> None:
         print(f"  Records:           {fsum['n']}")
         print(f"  Unavailable/err:   {fsum['errors']}")
 
-    # dead-man's switch: record a successful run
-    hb.record("forward_record", ts=now.isoformat())
+    # dead-man's switch: record ONLY a genuinely-successful run. If EVERY symbol
+    # errored (total fetch outage) don't look healthy — but 0 bars appended on a
+    # weekend/holiday is legitimate (no new confirmed bar), so gate on errors,
+    # not on bars_appended.
+    total_failure = summary["symbols"] > 0 and summary["errors"] >= summary["symbols"]
+    if total_failure:
+        print("\nWARNING: every symbol errored — NOT recording a healthy "
+              "heartbeat so the dead-man switch can fire.")
+    else:
+        hb.record("forward_record", ts=now.isoformat())
 
 
 if __name__ == "__main__":

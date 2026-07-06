@@ -35,6 +35,26 @@ DEFAULT_EXPECTATIONS = {
 }
 
 
+def _external_ping(healthy: bool, url: str | None, *, timeout: float = 5.0) -> None:
+    """Ping an external dead-man service (healthchecks.io / cronitor).
+
+    This is the ONLY thing that catches the #1 failure mode — the Mac being
+    asleep/off — because an in-band monitor (even the webhook) cannot fire when
+    the host is down. The external service EXPECTS a ping every period and alerts
+    YOU when it stops arriving. We hit the base URL on healthy and `<url>/fail`
+    when something is stale, so both host-down and in-band-stale raise an alert.
+    Best-effort: never raises.
+    """
+    if not url:
+        return
+    import urllib.request
+    target = url if healthy else url.rstrip("/") + "/fail"
+    try:
+        urllib.request.urlopen(target, timeout=timeout)  # noqa: S310 (trusted env URL)
+    except Exception:  # noqa: BLE001 — monitoring must never crash the run
+        pass
+
+
 def _build_monitor() -> Monitor:
     # load .env so ALERT_WEBHOOK_URL set there is honoured under cron
     # (audit: healthcheck never called _load_dotenv → webhook silently unused)
@@ -65,14 +85,17 @@ def main(argv: list[str] | None = None) -> int:
         stale = [s for s in stale if s["reason"] != "never recorded"]
 
     monitor = _build_monitor()
+    ping_url = os.environ.get("HEALTHCHECK_PING_URL")
     if not stale:
         monitor.alert("INFO", "HEARTBEAT_OK",
                       {"checked": list(DEFAULT_EXPECTATIONS)})
+        _external_ping(True, ping_url)
         print("OK — all heartbeats fresh.")
         return 0
 
     for s in stale:
         monitor.alert("CRITICAL", "HEARTBEAT_STALE", s)
+    _external_ping(False, ping_url)
     print(f"STALE ({len(stale)}): " + ", ".join(s["component"] for s in stale))
     return 1
 
