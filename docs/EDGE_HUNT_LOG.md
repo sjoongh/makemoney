@@ -213,3 +213,21 @@ avenue with genuine substance, and it is not free money: it pays you for bearing
 tail/counterparty risk in a riskier game. CONCLUSION unchanged: no free-data
 tradable ALPHA anywhere (equities, KOSDAQ, crypto spot, crypto carry) — carry is
 a declining risk premium, not an edge.
+
+### R14 — 2026-07-07 — Carry sleeve, built for real: arbitraged to ~0 in the holdout
+User chose path (a); built the #1 option (crypto delta-neutral funding carry) as a
+proper tail-capped sleeve backtest (weekly rebalance, 0.1%/leg cost, actual daily
+funding P&L, delta-neutral short-perp+long-spot). carry_sleeve_backtest.py.
+- Sleeve CAGR: TRAIN(20-22) +27.7% / VAL(22-24) +7.1% / HOLDOUT(25-26) -0.4%.
+  The premium is real historically but has been ARBITRAGED TO ~0 out-of-sample —
+  thin funding eaten by turnover cost in the current regime.
+- Sharpe 7.25 / MaxDD -2.4% are MISLEADING: they capture only funding-flow vol,
+  NOT the -100% exchange-blowup tail. At 15% allocation: +1.9%/yr contribution
+  (full-history) vs -15% of total on an FTX-style venue failure = ~8 years of
+  carry wiped in one event; and the +1.9% is ~0 in the holdout.
+VERDICT: TODAY the carry is a BAD deal — reward ~0 (arbitraged), tail -100%
+(venue). This is the terminal point of the "declining risk premium" caught at ~0.
+Path (a)'s best option, built honestly, says "not now." No crypto orders placed
+(no account; paper-only). Remaining in (a): options/short-vol as a risk-transform,
+or accept the conclusion. Ceiling holds: no free-data alpha; the one real premium
+is now ~0 net while retaining a catastrophic tail.
