@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_SBUX",
-  "created_ts": "2026-06-24T01:08:39.708814+00:00",
+  "created_ts": "2026-08-16T07:10:18.992507+00:00",
   "symbols": [
     "SBUX"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "22d554bba8036163270ad989c7478e5cd6c3ed1c576db3f4fa4bcb4f5ffd2f73",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "c799fbd5e7ee5d6838ebe463bb61c45d5bb0654fe0ab9e9a66cf746041f86744",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_FDXF",
-  "created_ts": "2026-06-24T00:57:38.101372+00:00",
+  "created_ts": "2026-08-19T07:13:28.727797+00:00",
   "symbols": [
     "FDXF"
   ],
   "provider": "yfinance",
   "start_date": "2026-05-27",
-  "end_date": "2026-06-23",
-  "n_bars": 19,
+  "end_date": "2026-08-18",
+  "n_bars": 58,
   "adjustment": "adjusted",
-  "content_hash": "fcfdee883175baefa1de743acf6f2499fca92cbf65762d1e048d7efff51c4a9e",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "d4874efe64bead1190c0f3ce3372d4e90e02c65229b9a935246f80d7e7dc18c5",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

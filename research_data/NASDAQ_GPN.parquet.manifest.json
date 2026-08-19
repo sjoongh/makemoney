@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_GPN",
-  "created_ts": "2026-06-24T00:58:56.721353+00:00",
+  "created_ts": "2026-08-19T07:14:03.910555+00:00",
   "symbols": [
     "GPN"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "670bfc0215913be76cd6f9801223a815d3267465d66cbe23c0c75ab70169f8c4",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "7fef09d4189e38d9c981547476bdfd40d2cbe6f9c6b9bf30a82083a3f60e6890",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

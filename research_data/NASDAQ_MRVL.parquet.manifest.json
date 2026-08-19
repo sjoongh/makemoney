@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_MRVL",
-  "created_ts": "2026-06-24T01:02:56.005998+00:00",
+  "created_ts": "2026-08-15T07:12:21.009345+00:00",
   "symbols": [
     "MRVL"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "09aac482fc00ebdf6ce78ad37d8b141adb82823fee8b3ed75fe38f3867218d1c",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "600aa434d8c00f365c3e651f3ce38441f2f4569c18108efe28bff463bfb1d39e",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

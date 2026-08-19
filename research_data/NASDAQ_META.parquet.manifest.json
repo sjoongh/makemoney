@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_META",
-  "created_ts": "2026-06-24T01:03:19.179610+00:00",
+  "created_ts": "2026-08-15T07:12:30.159285+00:00",
   "symbols": [
     "META"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "b3ceaff1afda88c1834499be51c91719e78b2bd1d720329e752754bd862f15b0",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "36a531fa214d8d2bfa1e8bdfe86b0a256c6bad4c263f08657d2843889bef3b95",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

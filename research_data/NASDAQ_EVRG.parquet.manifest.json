@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_EVRG",
-  "created_ts": "2026-06-24T00:57:00.876139+00:00",
+  "created_ts": "2026-08-19T07:13:11.018785+00:00",
   "symbols": [
     "EVRG"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "79eb4d3a394673c667c1e80ebd32406abb8d8fed509dee6296779cec52ff31ef",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "76dfe42ddfd925528baeae0e273c2b6867f54fcc813fa33dd50e3d1d5526cda5",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

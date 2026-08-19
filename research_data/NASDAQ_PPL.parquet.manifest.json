@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_PPL",
-  "created_ts": "2026-06-24T01:06:38.921981+00:00",
+  "created_ts": "2026-08-15T07:13:59.426527+00:00",
   "symbols": [
     "PPL"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "14587bec9d5888d0eb658b387bc6ceffb7729759ad54813f8ca4ff389232d1b3",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "9f2578a2f6b60fa4cac4a3e197a196e5feb2daf31f00cbdf5295ff9292ff3ed4",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

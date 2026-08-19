@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_CCI",
-  "created_ts": "2026-06-24T00:54:46.564987+00:00",
+  "created_ts": "2026-08-19T07:12:08.433578+00:00",
   "symbols": [
     "CCI"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "197c39616b599dd52f86290aab32c6b229c623edc7da66a8385b51e03b157fa7",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "1280ec9f969eeee0041175e8702d65e7d3bc45575fe5054eb9e95ae9de4578a1",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

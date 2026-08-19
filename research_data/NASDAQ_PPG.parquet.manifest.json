@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_PPG",
-  "created_ts": "2026-06-24T01:06:36.124079+00:00",
+  "created_ts": "2026-08-15T07:13:57.944781+00:00",
   "symbols": [
     "PPG"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "c656a9506a70bbdcab45393c4b1241e80c4cf38f746f544026b41fb6b9010f3b",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "b8dba7501120a62146d5a7ed8ad7f83a11c8ba02222614a205c64941e11629ae",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

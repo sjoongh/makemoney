@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_TTWO",
-  "created_ts": "2026-06-24T01:09:07.331155+00:00",
+  "created_ts": "2026-08-16T07:10:34.658909+00:00",
   "symbols": [
     "TTWO"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "c7d6ecfd48d7b4f14c873bc914feef7dcce6a9c9da4c69e9a143196c32ba17f5",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "b8dc218d70f49966388e9f60b4dcdce747993de77504ef8dae94541d7cb1c71f",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

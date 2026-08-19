@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_CHTR",
-  "created_ts": "2026-06-22T13:05:26.220182+00:00",
+  "created_ts": "2026-08-19T07:11:22.505061+00:00",
   "symbols": [
     "CHTR"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "77e628c15812d0f64a55c300362a02c25ddeb7db917e3df312a6d3603931e887",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "444751214f8c084b72023af0cf28ff0c3f719bf1246eca83b1f67f9597fc6ce9",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

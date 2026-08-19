@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_FITB",
-  "created_ts": "2026-06-24T00:57:43.542730+00:00",
+  "created_ts": "2026-08-19T07:13:31.423610+00:00",
   "symbols": [
     "FITB"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "0beff5db54e5afeef9ed02dade404fcfefa9774ddb426a12c833ed75c672ee5c",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "d79e66e2511a8131f79fa870334050910bf4e1fc6dfcc4d78eeae00706cd7485",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_FLEX",
-  "created_ts": "2026-06-24T00:57:54.285950+00:00",
+  "created_ts": "2026-08-19T07:13:36.867081+00:00",
   "symbols": [
     "FLEX"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "e0e331fe54533859efdec197402487b10e3ccc3d3a8b3fc297d92300f65ee73a",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "690638a1b946524dd23d0d2a9425bc98c6f07062eefe6c7b9daa162ce5b7504a",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

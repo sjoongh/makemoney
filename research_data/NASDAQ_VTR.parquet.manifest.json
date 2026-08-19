@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_VTR",
-  "created_ts": "2026-06-24T01:10:55.769806+00:00",
+  "created_ts": "2026-08-16T07:11:21.780892+00:00",
   "symbols": [
     "VTR"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "f5f9dab2104d8c49758b491137883eef45af175a05276c76069cebd71a676e6d",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "634dcc423936628b24cb049cdc1b20f168539bc03fa39b9410bc1bd8fb37ab57",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

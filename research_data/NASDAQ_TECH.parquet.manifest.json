@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_TECH",
-  "created_ts": "2026-06-22T13:04:05.042362+00:00",
+  "created_ts": "2026-08-15T07:10:22.398756+00:00",
   "symbols": [
     "TECH"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
   "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "65562edfb13857e16c7700d114d7c37b80f5b50528c9cc974a287203bec7bf54",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "d4e72a4686909168be0aa225be98c2c5ae0c24bdd5cd541089136934855406bc",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

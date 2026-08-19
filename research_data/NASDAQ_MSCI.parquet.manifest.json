@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_MSCI",
-  "created_ts": "2026-06-24T01:04:18.629970+00:00",
+  "created_ts": "2026-08-15T07:12:54.390096+00:00",
   "symbols": [
     "MSCI"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "b9fdcd106027f131543339bed51476953a2a6cf089c32adef1f82ebb85bdf857",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "29db8f8dc82bdf1ce378dabcc79a11cebc0fd6eeb6abf5c7bd5b8ae0c35fd96f",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_CMCSA",
-  "created_ts": "2026-06-22T13:06:23.278781+00:00",
+  "created_ts": "2026-08-19T07:11:48.393652+00:00",
   "symbols": [
     "CMCSA"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "763951c11ea89e6e3d88693c8901ed6b73486cc05da15e270fb39b675f06df62",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "dfd2db4393e669f0cecb729ae9d2151dbcdc51c517510a84f8711feb2ac6f13b",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

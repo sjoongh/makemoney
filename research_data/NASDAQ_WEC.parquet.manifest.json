@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_WEC",
-  "created_ts": "2026-06-24T01:12:06.536614+00:00",
+  "created_ts": "2026-08-16T07:11:48.690320+00:00",
   "symbols": [
     "WEC"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "83cf457ade4c31e2d200f8d6f16c12ee57a6acd166ef7c37c6c1bc19206e416d",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "f93917f30eb9b25a2afd231cc6528047dfbc36d06e0d9b269d4fed0775a19859",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_PNC",
-  "created_ts": "2026-06-24T01:06:33.901921+00:00",
+  "created_ts": "2026-08-15T07:13:56.479225+00:00",
   "symbols": [
     "PNC"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "dff1c6ef021b91dd21df6531ec07d4b2adea9f3eeebc78bf0840bc0a5ce8d14f",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "dbaf23b28c543004c66aca570a7b003cab3dd0e4bd59ec39fed9541d0f882f3a",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

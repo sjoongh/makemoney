@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_GIS",
-  "created_ts": "2026-06-24T00:58:44.874006+00:00",
+  "created_ts": "2026-08-19T07:13:58.497771+00:00",
   "symbols": [
     "GIS"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-22",
-  "n_bars": 2511,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "92c83c6326bdf1b322e23ca28875b0d81c2902582080ca29cdc2d756d075c062",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "b684b3debd926cd1c0cf822ef30a0946da3a6b5f2cb7629fc520b83bb6597122",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

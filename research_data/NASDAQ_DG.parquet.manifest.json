@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_DG",
-  "created_ts": "2026-06-24T00:55:29.435229+00:00",
+  "created_ts": "2026-08-19T07:12:29.955146+00:00",
   "symbols": [
     "DG"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "2d44c1d1a8c05bde8553ed5a9777b7b9b45ab3ca5aac6e5ac04be4de626a9592",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "2d9e0a3411b46deac47ad6e80052aafc6c7f14eb4e32acfe3acf103f62716f92",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

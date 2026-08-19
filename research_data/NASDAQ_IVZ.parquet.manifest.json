@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_IVZ",
-  "created_ts": "2026-06-24T01:00:40.734398+00:00",
+  "created_ts": "2026-08-15T07:11:22.543355+00:00",
   "symbols": [
     "IVZ"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "eb5d7fb2ff8183ad6e594300552d3a1f8b1f21b24ec5edcfc999b3473e63d047",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "62289846bc0c38d6abf21eeec8076eb6034305042d2df5cf1047af7fa2949c4e",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

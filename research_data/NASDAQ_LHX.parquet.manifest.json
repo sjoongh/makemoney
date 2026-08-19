@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_LHX",
-  "created_ts": "2026-06-24T01:01:55.585655+00:00",
+  "created_ts": "2026-08-15T07:11:50.837879+00:00",
   "symbols": [
     "LHX"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "96cd481174996c40972fff4e28f1b1656c4daa8f96c62fe0e776dfb2aafc5dc1",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "11efa77c6c953dbd3a50302b0a4e5b67422a4aaf4b7793a8bbaaf9b2bda11004",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

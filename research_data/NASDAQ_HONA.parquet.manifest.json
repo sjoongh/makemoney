@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_HONA",
+  "created_ts": "2026-08-19T07:14:22.068303+00:00",
+  "symbols": [
+    "HONA"
+  ],
+  "provider": "yfinance",
+  "start_date": "2026-06-15",
+  "end_date": "2026-08-18",
+  "n_bars": 45,
+  "adjustment": "adjusted",
+  "content_hash": "e17c777323fad42b4f9c3a0bc76d10621b587b62618d90158a6d03903c4753b1",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
+  "quality_passed": true
+}

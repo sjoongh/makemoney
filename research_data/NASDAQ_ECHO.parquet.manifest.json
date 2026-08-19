@@ -1,0 +1,15 @@
+{
+  "dataset_id": "NASDAQ_ECHO",
+  "created_ts": "2026-06-25T04:00:03.594366+00:00",
+  "symbols": [
+    "ECHO"
+  ],
+  "provider": "yfinance",
+  "start_date": "2026-06-24",
+  "end_date": "2026-06-24",
+  "n_bars": 1,
+  "adjustment": "adjusted",
+  "content_hash": "816638ebee2efc7f218835fe0610c8fdf4ce13024d3f36f21798924ecd199ab2",
+  "code_commit": "471fab5c3b7bffbe7615b079796acca5ea4b0223",
+  "quality_passed": false
+}

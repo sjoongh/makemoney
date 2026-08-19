@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_BLK",
-  "created_ts": "2026-06-22T13:04:08.774335+00:00",
+  "created_ts": "2026-08-15T07:10:25.268755+00:00",
   "symbols": [
     "BLK"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
   "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "9ca7d474547988a587a9c232711caf6f1b363f2ac9c818e9a8255e5dcf20ffa2",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "a1eee931c131c50206efa81717d9ba5211d2e094bad45e01efcc55dcd3eee9bb",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

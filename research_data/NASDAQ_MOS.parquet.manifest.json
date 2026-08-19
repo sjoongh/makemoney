@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_MOS",
-  "created_ts": "2026-06-24T01:04:13.823863+00:00",
+  "created_ts": "2026-08-15T07:12:51.444148+00:00",
   "symbols": [
     "MOS"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "eddc992a03afa62863349b2525fff8953a981e212999b1d5007d71688f1c22c2",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "50f1ec3f21b7227869ea4be5d3eba0299a813a27506293dd695da0c6f621397b",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

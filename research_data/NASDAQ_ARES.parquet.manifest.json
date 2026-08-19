@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_ARES",
-  "created_ts": "2026-06-22T13:09:15.461542+00:00",
+  "created_ts": "2026-08-19T07:11:02.537311+00:00",
   "symbols": [
     "ARES"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "2e76ce880108425f3828c2339df0f0f50761ae3d7de7c3c1ffec36ad12d8207d",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "ce95581474565466ced229ecd26184eba7e77df40eb3720e2382d97e1c43183f",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

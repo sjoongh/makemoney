@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_UBER",
-  "created_ts": "2026-06-24T01:10:21.600206+00:00",
+  "created_ts": "2026-08-16T07:11:07.711318+00:00",
   "symbols": [
     "UBER"
   ],
   "provider": "yfinance",
   "start_date": "2019-05-10",
-  "end_date": "2026-06-23",
-  "n_bars": 1789,
+  "end_date": "2026-08-14",
+  "n_bars": 1826,
   "adjustment": "adjusted",
-  "content_hash": "a63dbb771a2e13473381ef1809edb496287e14993deddeb570da5c2f3bcf2776",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "f0f0e73ac46dbdcd51eaad6ce8dd9fdf16648825b77ceafe020c3046b47b5e04",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

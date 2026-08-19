@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_BA",
-  "created_ts": "2026-06-22T13:04:16.356786+00:00",
+  "created_ts": "2026-08-15T07:10:31.002915+00:00",
   "symbols": [
     "BA"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
   "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "bb6b509bbb0b2c855e4d6834aea4e825326f1d9ba96324884f1f91face22ea05",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "d429aeca77b502cb9909dc4867dd2f098762c5b5ddf85c6645b027a5f0e7dec2",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

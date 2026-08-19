@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_EQT",
-  "created_ts": "2026-06-24T00:56:36.941988+00:00",
+  "created_ts": "2026-08-19T07:12:59.721783+00:00",
   "symbols": [
     "EQT"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "fe5f03d476c0d52c998d92bf083b5ef0d7989960df29e2aa701a01b42265bc38",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "811748e71c6808f8910f77ba194a113278be33eae885845e5dc81388fa7f9cc4",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

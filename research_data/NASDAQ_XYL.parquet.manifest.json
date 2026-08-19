@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_XYL",
-  "created_ts": "2026-06-24T01:12:52.210478+00:00",
+  "created_ts": "2026-08-16T07:12:05.965773+00:00",
   "symbols": [
     "XYL"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "4b0f4ef64ef1d7a81e46124bef42d02adf902d28dc458bf71d27073ab30ff6b1",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "543f6a9635cbc09f4ddd44e04ea5434c78daa27fe3a2a1ca2b22fc3d2f6ce85a",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

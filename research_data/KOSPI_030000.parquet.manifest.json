@@ -1,15 +1,15 @@
 {
   "dataset_id": "KOSPI_030000",
-  "created_ts": "2026-06-24T02:06:06.761423+00:00",
+  "created_ts": "2026-08-17T07:12:32.373815+00:00",
   "symbols": [
     "030000"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-24",
+  "start_date": "2016-08-16",
+  "end_date": "2026-08-14",
   "n_bars": 2445,
   "adjustment": "adjusted",
-  "content_hash": "3bc7e3a161006a3b5c4f15c251f72fe7b2dea8cc9330af79ea01c5f4b463b2da",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "952b19df1168414231798087d95b6af7b8741a17771b1228ba1ef62ec1e34bfb",
+  "code_commit": "c62f05a96e0d28fd6559f0de8257b5918adda361",
   "quality_passed": true
 }

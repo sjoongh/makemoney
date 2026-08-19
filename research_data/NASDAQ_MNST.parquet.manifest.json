@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_MNST",
-  "created_ts": "2026-06-24T01:03:59.968172+00:00",
+  "created_ts": "2026-08-15T07:12:47.189120+00:00",
   "symbols": [
     "MNST"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2513,
   "adjustment": "adjusted",
-  "content_hash": "4b72ccac214b370316bd14989128ad30cf630cb9f180a9316afce50e5ffd29fa",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "d6c1e47ad67fd57c52dbb9e850e0caf46818170bae20cbc31d701f481ca5682a",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

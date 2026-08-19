@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_WM",
-  "created_ts": "2026-06-24T01:12:00.277617+00:00",
+  "created_ts": "2026-08-16T07:11:45.856125+00:00",
   "symbols": [
     "WM"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "11f27f3ec882a28a9ed973ab5666e74169244daef970e6440f1ab0055070097a",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "75ed3207603d4f1d197edad0efc5d0a389663a66ce6f967681d1751d225ec422",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

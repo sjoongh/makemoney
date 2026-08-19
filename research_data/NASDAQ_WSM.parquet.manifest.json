@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_WSM",
-  "created_ts": "2026-06-24T01:12:32.959267+00:00",
+  "created_ts": "2026-08-16T07:11:57.425412+00:00",
   "symbols": [
     "WSM"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-22",
-  "n_bars": 2511,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "47dca9e505472f92e74da33480e7312fddbef87025ed60cc5daf3ce559fe182b",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "697b3521b54f52bf05a89e04cc9ff14dabb902c39960d8fb089e131477d15cc9",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

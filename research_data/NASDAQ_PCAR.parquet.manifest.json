@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_PCAR",
-  "created_ts": "2026-06-24T01:05:38.328162+00:00",
+  "created_ts": "2026-08-15T07:13:34.787270+00:00",
   "symbols": [
     "PCAR"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "41b75e3a6f9a773a5647e6c01bc854e7ca3f9f424457d98b7ec98f5481fece87",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "ff5cd387794b97e641a780c1df8acc03b33f4b4c6bffa4ba4d602f45a6024f3f",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

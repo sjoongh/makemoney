@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_WDC",
-  "created_ts": "2026-06-24T01:12:26.243783+00:00",
+  "created_ts": "2026-08-16T07:11:54.610961+00:00",
   "symbols": [
     "WDC"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "f74e40c174a4ea38d65291f606ce6d7cca4b2f5faba1b6fd4dc635074c53871d",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "69accf20b0d4de649aef70f5b30a297d5ced129b50a35c8c42cfa35ea2a9f40b",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

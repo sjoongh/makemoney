@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_ELV",
-  "created_ts": "2026-06-24T00:56:23.635775+00:00",
+  "created_ts": "2026-08-19T07:12:52.663342+00:00",
   "symbols": [
     "ELV"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "a10d58c74f4d97b417558aa376a97aeff4b40bae4465a9f57f58b7c1923e5596",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "66aa96cf8a8536472a6f340689baffdbb4c6bddfbf40fc2cb87cadc977c2549a",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

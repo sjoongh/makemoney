@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_NOW",
-  "created_ts": "2026-06-24T01:08:11.909930+00:00",
+  "created_ts": "2026-08-16T07:10:03.324750+00:00",
   "symbols": [
     "NOW"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "d4205efd55f6128eb0d666a60d93c52e004e79813b0928e327204edd5300ba24",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "3e89f98583871e1653a84c7a0aad3fa329a6b390c755620de11b857f683cd6a7",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

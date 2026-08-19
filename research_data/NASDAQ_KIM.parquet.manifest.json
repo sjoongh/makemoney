@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_KIM",
-  "created_ts": "2026-06-24T01:01:26.475955+00:00",
+  "created_ts": "2026-08-15T07:11:42.223187+00:00",
   "symbols": [
     "KIM"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "64cd3e0aa26a7ab0d54edc78c2f651f76e09762d8636076937bc68b10b7188e0",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "4e33b7dc4483cf0dd267b39c1c0658ba8a05025cb1621a74e27cf91a51a1a7a6",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

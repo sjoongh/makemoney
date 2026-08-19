@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_CASY",
-  "created_ts": "2026-06-22T13:04:57.350224+00:00",
+  "created_ts": "2026-08-15T07:10:58.122654+00:00",
   "symbols": [
     "CASY"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
   "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "7d8fa488a21f32e4e4087e7b4e1bf7891a191592e6a22992b4c3c9e713137c09",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "23e155ad1442da281a308f6a057d5ebcaa0b24ce3d5bbdbd82fb527c969cb7b5",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_FSLR",
-  "created_ts": "2026-06-24T00:57:47.119621+00:00",
+  "created_ts": "2026-08-19T07:13:32.754801+00:00",
   "symbols": [
     "FSLR"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "c7d68337cbf3e75649a12ba08d7e1bc3a2406c2ec09bebed13194dfe26453128",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "362ecea94ec66e9c23c77d0fa41311de72612d6a86f443fb2e99d8c069f73a14",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

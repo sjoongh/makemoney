@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_ALLE",
-  "created_ts": "2026-06-22T12:58:25.580031+00:00",
+  "created_ts": "2026-08-19T07:10:25.165826+00:00",
   "symbols": [
     "ALLE"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "7005beff28e7e7930c7c7dbec08c8ca47857d7f556b81693f9816cf7dbaac771",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "49a084ef32a476bd0240cc9d5fe41ee383a2172cb0245988531cc664fa806a50",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

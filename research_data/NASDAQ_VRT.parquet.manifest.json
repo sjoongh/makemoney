@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_VRT",
-  "created_ts": "2026-06-24T01:11:20.485240+00:00",
+  "created_ts": "2026-08-16T07:11:29.981968+00:00",
   "symbols": [
     "VRT"
   ],
   "provider": "yfinance",
   "start_date": "2018-08-02",
-  "end_date": "2026-06-23",
-  "n_bars": 1982,
+  "end_date": "2026-08-14",
+  "n_bars": 2019,
   "adjustment": "adjusted",
-  "content_hash": "c7ab3909c98a805870c257449587534f1e4bcdd65d320ec38e475ae8db60adb8",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "86efe196bfb821525e5386bfe75d77ddf0f197f9a2f54cd0fa7ee408cc8c07d1",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

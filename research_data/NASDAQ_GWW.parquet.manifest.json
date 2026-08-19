@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_GWW",
-  "created_ts": "2026-06-24T01:11:47.487709+00:00",
+  "created_ts": "2026-08-16T07:11:38.644038+00:00",
   "symbols": [
     "GWW"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "89d2daf1fd7fe5bbb3c60b13d6f44943e7baf801f387dac7ffb1661b1f2ef6b8",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "f70ad1394b0a3f942f1f58132cf3b63b5484d9867ccf2846c1ae3f22a87cc16e",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_XOM",
-  "created_ts": "2026-06-24T00:57:19.840273+00:00",
+  "created_ts": "2026-08-17T07:10:05.291865+00:00",
   "symbols": [
     "XOM"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "ad9a52c4daafc3cafc876580720b7f78f12aae0bd5d01d51a64ec39f43c771fd",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "cc6fbb5069511afbc2f6d25fa43331c0f2983473c8787d2e63456aff54588443",
+  "code_commit": "c62f05a96e0d28fd6559f0de8257b5918adda361",
   "quality_passed": true
 }

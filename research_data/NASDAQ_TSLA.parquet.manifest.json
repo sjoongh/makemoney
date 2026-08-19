@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_TSLA",
-  "created_ts": "2026-06-24T01:09:23.327169+00:00",
+  "created_ts": "2026-08-17T07:10:15.428919+00:00",
   "symbols": [
     "TSLA"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "1cf0fec884e482a0a96324e9e8402545f17a2d8c4648df2c46b7e65d320a5562",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "b1819b6494d2def830be8b1c05de2447d0b97fa88364958663e2e88ac3afbe94",
+  "code_commit": "c62f05a96e0d28fd6559f0de8257b5918adda361",
   "quality_passed": true
 }

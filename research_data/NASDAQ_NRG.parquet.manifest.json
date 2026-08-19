@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_NRG",
-  "created_ts": "2026-06-24T01:05:01.053920+00:00",
+  "created_ts": "2026-08-15T07:13:15.861886+00:00",
   "symbols": [
     "NRG"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "cdcb1e7cdcdc9ca8d2a2f478465597813c9e33572381761f5cba978414a88143",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "872f7d1f4033fb025183fc4c0015f5299f2d60db7f9fa3300983991d5a78c4f0",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_AJG",
-  "created_ts": "2026-06-22T13:03:02.891234+00:00",
+  "created_ts": "2026-08-19T07:11:05.145245+00:00",
   "symbols": [
     "AJG"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "fef82f6142f7d810b615402df79488517a3ed32e8d45d7b86f864bb3bee7e3c2",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "1d00055662d6f1883bb3da2794380ceaf45a39cc38953fc90253dda99088d13d",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

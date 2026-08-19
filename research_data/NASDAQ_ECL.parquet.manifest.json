@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_ECL",
-  "created_ts": "2026-06-24T00:56:11.786377+00:00",
+  "created_ts": "2026-08-19T07:12:47.389640+00:00",
   "symbols": [
     "ECL"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "c4277b2be610edb4ec995ac09d54110a7d1485165a8bc6854fe007cd6c991d9c",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "7c3527c43be0ca2c95b252b3fd8e6d642ae4859611a9d4d41d841ceb3bce465f",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

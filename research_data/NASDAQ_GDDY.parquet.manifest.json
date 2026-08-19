@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_GDDY",
-  "created_ts": "2026-06-24T00:59:02.284176+00:00",
+  "created_ts": "2026-08-19T07:14:06.785511+00:00",
   "symbols": [
     "GDDY"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "48d7897526003c3a27f78bf4af6b3b744c54a298f58a3586d5b348ff61cede68",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "dff35a2da40238ff423a9dd93c3a02e46a66487d51ae9bfee20ee2ba2eed7fc7",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

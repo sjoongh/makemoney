@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_PGR",
-  "created_ts": "2026-06-24T01:06:46.848168+00:00",
+  "created_ts": "2026-08-15T07:14:02.392475+00:00",
   "symbols": [
     "PGR"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "dda70cedc85119d090366cc07d9f6fa3ec2ad01cb1ef0c8789f340e2b60b2254",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "8e68c19fe8e0e7156b07dd69d2cdd2a52f6bc833dbccd91a7eb37ddb9bd7e93e",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_ETN",
-  "created_ts": "2026-06-24T00:56:01.429514+00:00",
+  "created_ts": "2026-08-19T07:12:44.751397+00:00",
   "symbols": [
     "ETN"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "8245658db3e359bc4bb108bf8dc8443134478869a3aa551b5b170faccaca4f09",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "ef763d71176077cda14cfd4a46398771eb490058d7677e1951a27e23a61b83e9",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_HBAN",
-  "created_ts": "2026-06-24T01:00:00.549697+00:00",
+  "created_ts": "2026-08-19T07:14:33.805695+00:00",
   "symbols": [
     "HBAN"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "0454ca196dda2097c32438759a30af3a13f8ebcbfaf614b6456ba808f2e42dd5",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "4b6515f8f80f641adfd1845fd07efad22884993c18197ab865ab4c72e1481ef0",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

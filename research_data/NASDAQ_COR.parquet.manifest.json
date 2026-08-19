@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_COR",
-  "created_ts": "2026-06-22T13:09:24.258245+00:00",
+  "created_ts": "2026-08-19T07:11:14.552556+00:00",
   "symbols": [
     "COR"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "02b9b0a52a47ebc9624161f7fa7f30fa740e25b6bed45d4e99935a5ccf62822b",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "a123b188da0e04f84963464f2d9a9393cd1cb82e622bf9f0c51a870ce2a7c2de",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

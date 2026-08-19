@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_GS",
-  "created_ts": "2026-06-24T00:59:06.726302+00:00",
+  "created_ts": "2026-08-19T07:14:08.288718+00:00",
   "symbols": [
     "GS"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "2b124ab11c158e4fd3eda6d38ce616e6f8edb6abe6f9d46b5e3762d86215a712",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "1b09197f784cfa598e64908b5150845a7f1f724da7d4a595b4b408009b6c03be",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

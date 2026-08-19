@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_PEG",
-  "created_ts": "2026-06-24T01:06:54.767875+00:00",
+  "created_ts": "2026-08-15T07:14:06.637874+00:00",
   "symbols": [
     "PEG"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "44d84e08c62d8498e91bac51fb2aa87ac164839132d3586b596784e22de5324b",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "3c8555677ef1e9a6826333625766b5d5c9badad1384e150e67d6c95c223fb86c",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

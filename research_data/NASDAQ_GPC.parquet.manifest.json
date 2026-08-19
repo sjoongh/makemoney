@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_GPC",
-  "created_ts": "2026-06-24T00:58:50.189931+00:00",
+  "created_ts": "2026-08-19T07:14:01.250843+00:00",
   "symbols": [
     "GPC"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "a51e9b8a3096c7b84fa847f170646d57cfdcc71985b8ad343d58ae60ca8cffbe",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "d24ad3eed84842aeec5b365743308c7f069ec12381578f5b4e2020f1f7c3e7ed",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

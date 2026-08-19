@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_Q",
-  "created_ts": "2026-06-24T01:07:12.438799+00:00",
+  "created_ts": "2026-08-15T07:14:16.210100+00:00",
   "symbols": [
     "Q"
   ],
   "provider": "yfinance",
   "start_date": "2025-10-27",
-  "end_date": "2026-06-23",
-  "n_bars": 164,
+  "end_date": "2026-08-14",
+  "n_bars": 201,
   "adjustment": "adjusted",
-  "content_hash": "05e38f9be134b1330c97c96cbf6a6ec4ef01a1ba15cd6b79dd8bd335027b3ab1",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "a621726e284f1afa698256a4c9ab99689ed51b869ce6920bbae089d6f105f9e1",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

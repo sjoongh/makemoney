@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_FCX",
-  "created_ts": "2026-06-24T00:58:18.661852+00:00",
+  "created_ts": "2026-08-19T07:13:46.227855+00:00",
   "symbols": [
     "FCX"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "3b5527a0445fe0ac7fca1b18bdba4bd4279094878df078c2d9ff5226bb986583",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "23d5dcb00c93a4aec63c589afc4fc0467c526e272d95f60076917ba265bf1056",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

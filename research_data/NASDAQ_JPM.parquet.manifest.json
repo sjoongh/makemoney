@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_JPM",
-  "created_ts": "2026-06-24T01:01:08.556659+00:00",
+  "created_ts": "2026-08-17T07:10:09.739216+00:00",
   "symbols": [
     "JPM"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "91bb78763e7b47803b9a415011d8830f673d3dc3b81d83b3f28d4be9c4fe6c3a",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "77e6a9112e8148b64e7db6e6f5f95a50827d307154f085f2b8dd3cd5c2ac0d99",
+  "code_commit": "c62f05a96e0d28fd6559f0de8257b5918adda361",
   "quality_passed": true
 }

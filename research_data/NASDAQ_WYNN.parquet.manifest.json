@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_WYNN",
-  "created_ts": "2026-06-24T01:12:45.293512+00:00",
+  "created_ts": "2026-08-16T07:12:03.014859+00:00",
   "symbols": [
     "WYNN"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "63b987471806650beafccae8182022479208a7694aae88a7774c90e7315989ce",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "a2deb85924c3ca1f7eb34391940d45c07e99a27094bd36a242aab68b927f9de8",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_GOOG",
-  "created_ts": "2026-06-22T12:58:33.154672+00:00",
+  "created_ts": "2026-08-19T07:10:30.637306+00:00",
   "symbols": [
     "GOOG"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "a0cd56b9bad95b5ee1072c0c885ad030d2d2211de0d5a6ef872be259fe18054f",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "9ad4f66d8bdc4e7925cebb3961e3abea53f4faa098be8713be9d56d920d4918c",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

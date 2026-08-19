@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_NDSN",
-  "created_ts": "2026-06-24T01:04:44.146793+00:00",
+  "created_ts": "2026-08-15T07:13:08.696750+00:00",
   "symbols": [
     "NDSN"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "6136f41fa6cb571dee01121a299cf4afbf966a6fba6be70552528c70eb5a2cea",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "1defbcf94258b5af2f2f03b260880a0950d2a5af8c8d0a759c784e5f95ae66f4",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

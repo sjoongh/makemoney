@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_IP",
-  "created_ts": "2026-06-24T01:00:33.621581+00:00",
+  "created_ts": "2026-08-15T07:11:18.340699+00:00",
   "symbols": [
     "IP"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "e7da6c0291591a6b9cf90298f5df4735ab9679ef3f01547cf1c8731ae070e961",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "4e2bfe135b8be89685387a73179929a0bed358127e0b2d0810e46ab95389429a",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

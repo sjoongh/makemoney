@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_FDX",
-  "created_ts": "2026-06-24T00:57:36.556293+00:00",
+  "created_ts": "2026-08-19T07:13:27.628886+00:00",
   "symbols": [
     "FDX"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "89bee87313d0a2ea1c76f096fc6a5782984a6f8db4aa30fe834b9735c2877b84",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "d5784791749a2d9e8b35f846d0afe1c4e8b32949975e6ac572891f29de908712",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

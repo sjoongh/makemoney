@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_VRSN",
-  "created_ts": "2026-06-24T01:11:03.361369+00:00",
+  "created_ts": "2026-08-16T07:11:24.512101+00:00",
   "symbols": [
     "VRSN"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "dd1ad7ab0aba23c5556cdbae14e07fdee734c8f2bdf226e74f23d62589c4f89c",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "37d2f07b37145f0a111793e6aa5f826e35cab22ffeab841b4606d1f799033741",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

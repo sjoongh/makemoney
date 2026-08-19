@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_PODD",
-  "created_ts": "2026-06-24T01:00:18.956654+00:00",
+  "created_ts": "2026-08-15T07:11:11.037492+00:00",
   "symbols": [
     "PODD"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "bf1cf8657860d8c8cfdc503e979af787938b6085948038821044595b2b07651b",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "39de0df96cefe4fefbc13754dfa09d2be3ea8899c1d1c7be129ca91de272488c",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

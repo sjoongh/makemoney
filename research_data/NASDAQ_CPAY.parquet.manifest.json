@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_CPAY",
-  "created_ts": "2026-06-24T00:54:28.770625+00:00",
+  "created_ts": "2026-08-19T07:12:00.519489+00:00",
   "symbols": [
     "CPAY"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "5ae4b02f10a194350bfcaa4d3232320e512d8cf73035f85a5e31d1a07597710c",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "80cf91863b9d1273881245f12bdd8a7744aeae425d5d591fdbd0c3217596cc3f",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

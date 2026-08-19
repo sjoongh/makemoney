@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_CIEN",
-  "created_ts": "2026-06-22T13:05:36.051006+00:00",
+  "created_ts": "2026-08-19T07:11:27.956056+00:00",
   "symbols": [
     "CIEN"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "d65c2a14e1c7d6d77eb4ac767e1a4309132e9468044e4fe7b359e84c06b74f36",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "51622fe574dc040868c7420c587f332bea1cbc58ec8f000d2df707b72e8c7142",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

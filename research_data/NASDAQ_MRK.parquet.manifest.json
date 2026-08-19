@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_MRK",
-  "created_ts": "2026-06-24T01:03:15.019960+00:00",
+  "created_ts": "2026-08-17T07:10:12.573556+00:00",
   "symbols": [
     "MRK"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-22",
-  "n_bars": 2511,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "a898ac483118916596c93058ee988c512e62b677319ac45cb34ee79b45bb54a5",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "28721a1bfe5e0c2e83ab0bed28aa4dc963e82f3e7a7977f99811306ea6fbfdca",
+  "code_commit": "c62f05a96e0d28fd6559f0de8257b5918adda361",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_IQV",
-  "created_ts": "2026-06-24T01:00:46.558525+00:00",
+  "created_ts": "2026-08-15T07:11:25.400862+00:00",
   "symbols": [
     "IQV"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "ae8b2dd3b3f54e391fbc0c277c750788121fdb9f86f4033298ec50642824124e",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "9dbebe1c13c9146719659ac4fd0a8e5bf34d519cc2c7076b6d35cd873d582838",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

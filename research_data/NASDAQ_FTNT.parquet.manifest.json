@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_FTNT",
-  "created_ts": "2026-06-24T00:58:00.105967+00:00",
+  "created_ts": "2026-08-19T07:13:39.553218+00:00",
   "symbols": [
     "FTNT"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "c86a8da87e2029fce19dc198d521a33486901c971e61e0dbc552460889ebaf3c",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "cf13180391d783bf4c09ab78d381334663d919e914690f1f9cfd489be8ba08ef",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

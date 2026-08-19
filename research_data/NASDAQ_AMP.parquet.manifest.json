@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_AMP",
-  "created_ts": "2026-06-22T12:58:52.640507+00:00",
+  "created_ts": "2026-08-19T07:10:43.960993+00:00",
   "symbols": [
     "AMP"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "cd0050b323604755465c4fd1541f5deaea40f069472fe414199ce6b46917343b",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "3beb580ff87785241342b6e6db0a5831142907694076547fff73df13ef2afe50",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

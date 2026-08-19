@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_HUM",
-  "created_ts": "2026-06-24T00:59:58.472762+00:00",
+  "created_ts": "2026-08-19T07:14:32.363455+00:00",
   "symbols": [
     "HUM"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "d1cb64ec0c5bda70f9c7fd15894855556745dfb6242826af758fe43163580a90",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "b053bf4b7494739dd0eefa1eb3c86be3c56363f24c114abeb545975d783a0ec7",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

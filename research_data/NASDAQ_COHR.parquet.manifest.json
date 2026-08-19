@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_COHR",
-  "created_ts": "2026-06-22T13:06:11.702039+00:00",
+  "created_ts": "2026-08-19T07:11:44.429912+00:00",
   "symbols": [
     "COHR"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "fc28433e2d33208e035d50086a127c32f07c1654dd4cec800eb903b01616feb0",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "227290c661bd046fa6cd2c671ba5457bee70147a6c52355ffd3dbc9c1c43222c",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

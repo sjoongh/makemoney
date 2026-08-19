@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_KKR",
-  "created_ts": "2026-06-24T01:01:32.589897+00:00",
+  "created_ts": "2026-08-15T07:11:45.022711+00:00",
   "symbols": [
     "KKR"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "cae77d73e1a8c57689d68ccb237635106f52fa4d433ebee0d9b80816511919fd",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "0e3b4e2b064de2ebe6ba4ccd1580c8cb2adefd79a0593ded016e7d5dbefac9cd",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

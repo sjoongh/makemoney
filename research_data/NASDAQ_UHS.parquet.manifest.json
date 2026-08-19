@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_UHS",
-  "created_ts": "2026-06-24T01:10:46.844709+00:00",
+  "created_ts": "2026-08-16T07:11:17.532786+00:00",
   "symbols": [
     "UHS"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-22",
-  "n_bars": 2511,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "a27d1ee4f92c8ebb371835234d394ea867bace8f82275e3ff3b234899dd44f92",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "1fd3f46a052b71168cd507e23fea3ad63ef83aca4210ad51fe537567753ae6e6",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

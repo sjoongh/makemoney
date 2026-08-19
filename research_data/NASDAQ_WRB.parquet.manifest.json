@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_WRB",
-  "created_ts": "2026-06-24T01:11:42.030472+00:00",
+  "created_ts": "2026-08-16T07:11:37.162689+00:00",
   "symbols": [
     "WRB"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "a900f73e392a83818d70e726165bf3470731388a1b67975589864c0e5c5c1ef4",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "d3b363e0508521dd0b25f0ef3825c507db5c4c22665e98c6938e1c0150fcb6a2",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

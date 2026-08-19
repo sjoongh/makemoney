@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_NDAQ",
-  "created_ts": "2026-06-24T01:04:21.295140+00:00",
+  "created_ts": "2026-08-15T07:12:55.831736+00:00",
   "symbols": [
     "NDAQ"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "8d2481f01bcf0a50f07955250afa29899676ef241c4fab8c6470f1ed8f4699d0",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "5f77adec4125af7935a9c6605ebecce7931308660ec6f0da9fd707c1c48030cc",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

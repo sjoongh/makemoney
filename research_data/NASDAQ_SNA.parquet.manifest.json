@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_SNA",
-  "created_ts": "2026-06-24T01:08:27.251182+00:00",
+  "created_ts": "2026-08-16T07:10:11.844015+00:00",
   "symbols": [
     "SNA"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "5559e00d94ff3b1391c7dfe34493958437ebec3a019f8e6a0508ab9d92ce4188",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "4a7a592b708fb3b03fb11371923132a9f77b834ab64a7e910f01097154a8dcdf",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_CME",
-  "created_ts": "2026-06-22T13:05:59.532155+00:00",
+  "created_ts": "2026-08-19T07:11:38.914932+00:00",
   "symbols": [
     "CME"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
-  "n_bars": 2514,
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
+  "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "44bb19c6a11404d535ed102c9520b0dd99f1122798889bc09c2083f35c022289",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "3d2f0e70d41a61cb326d60aa41bad170b382347bca68e5f2164944884afaa05b",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

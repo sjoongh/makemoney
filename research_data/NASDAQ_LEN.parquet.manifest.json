@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_LEN",
-  "created_ts": "2026-06-24T01:02:09.904675+00:00",
+  "created_ts": "2026-08-15T07:11:57.793849+00:00",
   "symbols": [
     "LEN"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "25f632731570fa8605c1bffb60502197e32ff1773dc0ba77833743959fe6adea",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "ad1b1cc59760ab7d2a5c8ad95ff29b93ec4cbac084b7f8ca3ac7d8348ae2bf94",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_DOV",
-  "created_ts": "2026-06-24T00:55:43.798639+00:00",
+  "created_ts": "2026-08-19T07:12:36.358391+00:00",
   "symbols": [
     "DOV"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "de357d948c4cec7a4b816e7e1920cb3071850d748d07d07c60ccb60d7e9de529",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "e748befaa59dba9ec82181fa081dd29ef8653af6a2597c72a8b74dab0a18f086",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

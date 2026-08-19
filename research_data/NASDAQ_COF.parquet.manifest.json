@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_COF",
-  "created_ts": "2026-06-22T13:04:47.554152+00:00",
+  "created_ts": "2026-08-15T07:10:51.062391+00:00",
   "symbols": [
     "COF"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
   "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "ff95f7866733b89d5a30ebe6d4792a527fea3f30bbecf1a8785b06314e2d6504",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "8efb28a707dad7a74f1090409c5dce1d4e5b47db661e2c180c6204e8408953e2",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

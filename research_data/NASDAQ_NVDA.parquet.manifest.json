@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_NVDA",
-  "created_ts": "2026-06-24T01:05:06.961973+00:00",
+  "created_ts": "2026-08-15T07:13:18.686021+00:00",
   "symbols": [
     "NVDA"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "d85fa9915eea82c23ca72da0a116ed1d769e164253e85c1815cf4f4764d316d9",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "543dcd6707bf50311b963b8e99c8c61c178e067e85757c882e8b4902d2cceea2",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

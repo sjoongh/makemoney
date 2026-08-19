@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_AZO",
-  "created_ts": "2026-06-22T13:03:26.044982+00:00",
+  "created_ts": "2026-08-15T07:10:06.444221+00:00",
   "symbols": [
     "AZO"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-20",
-  "end_date": "2026-06-18",
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
   "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "d24bcacfb74674cf0426cb22f1d2aa789775df6a3cd2862ba3eadf4f961ee223",
-  "code_commit": "4ec4b8c85cb5dfa829c1ddd03c8e8c1f0bdc170e",
+  "content_hash": "64b76f5dfcddd07dc80c1da9da0097a717239888b6049b1814ee660de733a7d1",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

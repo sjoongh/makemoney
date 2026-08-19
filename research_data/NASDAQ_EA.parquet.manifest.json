@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_EA",
-  "created_ts": "2026-06-24T00:56:21.343294+00:00",
+  "created_ts": "2026-08-19T07:12:51.222357+00:00",
   "symbols": [
     "EA"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2026-07-17",
+  "end_date": "2026-08-10",
+  "n_bars": 6,
   "adjustment": "adjusted",
-  "content_hash": "e12799d353beffc2182db3dcf84ca91038394881d5151ef700203538d327da85",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "695f79bec6908d593e0861bddfd286d1df1ce65b4a29b20e6268de904f528da2",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

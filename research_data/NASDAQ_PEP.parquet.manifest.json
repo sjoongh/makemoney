@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_PEP",
-  "created_ts": "2026-06-24T01:06:07.949711+00:00",
+  "created_ts": "2026-08-15T07:13:47.626474+00:00",
   "symbols": [
     "PEP"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "c755f6e0e839521c905b7f5a812a2793a6a1a0ce756d4a9067ba96fbc2786f67",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "63222e5b41b5aabc7242b002e6a42bff5ff009766d7cf32099b58b50207c0519",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

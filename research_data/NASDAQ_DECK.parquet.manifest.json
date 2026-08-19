@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_DECK",
-  "created_ts": "2026-06-24T00:55:09.685533+00:00",
+  "created_ts": "2026-08-19T07:12:19.071720+00:00",
   "symbols": [
     "DECK"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
+  "start_date": "2016-08-19",
+  "end_date": "2026-08-18",
   "n_bars": 2512,
   "adjustment": "adjusted",
-  "content_hash": "779ac7635011ff704476d7940cfdacdd8ee8665c8ae890a07abf8f9a696c9a28",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "ca9bb62890e484620790aee5b3cb5748cc50a773bf8351cdbcc75d7d3ab60644",
+  "code_commit": "9dc0e189d92cce7860112b41234dfb2ba30e9670",
   "quality_passed": true
 }

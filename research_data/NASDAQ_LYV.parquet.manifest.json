@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_LYV",
-  "created_ts": "2026-06-24T01:02:23.125809+00:00",
+  "created_ts": "2026-08-15T07:12:03.769497+00:00",
   "symbols": [
     "LYV"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "863f5425960d35dd1b6f1a5cc49d1b27d114318765e5026e4d1fe8d7336f66b5",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "62212ee1a50037d08f736f5b9d950c63ed255236b35a31df67bc7ff24109424e",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

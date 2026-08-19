@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_L",
-  "created_ts": "2026-06-24T01:02:27.374606+00:00",
+  "created_ts": "2026-08-15T07:12:06.740481+00:00",
   "symbols": [
     "L"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "31c02099df52557142e09bb421fbba5a03dcc1af4f0ca2380c9561bee67dee5c",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "a9593fee76c94ef1886199d3992833832b133a19d994d8ef2bf1f5aca2cdf037",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_INCY",
-  "created_ts": "2026-06-24T01:00:14.068821+00:00",
+  "created_ts": "2026-08-15T07:11:08.312789+00:00",
   "symbols": [
     "INCY"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "36050ad16badcab27bc7fe0982842724287e5d8639578ec0547c0ff964b6f5c5",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "6cfb82634a743e57ad6178a4284443fad8a5b2e7a76e9edec7399a7de0df8fe9",
+  "code_commit": "c8d3c3285c6306718650173a0e203f33451a335e",
   "quality_passed": true
 }

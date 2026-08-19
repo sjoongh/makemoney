@@ -1,15 +1,15 @@
 {
   "dataset_id": "NASDAQ_SPG",
-  "created_ts": "2026-06-24T01:08:16.798679+00:00",
+  "created_ts": "2026-08-16T07:10:06.268994+00:00",
   "symbols": [
     "SPG"
   ],
   "provider": "yfinance",
-  "start_date": "2016-06-24",
-  "end_date": "2026-06-23",
-  "n_bars": 2512,
+  "start_date": "2016-08-15",
+  "end_date": "2026-08-14",
+  "n_bars": 2514,
   "adjustment": "adjusted",
-  "content_hash": "4ecc8af1c601bdfe49c13bb08d66a50ea09fb8cc454eec204b6b127aed14cce7",
-  "code_commit": "ea9ac1b57e29ceb12711674169ac09d09830da30",
+  "content_hash": "7db4d61a241915d7766c0e7d2995195d663121ee5003aaac51fa0942ebbff1be",
+  "code_commit": "982bfe2d2f28584caa030cc9b8cacc906385db9b",
   "quality_passed": true
 }
