@@ -55,3 +55,20 @@ status.html
 
 # crypto research data (re-fetchable via yfinance)
 crypto_data/
+
+# macOS / tooling scratch
+.DS_Store
+**/.DS_Store
+.heartbeat.json
+.omc/sessions/
+.omc/specs/
+.omc/project-memory.json
+
+# buggy-sizing ledger backup (kept locally, not published)
+beta_kis_track.buggy-sizing.jsonl.bak
+
+# Event/flow research stores: commit the point-in-time datasets + manifests,
+# ignore the resumable scratch (API budget + backfill progress cursors).
+event_data/.dart_budget.json
+event_data/.kospi_backfill_progress.json
+flow_data/.kr_flows_progress.json

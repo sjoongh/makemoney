@@ -42,6 +42,22 @@ TZ=America/New_York
 
 Replace `/path/to/makemoney` with the absolute path to your repo.
 
+### Disclosure-event recorder runs via launchd, NOT cron
+
+`trader.app.run_event_record` (DART + EDGAR daily incremental, free-data
+expansion) is scheduled by a **LaunchAgent**, because headless `crontab`
+installs hang on the macOS TCC approval prompt:
+
+- plist: `~/Library/LaunchAgents/com.makemoney.event-record.plist`
+  (Mon–Sat 16:20 local, logs → `logs/event_record.log`)
+- status: `launchctl list | grep makemoney`
+- manual run: `launchctl kickstart gui/$UID/com.makemoney.event-record`
+- unload: `launchctl bootout gui/$UID/com.makemoney.event-record`
+
+The job is idempotent (event store dedupes by (symbol, source_id)); if the
+Mac was asleep past 16:20, launchd runs it on wake. A missed stretch can be
+caught up with `python -m trader.app.run_event_record --days N`.
+
 ---
 
 ## WARNING: --live places real (paper) orders unattended

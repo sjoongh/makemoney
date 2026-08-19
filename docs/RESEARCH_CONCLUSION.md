@@ -72,11 +72,35 @@ a false positive, not discover alpha.
      earnings_yield ~0; neither significant. So the fundamental axis shows no edge
      on free data either. (yfinance's 5-quarter shallowness was bypassed entirely
      via EDGAR — depth was not the problem; there simply is no edge.)
+   - **Disclosure-event metadata was tested (2026-08-10, R6) — also NO edge.**
+     Built free point-in-time event pipelines (DART for KOSPI-200, EDGAR
+     submissions 8-K/6-K for NASDAQ-100; 128k events, 5y, acceptance-date
+     embargo) and ran 6 PRE-REGISTERED trailing-count signals (earnings 8-K,
+     material agreements, all-events, 공급계약, 임원·주요주주 소유변동,
+     대량보유변동) through the split-disciplined IC harness at h=21. Best
+     train |t| = 0.94 vs noise-best ≈ 1.89 across N=6 — no trial passed the
+     |t|≥2 gate, validation never opened, holdout stays locked. Caveats:
+     n≈29 non-overlapping periods (5y span) limits power to |IC| ≳ 0.02, and
+     only event COUNTS were tested — filing CONTENT (text/NLP) remains the
+     one untested free axis.
+   - **KR investor flows were tested (2026-08-16, R7) — also NO edge.** Built
+     a free per-stock daily flow panel (Naver frgn backfill, 233,724 rows,
+     KOSPI-200 × 5y, cross-validated exactly against KIS's investor API;
+     KIS itself only serves 30 days) and ran 3 PRE-REGISTERED 7-day
+     turnover-normalized imbalance signals (외국인 / 기관 / combined) at
+     h=21. Best train |t| = 0.36 vs noise-best ≈ 1.48 across N=3 — nothing
+     approached the gate, validation never opened, holdout locked. This is
+     also the rigorous verdict on retail "매수/매도세" dashboard features:
+     the underlying flow data has no cross-sectional 21d predictive power
+     on this universe.
    - **Verdict across axes:** price/technical (R1–R2), breadth & multi-horizon,
-     and fundamentals (R5) — all rigorously split-tested, all NULL. The free-data
-     edge ceiling is real and now doubly confirmed (price AND fundamentals).
-     A genuinely new edge would need PAID alt-data / microstructure, or a
-     different game (index beta + risk management, accepting no alpha).
+     fundamentals (R5), disclosure-event metadata (R6), and investor flows
+     (R7) — all rigorously split-tested, all NULL. The free-data edge ceiling
+     is real and now quadruply confirmed (price, fundamentals, event metadata
+     AND flows).
+     A genuinely new edge would need PAID alt-data / microstructure, filing
+     TEXT signals (unbuilt), or a different game (index beta + risk
+     management, accepting no alpha).
 3. **A different horizon/regime** — intraday or event-driven, where structure
    differs from the daily cross-section tested.
 4. **Capacity-aware, costed, out-of-sample** validation of any candidate before
